@@ -1,0 +1,38 @@
+.bankDetails{
+    .rightSec{
+    padding: 0 190px 105px 50px;
+    background-color: #f9f9f9;
+    
+    .formHeader{
+        background: rgb(226, 225, 254);
+        border-radius: 5px 5px 0px 0px;
+        height: 50px;
+        padding: 14px 30px;
+        
+    }
+    .form-section {
+        background: rgb(255, 255, 255);
+        border-radius: 5px;
+        border: 2px solid rgb(226, 225, 254);
+        margin-top: 30px;
+        // padding: 30px;
+    }
+    .employmentType{
+        padding: 40px 0;
+        border-bottom: 1px dotted rgb(226, 225, 254);;
+    }
+    .accName{
+        padding-top: 30px;
+    }
+    .rowPadding{
+        padding-top: 45px;
+    }
+    footer{
+
+        padding: 72px 30px 30px 30px;
+    }
+    .formPart{
+        padding: 14px 15px;
+    }    
+}
+}

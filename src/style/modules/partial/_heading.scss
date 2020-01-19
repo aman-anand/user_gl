@@ -1,0 +1,84 @@
+.text-14-regular,
+%text-14-regular {
+	font-family: $font-regular;
+	font-size: 14px;
+}
+.text-16-regular,
+%text-16-regular {
+	font-family: $font-regular;
+	font-size: 16px;
+}
+.text-18-regular,
+%text-18-regular {
+	font-family: $font-regular;
+	font-size: 18px;
+}
+.text-12-semibold,
+%text-12-semibold {
+	font-family: $font-semibold;
+	font-size: 12px;
+}
+.text-14-semibold,
+%text-14-semibold {
+	font-family: $font-semibold;
+	font-size: 14px;
+}
+
+.text-16-semibold,
+%text-16-semibold {
+	font-family: $font-semibold;
+	font-size: 16px;
+}
+.text-18-semibold,
+%text-18-semibold {
+	font-family: $font-semibold;
+	font-size: 18px;
+}
+.text-20-semibold,
+%text-20-semibold {
+	font-family: $font-semibold;
+	font-size: 20px;
+}
+.text-24-semibold,
+%text-24-semibold {
+	font-family: $font-semibold;
+	font-size: 24px;
+}
+.text-14-bold,
+%text-14-bold {
+	font-family: $font-bold;
+	font-size: 14px;
+}
+.text-16-bold,
+%text-16-bold {
+	font-family: $font-bold;
+	font-size: 16px;
+}
+.text-18-bold,
+%text-18-bold {
+	font-family: $font-bold;
+	font-size: 18px;
+}
+.text-20-bold,
+%text-20-bold {
+	font-family: $font-bold;
+	font-size: 20px;
+}
+%text-22-bold {
+	font-family: $font-bold;
+	font-size: 22px;
+}
+%text-14-extrabold {
+	font-family: $font-extrabold;
+	font-size: 14px;
+}
+.desc {
+	font-family: $font-semibold;
+	font-size: 12px;
+	color: $grey;
+}
+label {
+	font-family: $font-semibold;
+	font-size: 16px;
+	color: $blackish;
+}

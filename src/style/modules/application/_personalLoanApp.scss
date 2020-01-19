@@ -1,0 +1,83 @@
+.personal-loan {
+  background-color: #f9f9f9;
+  .rightSec {
+    padding: 0 190px 30px 50px;
+    background-color: #f9f9f9;
+    
+    .right-text {
+      text-align: right;
+    }
+    .form-section {
+      background: rgb(255, 255, 255);
+      border-radius: 5px;
+      border: 2px solid rgb(226, 225, 254);
+      margin-top: 30px;
+      .form-heading {
+        background: rgb(226, 225, 254);
+        border-radius: 5px 5px 0px 0px;
+        padding: 14px 30px;
+      }
+      .form-part {
+        padding: 30px;
+        .divide {
+          margin-bottom: 15px;
+          #defaultCheck1{
+            top:4px
+          }
+        }
+        .personal-address-label {
+          margin-top: 45px;
+          margin-bottom: 20px;
+          .line {
+            border-bottom: 2px dashed $grey-light;
+            margin: 14px;
+          }
+        }
+       .personal-address {
+          .padding {
+            padding-right: 30px;
+          }
+         
+        }
+        #panNumber{
+          text-transform:uppercase;
+        }
+      }
+     
+      .primary-button {
+        float: right;
+      }
+    }
+    
+   .hidden {
+      display: none;
+    }
+    
+
+::-webkit-datetime-edit-year-field:not([aria-valuenow]),
+::-webkit-datetime-edit-month-field:not([aria-valuenow]),
+::-webkit-datetime-edit-day-field:not([aria-valuenow]) {
+    color: transparent;
+}
+
+#date{
+  border: 2px solid #0097e6;
+  background: none;
+  display: block;
+  margin: 20px auto;
+  padding: 15px 45px;
+  width: 200px;
+  outline: none;
+  color: white;
+  border-radius: 25px;
+  text-align: center;
+  transition: 250ms width ease, 250ms border-color ease;
+}
+
+
+    footer {
+      margin-top: 30px;
+    }
+  }
+}
+

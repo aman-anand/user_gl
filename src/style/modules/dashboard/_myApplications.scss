@@ -1,0 +1,37 @@
+
+.my-application {
+	padding: 50px;
+	header {
+		h1 {
+			color: $blackish;
+			@extend %text-22-bold;
+			span {
+				float: right;
+				color: $grey;
+				@extend %text-14-semibold;
+			}
+		}
+		p {
+			color: $grey;
+			@extend %text-14-semibold;
+		}
+		margin-bottom: 54px;
+	}
+	.status-section {
+		@extend %status-card;
+		margin-bottom: 52px;
+	}
+	.application-preview {
+		.preview-card {
+			padding: 30px;
+			background-color: #fff;
+			border-radius: 10px;
+			box-shadow: 0 8px 20px 0 rgba(0, 0, 0, 0.06);
+			h3 {
+				@extend %text-22-bold;
+				margin-bottom: 22px;
+			}
+			@extend %common-tab-style;
+		}
+	}
+}

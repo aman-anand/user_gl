@@ -1,0 +1,52 @@
+.faq {
+	padding: 50px;
+	h1 {
+		color: $blackish;
+		@extend %text-22-bold;
+		margin-bottom: 20px;
+	}
+	.nav-tabs {
+		.nav-item {
+			margin-right: 20px;
+			.nav-link {
+				background-color: unset;
+				border: none;
+				padding: 10px 20px;
+				@extend %text-18-semibold;
+				color: $blackish;
+				&.active {
+					border-bottom: 1px solid $primary-color-one;
+					font-family: $font-bold;
+				}
+			}
+		}
+	}
+	.tab-content {
+		margin-top: 35px;
+		ul {
+			li {
+				border-bottom: dashed 1px #e7e7e7;
+				padding: 5px 0px;
+				h4 {
+					@extend %text-16-semibold;
+					color: $blackish;
+					cursor: pointer;
+					&:after {
+						content: "-";
+						float: right;
+					}
+					&.collapsed {
+						&:after {
+							content: "+";
+							float: right;
+						}
+					}
+				}
+				p {
+					@extend %text-14-semibold;
+					color: $blackish;
+				}
+			}
+		}
+	}
+}

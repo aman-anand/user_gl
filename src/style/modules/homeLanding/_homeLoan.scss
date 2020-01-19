@@ -1,0 +1,78 @@
+.banner-home-loan-section {
+  background-image: url(../images/homeLoansingle.png);
+  background-repeat: no-repeat;
+  background-size: cover;
+  position: relative;
+  overflow: hidden;
+  padding-bottom: 65px;
+  height: unset;
+  .slider-for {
+    z-index: -1;
+  }
+
+  .content {
+    margin-bottom: 210px;
+    color: #fff;
+
+    h3 {
+      font-size: 45px;
+      font-family: $font-bold;
+    }
+    p {
+      font-size: 45px;
+      font-family: $font-regular;
+    }
+  }
+}
+.banner-business-loan-section {
+  background-image: url(../images/businessLoansingle.png);
+  background-repeat: no-repeat;
+  background-size: cover;
+  position: relative;
+  overflow: hidden;
+  padding-bottom: 65px;
+  height: unset;
+  .slider-for {
+    z-index: -1;
+  }
+
+  .content {
+    margin-bottom: 210px;
+    color: #fff;
+
+    h3 {
+      font-size: 45px;
+      font-family: $font-bold;
+    }
+    p {
+      font-size: 45px;
+      font-family: $font-regular;
+    }
+  }
+}
+.banner-car-loan-section {
+  background-image: url(../images/loanAgainstProperty.png);
+  background-repeat: no-repeat;
+  background-size: cover;
+  position: relative;
+  overflow: hidden;
+  padding-bottom: 65px;
+  height: unset;
+  .slider-for {
+    z-index: -1;
+  }
+
+  .content {
+    margin-bottom: 210px;
+    color: #fff;
+
+    h3 {
+      font-size: 45px;
+      font-family: $font-bold;
+    }
+    p {
+      font-size: 45px;
+      font-family: $font-regular;
+    }
+  }
+}

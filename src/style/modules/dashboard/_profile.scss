@@ -1,0 +1,38 @@
+.profile {
+	padding: 75px 52px;
+	h1 {
+		color: $blackish;
+		@extend %text-20-bold;
+	}
+	article {
+		border-radius: 9px;
+		box-shadow: 0 8px 20px 0 rgba(96, 88, 242, 0.12);
+        background-color: #ffffff;
+        height: 100%;
+		header {
+			padding: 17px 30px;
+			button {
+				float: right;
+				border: none;
+				background-color: unset;
+			}
+		}
+		hr {
+			margin: 0;
+			border-top-style: dashed;
+		}
+		section {
+			padding: 17px 30px;
+			label {
+				margin-bottom: 4px;
+				color: $grey;
+				@extend %text-14-semibold;
+			}
+			p {
+				margin-bottom: 25px;
+				color: $blackish;
+				@extend %text-16-semibold;
+			}
+		}
+	}
+}

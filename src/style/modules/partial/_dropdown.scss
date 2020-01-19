@@ -1,0 +1,140 @@
+.drop-down-section {
+  border-bottom: 1px solid $grey-light;
+  .dropdown-menu {
+    width: 100%;
+  }
+  .drop-down-name {
+    font-family: "NunitoSemibold";
+    font-size: 12px;
+    color: #707070;
+  }
+
+  .dropdown {
+    &.show {
+      .btn::after {
+        transform: rotate(135deg);
+      }
+    }
+
+    .btn {
+      color: #54527b;
+      width: 100%;
+      text-align: left;
+      &::after {
+        border: 1px solid #989494c9;
+        border-width: 0 0 1px 1px;
+        width: 6px;
+        height: 6px;
+        line-height: 0;
+        font-size: 0;
+        position: absolute;
+        top: 40%;
+        right: 20px;
+        transform: rotate(-45deg);
+        transition: transform 0.3s ease;
+      }
+    }
+
+    .btn:focus {
+      box-shadow: unset;
+    }
+    .dropdown-item {
+      color: rgb(112, 112, 112);
+      font-size: 14px;
+      border-bottom: 1.5px solid rgb(242, 242, 248);
+      padding: 12px 25px;
+      font-family: $font-semibold;
+    }
+    .dropdown-item:last-child {
+      border: none;
+    }
+    .dropdown-item:active {
+      background-color: rgb(242, 242, 248);
+    }
+  }
+}
+
+.drop-down-name {
+  font-family: "NunitoSemibold";
+  font-size: 12px;
+  color: #707070;
+}
+.Select {
+  .Select-control {
+    border: none;
+    border-bottom: 1px solid #f2f2f8;
+    border-radius: 0;
+  }
+  .Select-placeholder,
+  .Select-value,
+  .Select-input {
+    padding: 0 !important;
+  }
+  .Select-placeholder {
+    color: rgb(84, 82, 123);
+    font-family: $font-semibold;
+    font-size: 14px;
+  }
+  .Select-control:hover {
+    box-shadow: unset;
+  }
+  .Select-arrow {
+    border: 1px solid #989494c9;
+    border-top-width: 1px;
+    border-right-width: 1px;
+    border-bottom-width: 1px;
+    border-left-width: 1px;
+    border-width: 0 0 1px 1px;
+    width: 6px;
+    height: 6px;
+    line-height: 0;
+    font-size: 0;
+    position: absolute;
+    top: 40%;
+    right: 20px;
+    transform: rotate(-45deg);
+    transition: transform 0.3s ease;
+  }
+  .Select-clear {
+    display: none;
+  }
+}
+
+.Select.is-focused:not(.is-open) > .Select-control {
+  border-bottom: 1px solid #f2f2f8 !important;
+  box-shadow: unset !important;
+}
+.Select.is-open > .Select-control .Select-arrow {
+  border-color: unset !important;
+  border-width: unset !important;
+  transform: rotate(135deg) !important;
+  border: 1px solid #989494c9 !important;
+  border-top-width: 1px !important;
+  border-right-width: 1px !important;
+  border-bottom-width: 1px !important;
+  border-left-width: 1px !important;
+  border-width: 0 0 1px 1px !important;
+  top: 40% !important;
+}
+.VirtualizedSelectFocusedOption {
+  background-color: rgb(242, 242, 248);
+}
+.VirtualizedSelectOption {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  padding: 12px 25px;
+  color: rgb(112, 112, 112);
+
+  font-size: 14px;
+  font-family: $font-semibold;
+  border-bottom: 1.5px solid rgb(242, 242, 248);
+
+  cursor: pointer;
+}
+.VirtualizedSelectOption:last-child {
+  border: none;
+}

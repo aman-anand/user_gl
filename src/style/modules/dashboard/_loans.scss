@@ -1,0 +1,24 @@
+.loans {
+	padding: 50px;
+	header {
+		h1 {
+			color: $blackish;
+			@extend %text-22-bold;
+			span {
+				float: right;
+				color: $grey;
+				@extend %text-14-semibold;
+			}
+		}
+		p {
+			color: $grey;
+			@extend %text-14-semibold;
+		}
+		margin-bottom: 54px;
+	}
+	.loan-section {
+		@extend %status-card;
+        margin-bottom: 20px;
+        
+	}
+}

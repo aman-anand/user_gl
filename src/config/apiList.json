@@ -1,0 +1,31 @@
+{
+	"env": "http://13.234.172.86/api/v1/",
+	"envmin": "http://13.234.172.86/",
+	"endpoint": {
+		"loanDropDown": "borrower/loanProducts",
+		"employmentTypeDropdown":"/restConfig/commonPropertySuggest?propertyType=BORROWER_PROFILE_VARIABLE5",
+		"signUp": "borrower/stepOne",
+		"signIn": "restApi/login",
+		"personalProfileUpdate": "/borrower/personalProfileUpdate",
+		"coApplicantDetails": "/coApplicant/add",
+		"addReferenceDetails": "/borrower/createAndUpdateReference",
+		"uploadDocument": "/borrower/uploadDocument",
+		"documentCategoryUuid": "/showAllRequiredDocuments/loanProduct",
+		"loanApplicationUpdate": "/borrower/updateLoanApplication",
+		"companyProfileUpdate": "/borrower/companyProfileUpdate",
+		"profileUpdate": "/borrower/profileUpdate",
+		"applyLoan": "loanApplication/apply",
+		"sendOtp": "verify/sendOtp",
+		"verifyPhone": "verify/phone",
+		"signUp2": "borrower/stepTwoIndividual",
+		"searchLoan": "borrower/fetchMatchingInvestors",
+		"fetchCreditScore": "borrower/fetchCreditScore",
+		"loanDetail": "borrower/loanDetails",
+		"userDetails": "borrower/borrowerDetail",
+		"userDetailsAll": "borrower/allBorrowerDetails",
+		"cityList": "restConfig/cityDetails",
+		"updateLoan": "borrower/updateLoanApplication",
+		"perfiosOnlineStart": "http://localhost:4000/v1/perfios/insights/start",
+		"investorDetails":"borrower/investorDetails"
+	}
+}

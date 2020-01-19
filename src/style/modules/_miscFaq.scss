@@ -1,0 +1,342 @@
+
+.belowHeaderSection{
+		  margin-top: 65px;
+		  
+		  .extraNavPart{
+			  height: 50px;
+			  align-items: center;
+			  padding: 30px 0;
+			  background-color: #6058F2;
+			//   border-bottom: 1px solid #6058F2;
+	     	//   border-bottom-left-radius: 50%;
+			//   border-bottom-right-radius: 50%;
+			  color:$grey-light ;
+		  
+		  }
+
+		  .radiusPart{
+			background-color: #e2e1fe;
+		  }
+		  .curve{
+			background-color: #e2e1fe;
+		  }
+
+      }
+					
+
+
+.tab-content {
+	margin-top: 0px;
+	ul {
+		li {
+			border-bottom: dashed 1px #e7e7e7;
+			padding: 5px 0px;
+			h4 {
+				@extend %text-16-semibold;
+				color: $blackish;
+				cursor: pointer;
+				&:after {
+					content: "-";
+					float: right;
+				}
+				&.collapsed {
+
+					&:after {
+						content: "+";
+						float: right;
+					}
+				}
+			}
+			p {
+				@extend %text-14-semibold;
+				color: $blackish;
+			}
+		}
+	}
+}
+
+.loanTypeFaq {
+	background-color: #e2e1fe;
+}
+
+.topNavFaq {
+	.header-section {
+		height: 65px;
+		background-color: #6058f2;
+
+		#sticky-logo{
+			display: block !important;
+		}
+		#logo{
+			display: none !important;
+		}
+
+		.navbar-nav {
+			.nav-item {
+			  line-height: 3;
+			  .nav-link {
+				color: #fff;
+			  }
+			  margin-right: 60px;
+			  &:last-child {
+				margin-right: 0px;
+			  }
+			  .active {
+				border-bottom: 1px solid #fff;
+				line-height: 3;
+			  }
+			}
+			.login{
+			  letter-spacing: 1px;
+			  text-transform: uppercase;
+			}
+		  }
+		  .dropdown-menu {
+			left: unset;
+			min-width: 12rem;
+			box-shadow: 0 8px 20px 0 rgba(96, 88, 242, 0.12);
+			margin: -2px;
+			.dropdown-item {
+			  padding: 12px 21px;
+			  border-bottom: solid 1.5px #f2f2f8;
+			  line-height: 1.1;
+			  font-size: 14px;
+			  color: #2c2a59;
+			  &:active {
+				background-color: #f2f2f8;
+			  }
+			}
+			.dropdown-item:last-child {
+			  border: none;
+			}
+		  }
+		  
+		
+		
+		// .fixed-header {
+		//   background-color: #6058f2;
+		//   transition: background-color 0.3s ease;
+		// }
+		
+	
+
+		// .navbar-nav {
+		// 	.nav-item {
+		// 		line-height: 3;
+		// 		.nav-link {
+		// 			color: #fff !important;
+		// 		}
+		// 		margin-right: 60px;
+		// 		&:last-child {
+		// 			margin-right: 0px;
+		// 		}
+		// 		&.active {
+		// 			border-bottom: 1px solid #fff;
+		// 			line-height: 3;
+		// 		}
+		// 	}
+		// }
+		// .dropdown-menu {
+		// 	left: unset;
+		// 	min-width: 12rem;
+		// 	box-shadow: 0 8px 20px 0 rgba(96, 88, 242, 0.12);
+		// 	.dropdown-item {
+		// 		padding: 12px 21px;
+		// 		border-bottom: solid 1.5px #f2f2f8;
+		// 		line-height: 1.1;
+		// 	}
+		// 	.dropdown-item:last-child {
+		// 		border: none;
+		// 	}
+		// }
+	}
+
+
+	
+	
+	@import url("https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css");
+    .panel-title > div:before {
+        float: right !important;
+        // font-family: FontAwesome;
+        content:"-" ;
+        padding-right: 5px;
+		color: rgb(44, 42, 89) !important;
+		
+    }
+    .panel-title > div.collapsed:before {
+        float: right !important;
+        content:"+" ;
+        color: rgb(44, 42, 89) !important;
+    }
+    .panel-title > div:hover, 
+    .panel-title > div:active, 
+    .panel-title > div:focus  {
+        text-decoration:none;
+        color: rgb(44, 42, 89) !important;
+    }
+    .panel-body{
+      padding: 0 !important;
+	}
+	
+	.accordionTitle{
+		padding: 17px 0;
+		border-bottom: 1px solid $grey-light !important;
+	  }
+
+	  .scrollableDivv{
+		height: 400px;
+		margin: 40px 0;
+		// overflow: scroll;
+	  }
+	
+	  .faqData{
+		  margin: 30px;
+	  }
+
+	.pagination{
+		justify-content: center;
+		ul{
+			margin-top: 0 !important;
+		}
+		
+	}
+	.page-item:first-child .page-link {
+		margin: 5px !important;
+	}
+}
+
+@import url("https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css");
+.panel-title > div:before {
+	float: right !important;
+	// font-family: FontAwesome;
+	content: "-";
+	padding-right: 5px;
+	color: rgb(44, 42, 89) !important;
+}
+.panel-title > div.collapsed:before {
+	float: right !important;
+	content: "+";
+	color: rgb(44, 42, 89) !important;
+}
+.panel-title > div:hover,
+.panel-title > div:active,
+.panel-title > div:focus {
+	text-decoration: none;
+	color: rgb(44, 42, 89) !important;
+}
+.panel-body {
+	padding: 0 !important;
+}
+
+.accordionTitle {
+	padding: 17px 0;
+	border-bottom: 1px solid $grey-light !important;
+}
+
+.scrollableDivv {
+	// height: 20vw;
+	height: 472px;
+	margin: 40px 0;
+	overflow: scroll;
+	overflow-x: hidden;
+}
+
+.faqData {
+	margin: 30px;
+}
+
+.pagination {
+	justify-content: center;
+	ul {
+		margin-top: 0 !important;
+	}
+	
+		//  border: 1px solid black
+}
+
+
+.page-item:first-child {
+	.page-link{
+	margin-left:5px;
+
+	
+	}
+}
+.page-item{
+
+	.activee{
+		width: 25px;
+		height: 25px;
+		// padding: 2px 6px !important;
+		// border: 1px solid #e2e1fe !important;
+		 background-color: #e2e1fe;
+		 text-align: center;
+		padding-top: 1px !important;
+		color: $primary-color-one !important;
+	}
+}
+
+.pagination > li > a,
+.pagination > li {
+	border-radius: 50% !important;
+	border: none !important;
+	margin: 5px;
+	padding: 0px 2px !important;
+	color: $blackish !important;
+	background-color: inherit;
+	padding: 0px !important;
+}
+
+// .pagination>li>a, .pagination>li {
+// 	border-radius: 50% !important;
+// 	border: none !important;
+// 	margin: 5px;
+// 	padding: 0px 2px !important;
+// 	color: $primary-color-two !important;
+// 	background-color: #e2e1fe;
+
+// 	}
+.nav-tabs {
+	.nav-item {
+		margin-right: 20px;
+		.nav-link {
+			background-color: unset;
+			border: none;
+			padding: 10px 20px;
+			@extend %text-18-semibold;
+			color: $blackish;
+			&.active {
+				border-bottom: 1px solid $primary-color-one;
+				font-family: $font-bold;
+			}
+		}
+	}
+}
+.tab-content {
+	margin-top: 35px;
+	ul {
+		li {
+			border-bottom: dashed 1px #e7e7e7;
+			padding: 5px 0px;
+			h4 {
+				@extend %text-16-semibold;
+				color: $blackish;
+				cursor: pointer;
+				&:after {
+					content: "-";
+					float: right;
+				}
+				&.collapsed {
+					&:after {
+						content: "+";
+						float: right;
+					}
+				}
+			}
+			p {
+				@extend %text-14-semibold;
+				color: $blackish;
+			}
+		}
+	}
+}

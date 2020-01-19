@@ -1,0 +1,24 @@
+.thank-you-container {
+	height: 100vh;
+	h2 {
+		font-family: $font-bold;
+		font-size: 40px;
+
+		font-stretch: normal;
+		font-style: normal;
+		line-height: 1.38;
+		letter-spacing: normal;
+		color: #2c2a59;
+	}
+	p {
+		font-family: $font-semibold;
+		font-size: 20px;
+
+		font-stretch: normal;
+		font-style: normal;
+		line-height: normal;
+		letter-spacing: normal;
+        color: #54527b;
+        margin-top: 40px;
+	}
+}

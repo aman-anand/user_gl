@@ -1,0 +1,244 @@
+#sticky-logo {
+    display: none;
+  }
+  body {
+    overflow-x: hidden;
+  }
+  .banner-loan-section {
+    background-image: url(../images/personalLoansingle.png);
+    background-repeat: no-repeat;
+  background-size: cover;
+  position: relative;
+  overflow: hidden;
+padding-bottom: 65px;
+height: unset;
+    .slider-for{
+      z-index: -1;
+    }
+  
+   
+  .content{
+    margin-bottom: 210px;
+    color:#fff;
+    
+    h3{
+        font-size: 45px;
+        font-family: $font-bold;
+    }
+    p{
+        font-size: 45px;
+        font-family: $font-regular;
+    }
+  }
+ 
+    
+  }
+  .overlay-loan-section{
+    width: 100%;
+    height: 800px;
+    z-index: -1;
+   // background: linear-gradient(to bottom, rgba(96,88,242, 0.4) 0%, #6058f2 100%); /* W3C */
+    position: absolute;
+  top: 0;
+  }
+  .first-loan-section {
+     overflow: hidden;
+  height: 100%;
+  background:  #f9f9f9;
+  transform: rotate(-5deg);
+  transform-origin: 0% 0;
+  position: absolute;
+  left: -45px;
+  top: 100%;
+  right: -45px;
+      @media all and (max-width: 1500px) {
+        transform-origin: 0% 0;
+    }
+    
+  }
+  .second-loan-section {
+    padding: 40px 0;
+    .benifit-part{
+        display: flex;
+        margin-bottom: 25px;
+        .content{
+            font-size: 24px;
+            font-family: $font-bold;
+            color: #353270;
+            margin-left:34px;
+        }
+    }p{
+        color: #2c2a59;
+    }
+    .main-heading {
+      color: rgb(53, 50, 112);
+      font-size: 36px;
+      font-family: $font-regular;
+      margin-bottom:56px;
+      .span-heading {
+        font-family: $font-bold;
+      }
+    }
+   
+  } //end second section
+  
+  .third-loan-section {
+    color: #fff;
+   background-color:#7169ff;
+    padding: 91px 0 118px 0;
+    .main-heading {
+      color: #fff;
+      font-size: 36px;
+      font-family: $font-regular;
+      margin-bottom: 51px;
+      .span-heading {
+        font-family: $font-bold;
+      }
+    }
+    .testimonial-card{
+        background-color: #fff;
+        padding:7px 30px 30px;
+        
+        border-radius:10px;
+        color: #2c2a59;
+        height:100%;
+        .testimonial-icon{
+            padding-left:74px;
+            padding-bottom: 12px;
+        }
+        .testimonial-sec{
+            display: flex;
+           
+            p{
+                color: #2c2a59;
+                margin-left:28px;
+            }
+        }
+        .testimonial-name{
+            color: #2c2a59;
+            text-align: right;
+        }
+    }
+   
+    .growing-text {
+      padding-bottom: 72px;
+      font-size: 36px;
+      font-family: $font-light;
+      padding-top: 137px;
+      .span-growing {
+        font-family: $font-bold;
+      }
+    }
+  } //end third section
+  
+  .fourth-loan-section {
+    .fourt-section-bg {
+      background-color: #fff;
+      border-radius: 10px;
+      box-shadow: 0 0 40px -10px rgba(69, 63, 176, 0.15);
+      position: relative;
+      transform: translateY(-50%);
+  
+      .counter-part {
+        text-align: center;
+        position: relative;
+        transform: translateY(-25%);
+        .counter {
+          font-family: $font-bold;
+          font-size: 30px;
+          color: #2c2a59;
+          padding: 21px 0 5px 0;
+        }
+        .counter-name {
+          font-family: $font-regular;
+          font-size: 18px;
+          color: #2c2a59;
+        }
+      }
+    }
+  } //end fourth section
+  .fifth-loan-section {
+    margin-top: -20px;
+    padding-bottom: 125px;
+    .item{
+      padding-left:70px;
+    }
+    .slider-img {
+     
+      -webkit-filter: grayscale(100%); /* Safari 6.0 - 9.0 */
+      filter: grayscale(100%);
+      &:hover {
+        filter: none;
+      }
+    }
+  
+  } //end fifth section
+  .sixth-loan-section{
+   padding-bottom: 100px;
+   
+    .main-heading {
+      font-family: $font-bold;
+          font-size: 36px;
+       color: #353270;
+       margin-bottom: 50px;
+    }
+   .viewall{
+       a{
+    font-size: 14px;
+    font-family: $font-bold;
+    letter-spacing: 1px;
+   
+    color: #6058f2 !important;
+    text-transform: uppercase;
+
+       }
+       margin-top: 60px;
+   }
+    .image-sec{
+        text-align: center;
+    }
+  } //end sixth section
+  .floating-form-loan-section {
+    border-radius: 10px;
+    box-shadow: 0 30px 40px -10px rgba(69, 63, 176, 0.25);
+    background-color: #ffffff;
+    padding: 40px;
+    margin-left: 100px;
+    width: 420px;
+    @media all and (max-width: 1200px) {
+      margin-left: 45px;
+  }
+  
+    h3,
+    p {
+      color: rgb(44, 42, 89);
+     
+    }
+    p{
+      margin-bottom: 40px;
+    }
+  
+    .form-element {
+      position: relative;
+      color: rgb(112, 112, 112);
+      margin-left: 30px;
+      margin-bottom: 10px;
+      .icon {
+        position: absolute;
+        top: 26px;
+        left: -30px;
+      }
+      .Select-value-label{
+        font-size: 14px;
+        font-family: "NunitoSemibold";
+        color: #54527b!important;
+      }
+    }
+    .form-element-button {
+      margin-top: 65px;
+      .apply-now {
+        padding: 24px;
+        width: 100%;
+      }
+    }
+  }

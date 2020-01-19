@@ -1,0 +1,150 @@
+.indi-form-text {
+	position: relative;
+	height: 60px;
+	overflow: hidden;
+	margin-top: 0px;
+
+	input {
+		width: 100%;
+		height: 100%;
+		border: none;
+		padding: 20px 0px 0px 0px;
+		outline: none;
+		border-radius: 0px;
+		color: $blackish;
+		font-size: 14px;
+	}
+	label {
+		position: absolute;
+		bottom: 0;
+		left: 0;
+		top: 0;
+		width: 100%;
+		height: 100%;
+		pointer-events: none;
+		border-bottom: 1px solid $grey-light;
+		&::after {
+			content: "";
+			position: absolute;
+			height: 100%;
+			left: 0px;
+			bottom: -1px;
+			width: 100%;
+			border-bottom: 1px solid $blackish;
+			transform: translateX(-100%);
+			transition: transform 0.3s ease;
+		}
+		.content-name {
+			position: absolute;
+			bottom: 5px;
+			left: 0px;
+			transition: all 0.3s ease;
+			font-family: $font-semibold;
+			font-size: 14px;
+			color: $grey;
+		}
+	}
+	input:focus + .label-name .content-name,
+	input:valid + .label-name .content-name {
+		transform: translateY(-125%);
+		font-size: 14px;
+		color: grey;
+	}
+	input:focus + .label-name::after,
+	input:valid + .label-name::after {
+		transform: translateY(0%);
+	}
+
+}
+.drop-down-section{
+	margin-top: 34px;
+}
+
+.custom-radios {
+	/* HIDE RADIO */
+	position: relative;
+	display: inline-block;
+	align-items: center;
+	margin-right: 20px;
+	[type="radio"] {
+		position: absolute;
+		opacity: 0;
+		width: 15px;
+		height: 15px;
+		top: 5px;
+		bottom: 0;
+		cursor: pointer;
+	}
+
+	/* IMAGE STYLES */
+	[type="radio"] + .custom-check {
+		cursor: pointer;
+		width: 15px;
+		height: 15px;
+		border: 2px solid $primary-color-two;
+		border-radius: 100%;
+		pointer-events: none;
+		cursor: pointer;
+		margin-right: 10px;
+		display: inline-block;
+		vertical-align: middle;
+	}
+
+	/* CHECKED STYLES */
+	[type="radio"]:checked + .custom-check {
+		background-color: $primary-color-two;
+		background-image: url("../images/active.svg");
+		background-size: 20px;
+		background-position: top -5px center;
+	}
+	label {
+		font-family: $font-semibold;
+		font-size: 14px;
+		color: $blackish;
+		margin-bottom: 0px;
+	}
+}
+.custom-checkbox {
+	/* HIDE RADIO */
+	position: relative;
+	display: inline-block;
+	align-items: center;
+	margin-right: 20px;
+	[type="checkbox"] {
+		position: absolute;
+		opacity: 0;
+		width: 15px;
+		height: 15px;
+		top: 5px;
+		bottom: 0;
+		cursor: pointer;
+	}
+
+	/* IMAGE STYLES */
+	[type="checkbox"] + .custom-check {
+		cursor: pointer;
+		width: 15px;
+		height: 15px;
+		border: 2px solid $primary-color-two;
+		border-radius: 100%;
+		pointer-events: none;
+		cursor: pointer;
+		margin-right: 10px;
+		display: inline-block;
+		vertical-align: middle;
+	}
+
+	/* CHECKED STYLES */
+	[type="checkbox"]:checked + .custom-check {
+		background-color: $primary-color-two;
+		background-image: url("../images/active.svg");
+		background-size: 20px;
+		background-position: top -5px center;
+	}
+	label {
+		font-family: $font-semibold;
+		font-size: 14px;
+		color: $blackish;
+		margin-bottom: 0px;
+	}
+}

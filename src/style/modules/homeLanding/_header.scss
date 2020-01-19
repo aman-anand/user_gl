@@ -1,0 +1,49 @@
+.header-section {
+  height: 65px;
+
+  .navbar-nav {
+    .nav-item {
+      line-height: 3;
+      .nav-link {
+        color: #fff;
+      }
+      margin-right: 60px;
+      &:last-child {
+        margin-right: 0px;
+      }
+      .active {
+        border-bottom: 1px solid #fff;
+        line-height: 3;
+      }
+    }
+    .login{
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+  }
+  .dropdown-menu {
+    left: unset;
+    min-width: 12rem;
+    box-shadow: 0 8px 20px 0 rgba(96, 88, 242, 0.12);
+    margin: -2px;
+    .dropdown-item {
+      padding: 12px 21px;
+      border-bottom: solid 1.5px #f2f2f8;
+      line-height: 1.1;
+      font-size: 14px;
+      color: #2c2a59;
+      &:active {
+        background-color: #f2f2f8;
+      }
+    }
+    .dropdown-item:last-child {
+      border: none;
+    }
+  }
+  
+}
+
+.fixed-header {
+  background-color: #6058f2;
+  transition: background-color 0.3s ease;
+}

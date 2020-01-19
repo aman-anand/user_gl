@@ -1,0 +1,52 @@
+.floating-form-section-loan {
+    border-radius: 10px;
+    box-shadow: 0 30px 40px -10px rgba(69, 63, 176, 0.25);
+    background-color: #ffffff;
+    padding: 40px;
+    margin-left: 100px;
+    width: 420px;
+    margin-top: 100px;
+    z-index: 1;
+position: relative;
+    @media all and (max-width: 1200px) {
+      margin-left: 45px;
+  }
+  
+    h3,
+    p {
+      color: rgb(44, 42, 89);
+     
+    }
+    p{
+      margin-bottom: 40px;
+    }
+  
+    .form-element {
+      position: relative;
+      color: rgb(112, 112, 112);
+      margin-left: 30px;
+    
+      .icon {
+        position: absolute;
+        top: 26px;
+        left: -30px;
+      }
+      .Select-value-label{
+        font-size: 14px;
+        font-family: "NunitoSemibold";
+        color: #54527b!important;
+      }
+    }
+    .form-element-button {
+      margin-top: 65px;
+      .apply-now {
+        padding: 24px;
+        width: 100%;
+      }
+    }
+  }
+  .sticky {
+    position: fixed;
+    top: 100px;
+    z-index: 1;
+  }

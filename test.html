@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<meta http-equiv="X-UA-Compatible" content="ie=edge" />
+		<title>Document</title>
+	</head>
+	<body>
+		<button onclick="myFunction()">Click me</button>
+		<div id="container"></div>
+		<script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.0/axios.js" integrity="sha256-XmdRbTre/3RulhYk/cOBUMpYlaAp2Rpo/s556u0OIKk=" crossorigin="anonymous"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/fetch/3.0.0/fetch.js" integrity="sha256-E6Qjbpri3VCWu8GKOk5xCaZIJnvKhIni4/mQMm2kCE8=" crossorigin="anonymous"></script>
+		<script>
+			function myFunction() {
+				const headers = {
+					"Content-Type": "application/x-www-form-urlencoded"
+				};
+				let dataString = {
+					access_token: "d9a94f8b-5eeb-4919-badc-b292dcac291f",
+					loanUuid: "1ef18ea4-6f3c-4466-b124-c0610fde801f",
+					coApplicantDetails: JSON.stringify({
+						firstName: "varaasidasdd",
+						lastName: "askhdkiiasd"
+					})
+				};
+
+				console.log(`${JSON.stringify(headers)}  --- ${JSON.stringify(dataString)}`);
+
+				axios
+					.post("http://13.234.172.86/api/v1/coApplicant/add", qs.stringify(dataString), {
+						"Content-Type": "application/x-www-form-urlencoded"
+					})
+					.then(response => {
+						alert(JSON.stringify(response));
+					})
+					.catch(error => {
+						alert("err");
+					});
+				// let dataString = {
+				// 	id: 1.4660562175805414,
+				// 	progreeId: "signUpPagefgdfg",
+				// 	companyName: "ghfghgff",
+				// 	name: "fghfgh",
+				// 	designation: "fgh",
+				// 	mobNo: "454564545",
+				// 	email: "dfgdfggggfgfdfgg@gmail.com",
+				// 	alternateEmail: "sdfffffgfgfff@gmail.com",
+				// 	password: "1234",
+				// 	confirmPassword: "1234"
+				// };
+				// fetch("'http://heliorestapi.herokuapp.com/signupinfo.php", {
+				// 	method: "post",
+				// 	body: JSON.stringify(dataString)
+				// })
+				// 	.then(function(response) {
+				// 		return response.text();
+				// 	})
+				// 	.then(function(data) {
+				// 		$("#container").html(data);
+				// 	});
+			}
+		</script>
+	</body>
+</html>

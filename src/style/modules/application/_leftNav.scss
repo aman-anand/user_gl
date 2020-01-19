@@ -1,0 +1,169 @@
+.left-Nav {
+  text-align: center;
+  background-color: #f2f2f8;
+
+  .checkedd{
+    background-color: #04D1AE;
+    height: 24px;
+    width: 24px;
+    border-radius: 50%;
+  }
+
+.logo{
+  padding-top:34px;
+}
+  ul {
+    flex-direction: column;
+    position: relative;
+    padding-left: 40px;
+    padding-top: 60px;
+    list-style-type: none;
+    margin: 0;
+    padding: 73px 57px 313px;
+    li {
+      position: relative;
+      z-index: 99;
+      a {
+        text-decoration: none;
+        color: #222;
+        .title {
+          align-items: center;
+          display: -webkit-flex;
+          .step-number {
+            background-color: #e2e1fe;  
+            color: #54527b;
+            width: 25px;
+            height: 25px;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            display: -webkit-flex;
+          }
+
+          .step-text {
+            padding: 15px 10px;
+            color: #2c2a59;
+            font-family: $font-regular;
+          }
+        }
+      }
+    }
+
+    li.active {
+      a {
+        .title {
+          .step-number {
+           
+            background-color: #6058f2;
+            color: #fff;
+          }
+
+          .step-text {
+          
+            padding: 15px 10px;
+            color: #2c2a59;
+
+          }
+        }
+      }
+    }
+  }
+  .continue {
+    background-color: #e2e1fe;
+    padding: 15px 0px;
+    a {
+      font-family: $font-extrabold;
+      color: rgb(96, 88, 242);
+
+      font-size: 14px;
+
+      letter-spacing: 1px;
+      text-align: center;
+      text-transform: uppercase;
+    }
+  }
+  
+  .exitModal{
+    padding: 40px ;
+    
+  }
+  .exitPopUpContent{
+    padding-bottom: 60px;
+    padding-top: 20px;
+  }
+
+  .blackish{
+    color: $blackish !important;
+  }
+
+  .grey{
+    color: $grey;
+  }
+  .primary-color-five{
+    color: $primary-color-five
+  }
+  .modalBody{
+    padding: 47px !important;
+  }
+  .accordionTitle{
+    padding: 17px 0;
+    border-bottom: 1px solid $grey-light !important;
+  }
+  .modalHeader{
+    padding: 25px;
+    border-bottom: 1px dotted  $grey-dark;
+  }
+
+  .modal-footer{
+    border-top: none;
+    padding: 25px;
+  }
+  .padding9px{
+    padding: 9px 0;
+  }
+  .padding5px{
+    padding-top: 5px;
+  }
+  .dot li{
+    list-style-type: none;
+    padding: 5px 13px;
+  }
+  .dot li::before{
+    content: "\2022";
+    color: $primary-color-one;
+    font-weight: bold;
+    display: inline-block; 
+    width: 1em;
+    margin-left: -1em;
+  }
+
+  .scrollableDiv{
+    height: 175px;
+    overflow: scroll;
+    overflow-x: hidden;
+  }
+
+  @import url("https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css");
+    .panel-title > div:before {
+        float: right !important;
+        // font-family: FontAwesome;
+        content:"-" ;
+        padding-right: 5px;
+        color: rgb(44, 42, 89) !important;
+    }
+    .panel-title > div.collapsed:before {
+        float: right !important;
+        content:"+" ;
+        color: rgb(44, 42, 89) !important;
+    }
+    .panel-title > div:hover, 
+    .panel-title > div:active, 
+    .panel-title > div:focus  {
+        text-decoration:none;
+        color: rgb(44, 42, 89) !important;
+    }
+    .panel-body{
+      padding: 0 !important;
+    }
+
+}

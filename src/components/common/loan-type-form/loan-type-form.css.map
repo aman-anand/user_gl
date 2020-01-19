@@ -1,0 +1,9 @@
+{
+    "version": 3,
+    "mappings": "AAAA,AAAA,YAAY,CAAA;EACR,KAAK,EAAE,GAAG;CACb",
+    "sources": [
+        "loan-type-form.scss"
+    ],
+    "names": [],
+    "file": "loan-type-form.css"
+}
