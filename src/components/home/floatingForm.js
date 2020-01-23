@@ -90,7 +90,7 @@ class FloatingForm extends Component {
         return (
           
             <form>
-            <h3 className='text-20-bold'>Let’s keep you going!</h3>
+            <h3 className='text-20-bold'>Please Sign In</h3>
             <p className='text-16-regular'>Help us understand a few details before we can get started.</p>
             <div className='form-element'>
                 <div className='icon'>

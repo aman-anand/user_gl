@@ -1,6 +1,6 @@
 import React, { Component } from "react";
-import Logo from "../../images/download.svg";
-import StickyLogo from "../../images/sticky-logo.svg";
+import Logo from "../../images/logo.png";
+import StickyLogo from "../../images/logo.png";
 import $ from "jquery";
 class HomeHeader extends Component {
     constructor(props) {
@@ -51,39 +51,8 @@ class HomeHeader extends Component {
 
                 <nav className="navbar navbar-expand-lg fixed-top   header-section ">
                     <div className="container p-0">
-                        <div id="logo" className="" ><a href="/"><img src={Logo} /></a></div>
-                        <div id="sticky-logo" className="" ><a href="/"><img src={StickyLogo} /></a></div>
-                        <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
-                            <span className="navbar-toggler-icon"></span>
-                        </button>
-                        <span className="" id="navbarNavDropdown">
-                            <ul className="navbar-nav justify-content-end">
-                                <li className="nav-item">
-                                    <a className={this.state.activeNav == 1 ? 'nav-link text-16-bold active' : 'nav-link text-16-regular'} href="/">Home </a>
-                                </li>
-                                <li className="nav-item">
-                                    <a className={this.state.activeNav == 2 ? 'nav-link text-16-bold dropdown-toggle active' : 'nav-link text-16-regular dropdown-toggle'}  href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                        Loans
-        </a>
-                                    <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                                        <a  class="dropdown-item" href="/loan/home-loan">Home Loan</a>
-                                        <a  class="dropdown-item" href="/loan/personal-loan">Personal Loan</a>
-                                        <a class="dropdown-item" href="/loan/business-loan">Business Loan</a>
-                                        <a class="dropdown-item" href="/loan/loan-against-property">Loan Against Property</a>
-                                       
-
-                                    </div>
-                                </li>
-                                <li className="nav-item">
-                                    <a className={this.state.activeNav == 3 ? 'nav-link text-16-bold active' : 'nav-link text-16-regular'}  href="/faq">F.A.Qs</a>
-                                </li>
-                                <li className="nav-item">
-                                    {/* <a className="nav-link text-16-bold login" href="/sign-in">Login</a> */}
-                                </li>
-
-                            </ul>
-
-                        </span>
+                        <div id="logo" className="" ><a href="/"><img src={Logo} width='100px'/></a></div>
+                        <div id="sticky-logo" className="" ><a href="/"><img src={StickyLogo} width='100px' /></a></div>
                     </div>
                 </nav>
 
