@@ -13,6 +13,8 @@ import Home from "../../images/home-loan.svg";
 import Check from "../../images/check-big.svg";
 import BankAllocated from "../../images/bank-allocated.svg";
 import AxisBank from "../../images/Axis-Bank.png";
+import { getCourses } from "../../services/masters";
+import axios from "axios";
 class MyApplications extends Component {
 	constructor(props) {
 		super(props);
@@ -22,11 +24,25 @@ class MyApplications extends Component {
 		};
 	}
 
+	fetchCall = () => {
+		console.log('Came to this function')
+		let dataString = {
+			"email":"aadfsddf@adsdessf.com",
+			"password":"aman",
+				}
+		getCourses(dataString).then(res => {
+			console.log(res)
+		});
+		// axios.get(`https://15.206.124.63/apis/courses`)
+		// .then(res => {
+		// 	console.log('Testing')
+		// })
+	}
 	componentDidMount() {
+		this.fetchCall()
 	}
 	// Get user data to prefill the data
 	render() {
-		const { loanList ,userData} = this.state;
 		return (
 			<div className='container-fluid'>
 				<div className='row'>
