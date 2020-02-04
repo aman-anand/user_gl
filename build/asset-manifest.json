@@ -1,19 +1,19 @@
 {
   "files": {
-    "main.css": "/static/css/main.8220c031.chunk.css",
-    "main.js": "/static/js/main.8e225c06.chunk.js",
-    "main.js.map": "/static/js/main.8e225c06.chunk.js.map",
+    "main.css": "/static/css/main.bad73742.chunk.css",
+    "main.js": "/static/js/main.abf675f2.chunk.js",
+    "main.js.map": "/static/js/main.abf675f2.chunk.js.map",
     "runtime-main.js": "/static/js/runtime-main.b881e3af.js",
     "runtime-main.js.map": "/static/js/runtime-main.b881e3af.js.map",
     "static/css/2.699efa4f.chunk.css": "/static/css/2.699efa4f.chunk.css",
-    "static/js/2.0c77fcaf.chunk.js": "/static/js/2.0c77fcaf.chunk.js",
-    "static/js/2.0c77fcaf.chunk.js.map": "/static/js/2.0c77fcaf.chunk.js.map",
+    "static/js/2.1f6bfe9f.chunk.js": "/static/js/2.1f6bfe9f.chunk.js",
+    "static/js/2.1f6bfe9f.chunk.js.map": "/static/js/2.1f6bfe9f.chunk.js.map",
     "index.html": "/index.html",
-    "precache-manifest.02e947780c6de1fb47fc2753542c0007.js": "/precache-manifest.02e947780c6de1fb47fc2753542c0007.js",
+    "precache-manifest.276dbfc4e98e596925a209787cc37575.js": "/precache-manifest.276dbfc4e98e596925a209787cc37575.js",
     "service-worker.js": "/service-worker.js",
     "static/css/2.699efa4f.chunk.css.map": "/static/css/2.699efa4f.chunk.css.map",
-    "static/css/main.8220c031.chunk.css.map": "/static/css/main.8220c031.chunk.css.map",
-    "static/js/2.0c77fcaf.chunk.js.LICENSE": "/static/js/2.0c77fcaf.chunk.js.LICENSE",
+    "static/css/main.bad73742.chunk.css.map": "/static/css/main.bad73742.chunk.css.map",
+    "static/js/2.1f6bfe9f.chunk.js.LICENSE": "/static/js/2.1f6bfe9f.chunk.js.LICENSE",
     "static/media/2-l-loans.svg": "/static/media/2-l-loans.3c965973.svg",
     "static/media/35-lenders.svg": "/static/media/35-lenders.fe6716d0.svg",
     "static/media/500-advisors.svg": "/static/media/500-advisors.4615273d.svg",
@@ -45,7 +45,6 @@
     "static/media/bajaj finserv.png": "/static/media/bajaj finserv.2a2dca9b.png",
     "static/media/bank of baroda.png": "/static/media/bank of baroda.de4ccd54.png",
     "static/media/bank of maharashtra.png": "/static/media/bank of maharashtra.fa9fbe3b.png",
-    "static/media/bank-allocated.svg": "/static/media/bank-allocated.e7ea4aee.svg",
     "static/media/basic-icons-01-copy-21.svg": "/static/media/basic-icons-01-copy-21.efa279bf.svg",
     "static/media/business-loan-icon.svg": "/static/media/business-loan-icon.164ee525.svg",
     "static/media/business-loan.svg": "/static/media/business-loan.bf20d221.svg",
@@ -90,8 +89,8 @@
   "entrypoints": [
     "static/js/runtime-main.b881e3af.js",
     "static/css/2.699efa4f.chunk.css",
-    "static/js/2.0c77fcaf.chunk.js",
-    "static/css/main.8220c031.chunk.css",
-    "static/js/main.8e225c06.chunk.js"
+    "static/js/2.1f6bfe9f.chunk.js",
+    "static/css/main.bad73742.chunk.css",
+    "static/js/main.abf675f2.chunk.js"
   ]
 }
