@@ -57,4 +57,21 @@ table {
 .table-div{
     padding-top: 20px;
     padding-bottom: 40px;
+    max-height: 200px;
+    overflow-y: auto;
 }  
+.close-button-style{
+    position: fixed;
+    top: 0px;
+    right: 0px;
+    padding: 20px;
+}
+.save-button-style{
+    position: fixed;
+    bottom: 0px;
+    right: 0px;
+    padding: 20px;
+}
+.pointer{
+    cursor: pointer;
+}
