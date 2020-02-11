@@ -6,7 +6,7 @@ import './myApplication.scss';
 // import ReactDOM from 'react-dom';
 import Modal from 'react-modal';
 import closeIcon from '../../images/close-icon-vector-23190083.jpg'
-import { getCourses, getElement, getTopic, setElement, setCourse, setTopic } from "../../services/masters";
+import { getCourses, getElement, getTopic, getQuiz, setElement, setCourse, setTopic, setQuiz } from "../../services/masters";
 
 const customStyles = {
 	content : {
@@ -20,7 +20,7 @@ const customStyles = {
 	}
   };
 let allCoursesSelectedInMultiselect = []
-class MyApplications extends Component {
+class Quix extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
@@ -29,6 +29,7 @@ class MyApplications extends Component {
 			courseList: [],
 			elementList: [],
 			topicList: [],
+			quizList: [],
 			courseView: true,
 			elementView: false,
 			topicView: false,
@@ -37,15 +38,21 @@ class MyApplications extends Component {
 			modalIsOpenTopic: false,
 			addCourseValue: null,
 			addElementValue: null,
-			addTopicValue: null,
+			addQuizNameValue: null,
 			addSourceValue: null,
+			addRemarksValue: null,
 			courseListMapOptions: [],
-			elementListMapOptions: [],
+            elementListMapOptions: [],
+            topicListMapOptions: [],
 			courseListMap: [],
 		 	elementListMap: [],
 			topicListMap: [],
+			quizListMap: [],
 			sendingMultipleCoursesInTopic: null,
-			sendingElementInTopic: null
+            sendingElementInTopic: null,
+            sendingtopicInTopic: null,
+            questionLimit: null,
+            preTest: false,
 		};
 	}
 
@@ -78,33 +85,17 @@ class MyApplications extends Component {
 				this.gettingListTopic()
 			})
 		});
+		getQuiz(dataString).then(res => {
+			console.log(res)
+			this.setState({
+				quizList: res.data
+			}, () => {
+				this.gettingListQuiz()
+			})
+		});
 	}
 	componentDidMount() {
 		this.fetchCall()
-	}
-	courseViewClicked = () => {
-		console.log('Course List View')
-		this.setState({
-			courseView: true,
-			elementView: false,
-			topicView: false	
-		})
-	}
-	elementViewClicked = () => {
-		console.log('Element List View')
-		this.setState({
-			courseView: false,
-			elementView: true,
-			topicView: false	
-		})
-	}
-	topicViewClicked = () => {
-		console.log('Topic List View')
-		this.setState({
-			courseView: false,
-			elementView: false,
-			topicView: true	
-		})
 	}
 	addElementClicked = () => {
 		console.log('Add Element Clicked')
@@ -145,21 +136,24 @@ class MyApplications extends Component {
 			alert(err)
 		})
 	}
-	saveTopicValue = () => {
-		console.log(this.state.addTopicValue)
-		console.log(this.state.addRemarksValue)
-		console.log(this.state.addSourceValue)
-		console.log(this.state.sendingMultipleCoursesInTopic)
-		console.log(this.state.sendingElementInTopic)
-		// console.log(this.state.)
-		let topicSetString = {
-			'topicName': this.state.addTopicValue,
-			'course': this.state.sendingMultipleCoursesInTopic,
-			'element': this.state.sendingElementInTopic,
-			'source': this.state.addSourceValue,
+	saveQuizValue = () => {
+        console.log(this.state.addQuizNameValue)
+        console.log(this.state.sendingMultipleCoursesInTopic)
+        console.log(this.state.sendingElementInTopic)
+        console.log(this.state.sendingtopicInTopic)
+        console.log(this.state.questionLimit)
+        console.log(this.state.preTest)
+        console.log(this.state.addRemarksValue)
+		let quizSetString = {
+			'title': this.state.addQuizNameValue,
+			'rank': this.state.sendingMultipleCoursesInTopic,
+            'element': this.state.sendingElementInTopic,
+            'topic': this.state.sendingtopicInTopic,
+            'questionLimit': this.state.questionLimit,
+			'preTest': this.state.preTest,
 			'remarks': this.state.addRemarksValue
 		}
-		setTopic(topicSetString).then(res => {
+		setQuiz(quizSetString).then(res => {
 			console.log(res)
 			this.setState({
 				topicList: res.data
@@ -167,24 +161,6 @@ class MyApplications extends Component {
 				this.fetchCall()
 			})
 			this.closeAddTopicModal()
-		})
-		.catch(err => {
-			alert(err)
-		})
-	}
-	saveCourseValue = () => {
-		console.log(this.state.addCourseValue)
-		let courseSetString = {
-			'name': this.state.addCourseValue
-		}
-		setCourse(courseSetString).then(res => {
-			console.log(res)
-			this.setState({
-				courseList: res.data
-			}, () => {
-				this.fetchCall()
-			})
-			this.closeAddCourseModal()
 		})
 		.catch(err => {
 			alert(err)
@@ -201,13 +177,22 @@ class MyApplications extends Component {
 		this.setState({
 			sendingElementInTopic : element._id
 		})
-		// e => {this.setState({
-		// 	sendingElementInTopic : e.target.value
-		// })}
+	}
+	topicSelectFunction = (e) => {
+        console.log(e.target.value)
+        console.log(this.state.topicList)
+		let topic = this.state.topicList.data.find(findingtopicId)
+		console.log(topic._id)
+		function findingtopicId(data){
+			if(data.topicName === e.target.value){
+				return data.topicName
+			}
+		}
+		this.setState({
+			sendingtopicInTopic : topic._id
+		})
 	}
 	multipleCourseSelectFunction = (e) => {
-		console.log(e.target.value)
-		console.log(this.state.courseList)
 		let course  = this.state.courseList.data.find(findingCourseId)
 		console.log(course._id)
 		function findingCourseId(data){
@@ -215,10 +200,8 @@ class MyApplications extends Component {
 				return data.name
 			}
 		}
-		allCoursesSelectedInMultiselect.push(course._id)
-		console.log(allCoursesSelectedInMultiselect)
 		this.setState({
-			sendingMultipleCoursesInTopic: allCoursesSelectedInMultiselect
+			sendingMultipleCoursesInTopic: course._id
 		})
 	}
 	gettingListCourse = () => {
@@ -282,19 +265,42 @@ class MyApplications extends Component {
 							</tr>
 							</>
 						)
-					})
-				})
+                    }),
+                    topicListMapOptions: this.state.topicList.data.map((log, i) => {
+                        return (
+                            <>
+                            <option value={log.topicName}>{log.topicName}</option>
+                            </>
+                        )
+                    })  
+                })
+			}
+	}
+	gettingListQuiz = () => {
+			if(this.state.quizList){
+				this.setState({
+					quizListMap: this.state.quizList.data.map((log, i) => {
+						return (
+							<>
+							<tr>
+								<td>{log.title}</td>
+								{log.preTest && <td>True</td>}
+								{!log.preTest && <td>False</td>}
+								<td className='text-underline'>Edit</td>
+								<td className='text-underline'>Delete</td>
+							</tr>
+							</>
+						)
+                    })
+                })
 			}
 	}
 	render() {
-		const textUnderlineCourse = this.state.courseView? 'text-underline': ''
-		const textUnderlineElement = this.state.elementView? 'text-underline': ''
-		const textUnderlineTopic = this.state.topicView? 'text-underline': ''
 		return (
 			<div className='container-fluid'>
 				<div className='row'>
 					<div className='col-xl-2 pl-0'>
-						<Navigation nav={1} />
+						<Navigation nav={3} />
 					</div>
 					<div className='col-xl-10 my-application'>
 						<header>
@@ -304,65 +310,20 @@ class MyApplications extends Component {
 						</header>
 						<div className='mainTab'>
 							<div className='row top-nav'>
-								<div className={["col-xl-4 col-lg-4 col-md-4 text-center pointer", textUnderlineCourse].join(' ')} onClick={this.courseViewClicked}>
-									Courses
-								</div>
-								<div className={["col-xl-4 col-lg-4 col-md-4 text-center pointer", textUnderlineElement].join(' ')} onClick = {this.elementViewClicked}>
-									Elements
-								</div>
-								<div className={["col-xl-4 col-lg-4 col-md-4 text-center pointer", textUnderlineTopic].join(' ')} onClick = {this.topicViewClicked}>
-									Topics
+								<div className="col-xl-12 col-lg-12 col-md-12 text-center pointer text-underline">
+									Quiz
 								</div>
 							</div>
-							{
-								this.state.elementView && 
 								<>
 									<div className='table-div'>
 									<table>
 									<tr>
-										<th>Name</th>
+										<th>Title</th>
+										<th>Pre Test</th>
 										<th>Edit</th>
 										<th>Delete</th>
 									</tr>
-									{this.state.elementListMap}
-									</table>
-									</div>
-								
-									<div className='bottom-button'>
-										<button className='br-4 button px-4 py-1' onClick={this.addElementClicked}> + Add</button>
-									</div>
-									<Modal
-									isOpen={this.state.modalIsOpenElement}
-									onAfterOpen={this.afterOpenModal}
-									onRequestClose={this.closeModal}
-									style={customStyles}
-									contentLabel="Example Modal"
-								>
-									<h2 ref={subtitle => this.subtitle = subtitle}>Add Elements</h2>
-									<div className='form-element'>										
-										<div className='indi-form-text'>
-											<input type='text' className='' name='age' id='age' autoComplete='off' value={this.state.age} onChange={e => this.setState({ addElementValue: e.target.value })} required />
-											<label for='age' className='label-name'>
-												<span className='content-name'>Please Enter Element Name</span>
-											</label>
-										</div>
-									</div>
-										<img src = {closeIcon} className='common-close-button close-button-style' onClick={this.closeAddElementModal}></img>
-									<button onClick={this.saveElementValue} className='save-button-style'>Save</button>
-								</Modal>
-							</>
-							}
-							{
-								this.state.topicView && 
-								<>
-									<div className='table-div'>
-									<table>
-									<tr>
-										<th>Name</th>
-										<th>Edit</th>
-										<th>Delete</th>
-									</tr>
-									{this.state.topicListMap}
+									{this.state.quizListMap}
 									</table>
 									</div>
 								
@@ -376,11 +337,11 @@ class MyApplications extends Component {
 									style={customStyles}
 									contentLabel="Example Modal"
 								>
-									<h2 ref={subtitle => this.subtitle = subtitle}>Add Topics</h2>
+									<h2 ref={subtitle => this.subtitle = subtitle}>New Quiz</h2>
 									<div className='form-element'>										
 										<div className='col-lg-12' >
-											Course(s)
-										<select name="cars" multiple onChange={this.multipleCourseSelectFunction}>
+											Rank
+										<select name="cars" onChange={this.multipleCourseSelectFunction}>
 											{this.state.courseListMapOptions}
 										</select>
 										</div>
@@ -390,79 +351,46 @@ class MyApplications extends Component {
 											{this.state.elementListMapOptions}
 										</select>
 										</div>
+										<div className='col-lg-12'>
+											Topic
+										<select name="cars" onChange={this.topicSelectFunction}>
+											{this.state.topicListMapOptions}
+										</select>
+										</div>
 										<div className='form-element'>										
 										<div className='indi-form-text'>
-											<input type='text' className='' name='age' id='age' autoComplete='off' value={this.state.addTopicValue} onChange={e => this.setState({ addTopicValue: e.target.value })} required />
+											<input type='text' className='' name='age' id='age' autoComplete='off' value={this.state.addQuizNameValue} onChange={e => this.setState({ addQuizNameValue: e.target.value })} required />
 											<label for='age' className='label-name'>
-												<span className='content-name'>Please Enter Topic Name</span>
+												<span className='content-name'>Please Enter Title of Test</span>
 											</label>
 										</div>
 									</div>
 										<div className='form-element'>										
 										<div className='indi-form-text'>
-											<input type='text' className='' name='age' id='age' autoComplete='off' value={this.state.addSourceValue} onChange={e => this.setState({ addSourceValue: e.target.value })} required />
+											<input type='number' className='' name='age' id='age' autoComplete='off' value={this.state.questionLimit} onChange={e => this.setState({ questionLimit: e.target.value })} required />
 											<label for='age' className='label-name'>
-												<span className='content-name'>Please Enter Source</span>
+												<span className='content-name'>Please Enter Question Limit</span>
 											</label>
 										</div>
 									</div>
-										<div className='form-element'>										
+                                    <div className='form-element'>										
 										<div className='indi-form-text'>
 											<input type='text' className='' name='age' id='age' autoComplete='off' value={this.state.addRemarksValue} onChange={e => this.setState({ addRemarksValue: e.target.value })} required />
 											<label for='age' className='label-name'>
-												<span className='content-name'>Please Enter Remarks</span>
+												<span className='content-name'>Remarks</span>
 											</label>
 										</div>
+									</div>
+                                    <div className='form-element'>		
+                                    Pre Test								
+											<input type='checkbox' className='' name='age' id='age' autoComplete='off' value={this.state.preTest} onChange={e => this.setState({ preTest: !this.state.preTest })} />
 									</div>
 									</div>
 									{/* <button onClick={this.closeAddTopicModal} className='close-button-style'>Close Me</button> */}
 									<img src = {closeIcon} className='common-close-button close-button-style' onClick={this.closeAddTopicModal}></img>
-									<button onClick={this.saveTopicValue} className='save-button-style'>Save</button>
+									<button onClick={this.saveQuizValue} className='save-button-style'>Save</button>
 								</Modal>
 							</>
-							}
-							{
-								this.state.courseView && 
-								<>
-									<div className='table-div'>
-									<table>
-									<tr>
-										<th>Name</th>
-										<th>Edit</th>
-										<th>Delete</th>
-									</tr>
-									{this.state.courseListMap}
-									</table>
-									</div>
-								
-									<div className='bottom-button'>
-										<button className='br-4 button px-4 py-1' onClick={this.addCourseClicked}> + Add</button>
-									</div>
-									<Modal
-									isOpen={this.state.modalIsOpenCourse}
-									onAfterOpen={this.afterOpenModal}
-									onRequestClose={this.closeModal}
-									style={customStyles}
-									contentLabel="Example Modal"
-								>
-									<h2 ref={subtitle => this.subtitle = subtitle}>Add Courses</h2>
-									<div className='form-element'>										
-										<div className='indi-form-text'>
-											<input type='text' className='' name='age' id='age' autoComplete='off' value={this.state.age} onChange={e => this.setState({ addCourseValue: e.target.value })} required />
-											<label for='age' className='label-name'>
-												<span className='content-name'>Please Enter Course Name</span>
-											</label>
-										</div>
-										<div>
-
-										</div>
-									</div>
-									{/* <button onClick={this.closeAddCourseModal} className='close-button-style'>Close Me</button> */}
-									<img src = {closeIcon} className='common-close-button close-button-style' onClick={this.closeAddCourseModal}></img>
-									<button onClick={this.saveCourseValue} className='save-button-style'>Save</button>
-								</Modal>
-							</>
-							}
 						</div>
 					</div>
 				</div>
@@ -471,4 +399,4 @@ class MyApplications extends Component {
 	}
 }
 
-export default MyApplications;
+export default Quix;

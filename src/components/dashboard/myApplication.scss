@@ -64,14 +64,22 @@ table {
     position: fixed;
     top: 0px;
     right: 0px;
-    padding: 20px;
 }
-.save-button-style{
+.save-button-style {
     position: fixed;
     bottom: 0px;
     right: 0px;
-    padding: 20px;
+    padding: 4px 20px;
+    border-radius: 4px;
+    margin: 10px;
+    background-color: #7169ff;
+    color: #fff;
+    box-shadow: 0 0 10px -6px #000;
 }
 .pointer{
     cursor: pointer;
+}
+
+.common-close-button{
+    width: 30px;
 }

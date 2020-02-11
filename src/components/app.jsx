@@ -11,25 +11,9 @@ import "../style/style.css";
 import Signup from "./auth/signUp";
 import SignIn from "./auth/signIn";
 // Dashboard
-import Search from "./search";
 import MyApplication from "./dashboard/myApplications";
-import Loans from "./dashboard/loans";
-import Profile from "./dashboard/profile";
-import Faq from "./dashboard/faq";
-
-// Application form
-import PersonalLoanApp from "./application/index";
-import LoanDetail from "./application/loanDetail";
-import workDetails from "./application/workDetails";
-import OtherDetail from "./application/otherDetails";
-import bankDetails from "./application/bankDetails";
 import Home from "./home";
-import documents from "./application/documents";
-import PersonalLoan from "./home/personalLoan";
-import HomeLoan from "./home/homeLoan";
-import LoanAgainstProperty from "./home/loanAgainstProperty";
-import BusinessLoan from "./home/businessLoan";
-
+import Quix from "./dashboard/quiz";
 // page not found
 import NoMatch from "./partials/pageNotFound";
 
@@ -72,6 +56,7 @@ class App extends Component {
 
 							{/* Dashboard */}
 							<Route exact path='/dashboard' component={MyApplication} />
+							<Route exact path='/quiz' component={Quix} />
 							{/* <Route exact path='/dashboard/loans' component={Loans} />
 							<Route exact path='/dashboard/profile' component={Profile} />
 							<Route exact path='/dashboard/faq' component={Faq} />

@@ -64,3 +64,21 @@ export const setTopic = datastring => {
         mode: 'no-cors'
     });
 };
+export const getQuiz = datastring => {
+    console.log(datastring)
+	return axios.get(`${ApiList.env}${ApiList.endpoint.quiz}`, (datastring), {
+		headers: {
+            'Content-Type' : 'application/json'
+        },
+        mode: 'no-cors'
+    });
+};
+export const setQuiz = datastring => {
+    console.log(datastring)
+	return axios.post(`${ApiList.env}${ApiList.endpoint.quiz}`, (datastring), {
+		headers: {
+            'Content-Type' : 'application/json'
+        },
+        mode: 'no-cors'
+    });
+};

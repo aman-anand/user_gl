@@ -4,6 +4,7 @@
 	"endpoint": {
 			"courses": "courses",
 			"element": "element",
-			"topic": "topic"
+			"topic": "topic",
+			"quiz": "quiz"
 	}
 }

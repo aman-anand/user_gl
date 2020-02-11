@@ -32,7 +32,7 @@ class DashboardNavigation extends Component {
 							</a>
 						</li>
 						<li className={nav === 2 ? "active" : null}>
-							<a href='/dashboard/users'>
+							<a href='/users'>
 								<svg xmlns='http://www.w3.org/2000/svg' width='20' height='21' viewBox='0 0 20 21'>
 									<g fill='none' fillRule='evenodd' stroke='#FFF' strokeLinecap='round' strokeLinejoin='round' transform='translate(3 1.5)'>
 										<path d='M8.591 9.49l-3.898 3.898' />
@@ -45,7 +45,7 @@ class DashboardNavigation extends Component {
 							</a>
 						</li>
 						<li className={nav === 3 ? "active" : null}>
-							<a href='/dashboard/quiz'>
+							<a href='/quiz'>
 								<svg xmlns='http://www.w3.org/2000/svg' width='21' height='21' viewBox='0 0 21 21'>
 									<g fill='none' fillRule='evenodd' stroke='#FFF' strokeLinecap='round' strokeLinejoin='round' transform='translate(2.52 1.05)'>
 										<circle cx='7.875' cy='4.2' r='4.2' />
@@ -56,7 +56,7 @@ class DashboardNavigation extends Component {
 							</a>
 						</li>
 						<li className={nav === 4 ? "active" : null}>
-							<a href='/dashboard/studyMaterial'>
+							<a href='/studyMaterial'>
 								<svg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 20 20'>
 									<g fill='none' fillRule='evenodd' stroke='#FFF' strokeLinecap='round' strokeLinejoin='round' transform='translate(1 1)'>
 										<circle cx='8.9' cy='8.9' r='8.86' />
