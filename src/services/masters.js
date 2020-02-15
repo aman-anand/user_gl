@@ -28,6 +28,24 @@ export const setCourse = datastring => {
         mode: 'no-cors'
     });
 };
+export const updateCourse = datastring => {
+    console.log(datastring)
+	return axios.put(`${ApiList.env}${ApiList.endpoint.courses}`, (datastring), {
+		headers: {
+            'Content-Type' : 'application/json'
+        },
+        mode: 'no-cors'
+    });
+};
+export const deleteCourse = datastring => {
+    console.log(datastring)
+	return axios.put(`${ApiList.env}${ApiList.endpoint.courses}`, (datastring), {
+		headers: {
+            'Content-Type' : 'application/json'
+        },
+        mode: 'no-cors'
+    });
+};
 export const getElement = datastring => {
     console.log(datastring)
 	return axios.get(`${ApiList.env}${ApiList.endpoint.element}`, (datastring), {
@@ -46,6 +64,24 @@ export const setElement = datastring => {
         mode: 'no-cors'
     });
 };
+export const updateElement = datastring => {
+    console.log(datastring)
+	return axios.put(`${ApiList.env}${ApiList.endpoint.element}`, (datastring), {
+		headers: {
+            'Content-Type' : 'application/json'
+        },
+        mode: 'no-cors'
+    });
+};
+export const deleteElement = datastring => {
+    console.log(datastring)
+	return axios.put(`${ApiList.env}${ApiList.endpoint.element}`, (datastring), {
+		headers: {
+            'Content-Type' : 'application/json'
+        },
+        mode: 'no-cors'
+    });
+};
 export const getTopic = datastring => {
     console.log(datastring)
 	return axios.get(`${ApiList.env}${ApiList.endpoint.topic}`, (datastring), {
@@ -58,6 +94,24 @@ export const getTopic = datastring => {
 export const setTopic = datastring => {
     console.log(datastring)
 	return axios.post(`${ApiList.env}${ApiList.endpoint.topic}`, (datastring), {
+		headers: {
+            'Content-Type' : 'application/json'
+        },
+        mode: 'no-cors'
+    });
+};
+export const updateTopic = datastring => {
+    console.log(datastring)
+	return axios.put(`${ApiList.env}${ApiList.endpoint.topic}`, (datastring), {
+		headers: {
+            'Content-Type' : 'application/json'
+        },
+        mode: 'no-cors'
+    });
+};
+export const deleteTopic = datastring => {
+    console.log(datastring)
+	return axios.put(`${ApiList.env}${ApiList.endpoint.topic}`, (datastring), {
 		headers: {
             'Content-Type' : 'application/json'
         },

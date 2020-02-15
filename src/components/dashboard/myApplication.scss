@@ -1,12 +1,14 @@
 .mainTab{
     position: fixed;
-    width: 50vw;
+    width: 79vw;
     top: 50%;
+    min-height: 71vh;
     left: 58%;
     padding: 20px 50px 30px;
     border-radius: 10px;
     transform: translate(-50%, -50%);
-    box-shadow: 0px 5px 10px -2px;
+    /* border: 1px solid; */
+    box-shadow: 0px 2px 11px -9px;
 }
 
 .text-underline{
@@ -57,13 +59,21 @@ table {
 .table-div{
     padding-top: 20px;
     padding-bottom: 40px;
-    max-height: 200px;
     overflow-y: auto;
 }  
 .close-button-style{
     position: fixed;
-    top: 0px;
-    right: 0px;
+    top: 12px;
+    right: 12px;
+}
+.editIcon{
+    width:35px;
+}
+.text-center{
+    text-align: center;
+}
+.border-bottom{
+    border-bottom: 1px solid #000;
 }
 .save-button-style {
     position: fixed;
@@ -81,5 +91,27 @@ table {
 }
 
 .common-close-button{
-    width: 30px;
+    width: 14px;
+}
+
+.multiple-select-style{
+    height: 38px;
+    padding-left: 10px;
+    margin-left: 10px;
+    border-radius: 4px;
+    background-color: rgba(100, 100, 100, 0.1);
+    font-size: 12px;
+}
+
+.single-select-style{
+    padding-left: 10px;
+    margin-left: 10px;
+    border-radius: 4px;
+    background-color: rgba(100, 100, 100, 0.1);
+    font-size: 12px;
+}
+
+.py-10{
+    padding-top: 10px;
+    padding-bottom: 10px;
 }

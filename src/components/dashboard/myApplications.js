@@ -1,12 +1,13 @@
 import React, { Component } from "react";
-
 import Navigation from "../nav/dashboardNavigation";
 import moment from "moment";
 import './myApplication.scss';
 // import ReactDOM from 'react-dom';
 import Modal from 'react-modal';
-import closeIcon from '../../images/close-icon-vector-23190083.jpg'
-import { getCourses, getElement, getTopic, setElement, setCourse, setTopic } from "../../services/masters";
+import closeIcon from '../../images/cross-small-01-512.png'
+import { getCourses, getElement, updateElement, deleteElement, getTopic, updateTopic, setElement, setCourse, updateCourse, deleteCourse, deleteTopic, setTopic } from "../../services/masters";
+import editIcon from '../../images/web-circle-circular-round_58-512.png'
+import deleteIcon from '../../images/010_trash-2-512.png'
 
 const customStyles = {
 	content : {
@@ -45,7 +46,15 @@ class MyApplications extends Component {
 		 	elementListMap: [],
 			topicListMap: [],
 			sendingMultipleCoursesInTopic: null,
-			sendingElementInTopic: null
+			sendingElementInTopic: null,
+			courseEditValue: null,
+			courseEditId: null,
+			elementEditValue: null,
+			elementEditId: null,
+			topicEditValue: null,
+			topicEditId: null,
+			topicEditSource: null,
+			topicEditRemarks: null
 		};
 	}
 
@@ -106,21 +115,36 @@ class MyApplications extends Component {
 			topicView: true	
 		})
 	}
-	addElementClicked = () => {
+	addElementClicked = (e) => {
+		this.setState({
+			elementEditValue: e.name,
+			elementEditId: e._id
+		})
 		console.log('Add Element Clicked')
 		this.setState({modalIsOpenElement: true});
 	}
 	closeAddElementModal = () => {
 		this.setState({modalIsOpenElement: false})
 	}
-	addCourseClicked = () => {
+	addCourseClicked = (e) => {
+		this.setState({
+			courseEditValue: e.name,
+			courseEditId: e._id
+		})
 		console.log('Add Course Clicked')
 		this.setState({modalIsOpenCourse: true});
 	}
 	closeAddCourseModal = () => {
 		this.setState({modalIsOpenCourse: false})
 	}
-	addTopicClicked = () => {
+	addTopicClicked = (e) => {
+		console.log(e)
+		this.setState({
+			topicEditValue: e.topicName,
+			topicEditSource: e.source,
+			topicEditRemarks: e.remarks,
+			topicEditId: e._id
+		})
 		console.log('Add Topic Clicked')
 		this.setState({modalIsOpenTopic: true});
 	}
@@ -128,7 +152,29 @@ class MyApplications extends Component {
 		this.setState({modalIsOpenTopic: false})
 	}
 	saveElementValue = () => {
-		console.log(this.state.addElementValue)
+		if(this.state.elementEditId){
+			console.log(this.state.elementEditValue)
+		let elementSetString = {
+			'name': this.state.elementEditValue,
+			'_id': this.state.elementEditId
+		}
+		updateElement(elementSetString).then(res => {
+			console.log(res)
+			this.setState({
+				elementList: res.data,
+				elementEditValue: null,
+				elementEditId: null
+			}, () => {
+				this.fetchCall()
+			})
+			this.closeAddElementModal()
+		})
+		.catch(err => {
+			alert(err)
+		})
+		}
+		if(!this.state.elementEditId){
+			console.log(this.state.addElementValue)
 		let elementSetString = {
 			'name': this.state.addElementValue
 		}
@@ -145,35 +191,90 @@ class MyApplications extends Component {
 			alert(err)
 		})
 	}
+	}
 	saveTopicValue = () => {
-		console.log(this.state.addTopicValue)
-		console.log(this.state.addRemarksValue)
-		console.log(this.state.addSourceValue)
-		console.log(this.state.sendingMultipleCoursesInTopic)
-		console.log(this.state.sendingElementInTopic)
-		// console.log(this.state.)
-		let topicSetString = {
-			'topicName': this.state.addTopicValue,
-			'course': this.state.sendingMultipleCoursesInTopic,
-			'element': this.state.sendingElementInTopic,
-			'source': this.state.addSourceValue,
-			'remarks': this.state.addRemarksValue
+		if(this.state.topicEditId){
+			console.log(this.state.topicEditValue)
+			console.log(this.state.topicEditRemarks)
+			console.log(this.state.topicEditSource)
+			console.log(this.state.topicEditId)
+			console.log(this.state.sendingElementInTopic)
+			console.log(this.state.sendingMultipleCoursesInTopic)
+			// console.log(this.state.)
+			let topicSetString = {
+				'topicName': this.state.topicEditValue,
+				'course': this.state.sendingMultipleCoursesInTopic,
+				'element': this.state.sendingElementInTopic,
+				'source': this.state.topicEditSource,
+				'remarks': this.state.topicEditRemarks,
+				"_id": this.state.topicEditId
+			}
+			updateTopic(topicSetString).then(res => {
+				console.log(res)
+				this.setState({
+					topicList: res.data
+				}, () => {
+					this.fetchCall()
+				})
+				this.closeAddTopicModal()
+			})
+			.catch(err => {
+				alert(err)
+			})
+			}
+		if(!this.state.topicEditId){
+				console.log(this.state.addTopicValue)
+			console.log(this.state.addRemarksValue)
+			console.log(this.state.addSourceValue)
+			console.log(this.state.sendingMultipleCoursesInTopic)
+			console.log(this.state.sendingElementInTopic)
+			// console.log(this.state.)
+			let topicSetString = {
+				'topicName': this.state.addTopicValue,
+				'course': this.state.sendingMultipleCoursesInTopic,
+				'element': this.state.sendingElementInTopic,
+				'source': this.state.addSourceValue,
+				'remarks': this.state.addRemarksValue
+			}
+			setTopic(topicSetString).then(res => {
+				console.log(res)
+				this.setState({
+					topicList: res.data
+				}, () => {
+					this.fetchCall()
+				})
+				this.closeAddTopicModal()
+			})
+			.catch(err => {
+				alert(err)
+			})
+			}
+	}
+	saveCourseValue = () => {
+		console.log(this.state.courseEditId)
+		if(this.state.courseEditId){
+			console.log(this.state.courseEditValue)
+		let courseSetString = {
+			'name': this.state.courseEditValue,
+			'_id': this.state.courseEditId
 		}
-		setTopic(topicSetString).then(res => {
+		updateCourse(courseSetString).then(res => {
 			console.log(res)
 			this.setState({
-				topicList: res.data
+				courseList: res.data,
+				courseEditValue: null,
+				courseEditId: null
 			}, () => {
 				this.fetchCall()
 			})
-			this.closeAddTopicModal()
+			this.closeAddCourseModal()
 		})
 		.catch(err => {
 			alert(err)
 		})
-	}
-	saveCourseValue = () => {
-		console.log(this.state.addCourseValue)
+		}
+		if(!this.state.courseEditId){
+			console.log(this.state.addCourseValue)
 		let courseSetString = {
 			'name': this.state.addCourseValue
 		}
@@ -188,6 +289,97 @@ class MyApplications extends Component {
 		})
 		.catch(err => {
 			alert(err)
+		})
+		}
+	}
+	deleteCourseClicked = (e) => {
+		console.log(e)
+		this.setState({
+			courseEditValue: e.name,
+			courseEditId: e._id
+		}, () => {
+			if(this.state.courseEditId){
+				console.log(this.state.courseEditValue)
+			let courseSetString = {
+				'name': this.state.courseEditValue,
+				'_id': this.state.courseEditId,
+				'status': 0
+			}
+			deleteCourse(courseSetString).then(res => {
+				console.log(res)
+				this.setState({
+					courseList: res.data,
+					courseEditValue: null,
+					courseEditId: null
+				}, () => {
+					this.fetchCall()
+				})
+				this.closeAddCourseModal()
+			})
+			.catch(err => {
+				alert(err)
+			})
+			}
+		})
+	}
+	deleteElementClicked = (e) => {
+		console.log(e)
+		this.setState({
+			elementEditValue: e.name,
+			elementEditId: e._id
+		}, () => {
+			if(this.state.elementEditId){
+				console.log(this.state.elementEditValue)
+			let elementSetString = {
+				'name': this.state.elementEditValue,
+				'_id': this.state.elementEditId,
+				'status': 0
+			}
+			deleteElement(elementSetString).then(res => {
+				console.log(res)
+				this.setState({
+					elementList: res.data,
+					elementEditValue: null,
+					elementEditId: null
+				}, () => {
+					this.fetchCall()
+				})
+				this.closeAddElementModal()
+			})
+			.catch(err => {
+				alert(err)
+			})
+			}
+		})
+	}
+	deleteTopicClicked = (e) => {
+		console.log(e)
+		this.setState({
+			topicEditValue: e.name,
+			topicEditId: e._id
+		}, () => {
+			if(this.state.topicEditId){
+				console.log(this.state.topicEditValue)
+			let topicSetString = {
+				'name': this.state.topicEditValue,
+				'_id': this.state.topicEditId,
+				'status': 0
+			}
+			deleteTopic(topicSetString).then(res => {
+				console.log(res)
+				this.setState({
+					topicList: res.data,
+					topicEditValue: null,
+					topicEditId: null
+				}, () => {
+					this.fetchCall()
+				})
+				this.closeAddTopicModal()
+			})
+			.catch(err => {
+				alert(err)
+			})
+			}
 		})
 	}
 	elementSelectFunction = (e) => {
@@ -229,8 +421,8 @@ class MyApplications extends Component {
 							<>
 							<tr>
 								<td>{log.name}</td>
-								<td className='text-underline'>Edit</td>
-								<td className='text-underline'>Delete</td>
+								<td className='text-underline pointer' onClick={() => {this.addCourseClicked(log)}} ><img src={editIcon} className='editIcon'/></td>
+								<td className='text-underline pointer' onClick={() => {this.deleteCourseClicked(log)}}><img src={deleteIcon} className='editIcon'/></td>
 							</tr>
 							</>
 						)
@@ -253,8 +445,8 @@ class MyApplications extends Component {
 							<>
 							<tr>
 								<td>{log.name}</td>
-								<td className='text-underline'>Edit</td>
-								<td className='text-underline'>Delete</td>
+								<td className='text-underline pointer' onClick={() => {this.addElementClicked(log)}}><img src={editIcon} className='editIcon'/></td>
+								<td className='text-underline pointer' onClick={() => {this.deleteElementClicked(log)}}><img src={deleteIcon} className='editIcon'/></td>
 							</tr>
 							</>
 						)
@@ -277,8 +469,8 @@ class MyApplications extends Component {
 							<>
 							<tr>
 								<td>{log.topicName}</td>
-								<td className='text-underline'>Edit</td>
-								<td className='text-underline'>Delete</td>
+								<td className='text-underline pointer' onClick={() => {this.addTopicClicked(log)}}><img src={editIcon} className='editIcon'/></td>
+								<td className='text-underline pointer' onClick={() => {this.deleteTopicClicked(log)}}><img src={deleteIcon} className='editIcon'/></td>
 							</tr>
 							</>
 						)
@@ -305,13 +497,13 @@ class MyApplications extends Component {
 						<div className='mainTab'>
 							<div className='row top-nav'>
 								<div className={["col-xl-4 col-lg-4 col-md-4 text-center pointer", textUnderlineCourse].join(' ')} onClick={this.courseViewClicked}>
-									Courses
+									Employees Designation
 								</div>
 								<div className={["col-xl-4 col-lg-4 col-md-4 text-center pointer", textUnderlineElement].join(' ')} onClick = {this.elementViewClicked}>
-									Elements
+									Branch
 								</div>
 								<div className={["col-xl-4 col-lg-4 col-md-4 text-center pointer", textUnderlineTopic].join(' ')} onClick = {this.topicViewClicked}>
-									Topics
+									Sub-branch
 								</div>
 							</div>
 							{
@@ -338,12 +530,14 @@ class MyApplications extends Component {
 									style={customStyles}
 									contentLabel="Example Modal"
 								>
-									<h2 ref={subtitle => this.subtitle = subtitle}>Add Elements</h2>
+									<div className='border-bottom'>
+										<h6 ref={subtitle => this.subtitle = subtitle}>Add Branch</h6>
+									</div>
 									<div className='form-element'>										
 										<div className='indi-form-text'>
-											<input type='text' className='' name='age' id='age' autoComplete='off' value={this.state.age} onChange={e => this.setState({ addElementValue: e.target.value })} required />
+											<input type='text' className='' name='age' id='age' autoComplete='off' value={this.state.elementEditValue} onChange={e => this.setState({ addElementValue: e.target.value, elementEditValue: e.target.value })} required />
 											<label for='age' className='label-name'>
-												<span className='content-name'>Please Enter Element Name</span>
+												<span className='content-name'>Please Enter Branch Name</span>
 											</label>
 										</div>
 									</div>
@@ -376,31 +570,33 @@ class MyApplications extends Component {
 									style={customStyles}
 									contentLabel="Example Modal"
 								>
-									<h2 ref={subtitle => this.subtitle = subtitle}>Add Topics</h2>
+									<div className='border-bottom'>
+										<h6 ref={subtitle => this.subtitle = subtitle}>Add Sub-branch</h6>
+									</div>
 									<div className='form-element'>										
-										<div className='col-lg-12' >
-											Course(s)
-										<select name="cars" multiple onChange={this.multipleCourseSelectFunction}>
+										<div className='col-lg-12 py-10' >
+											Employee Designation
+										<select name="cars" multiple onChange={this.multipleCourseSelectFunction} className='multiple-select-style'>
 											{this.state.courseListMapOptions}
 										</select>
 										</div>
-										<div className='col-lg-12'>
-											Element
-										<select name="cars" onChange={this.elementSelectFunction}>
+										<div className='col-lg-12 py-10'>
+											Branch
+										<select name="cars" onChange={this.elementSelectFunction} className='single-select-style'>
 											{this.state.elementListMapOptions}
 										</select>
 										</div>
 										<div className='form-element'>										
 										<div className='indi-form-text'>
-											<input type='text' className='' name='age' id='age' autoComplete='off' value={this.state.addTopicValue} onChange={e => this.setState({ addTopicValue: e.target.value })} required />
+											<input type='text' className='' name='age' id='age' autoComplete='off' value={this.state.topicEditValue} onChange={e => this.setState({ addTopicValue: e.target.value, topicEditValue: e.target.value })} required />
 											<label for='age' className='label-name'>
-												<span className='content-name'>Please Enter Topic Name</span>
+												<span className='content-name'>Please Enter Sub-branch Name</span>
 											</label>
 										</div>
 									</div>
 										<div className='form-element'>										
 										<div className='indi-form-text'>
-											<input type='text' className='' name='age' id='age' autoComplete='off' value={this.state.addSourceValue} onChange={e => this.setState({ addSourceValue: e.target.value })} required />
+											<input type='text' className='' name='age' id='age' autoComplete='off' value={this.state.topicEditSource} onChange={e => this.setState({ addSourceValue: e.target.value, topicEditSource: e.target.value })} required />
 											<label for='age' className='label-name'>
 												<span className='content-name'>Please Enter Source</span>
 											</label>
@@ -408,7 +604,7 @@ class MyApplications extends Component {
 									</div>
 										<div className='form-element'>										
 										<div className='indi-form-text'>
-											<input type='text' className='' name='age' id='age' autoComplete='off' value={this.state.addRemarksValue} onChange={e => this.setState({ addRemarksValue: e.target.value })} required />
+											<input type='text' className='' name='age' id='age' autoComplete='off' value={this.state.topicEditRemarks} onChange={e => this.setState({ addRemarksValue: e.target.value, topicEditRemarks: e.target.value })} required />
 											<label for='age' className='label-name'>
 												<span className='content-name'>Please Enter Remarks</span>
 											</label>
@@ -445,12 +641,14 @@ class MyApplications extends Component {
 									style={customStyles}
 									contentLabel="Example Modal"
 								>
-									<h2 ref={subtitle => this.subtitle = subtitle}>Add Courses</h2>
+									<div className='border-bottom'>
+										<h6 ref={subtitle => this.subtitle = subtitle}>Add Employees Designation</h6>
+									</div>
 									<div className='form-element'>										
 										<div className='indi-form-text'>
-											<input type='text' className='' name='age' id='age' autoComplete='off' value={this.state.age} onChange={e => this.setState({ addCourseValue: e.target.value })} required />
+											<input type='text' className='' name='age' id='age' autoComplete='off' value={this.state.courseEditValue} onChange={e => this.setState({ addCourseValue: e.target.value, courseEditValue: e.target.value })} required />
 											<label for='age' className='label-name'>
-												<span className='content-name'>Please Enter Course Name</span>
+												<span className='content-name'>Please Enter Employee Designation</span>
 											</label>
 										</div>
 										<div>

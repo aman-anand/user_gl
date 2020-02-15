@@ -7,6 +7,8 @@ import './myApplication.scss';
 import Modal from 'react-modal';
 import closeIcon from '../../images/close-icon-vector-23190083.jpg'
 import { getCourses, getElement, getTopic, getQuiz, setElement, setCourse, setTopic, setQuiz } from "../../services/masters";
+import editIcon from '../../images/web-circle-circular-round_58-512.png'
+import deleteIcon from '../../images/010_trash-2-512.png'
 
 const customStyles = {
 	content : {
@@ -212,8 +214,8 @@ class Quix extends Component {
 							<>
 							<tr>
 								<td>{log.name}</td>
-								<td className='text-underline'>Edit</td>
-								<td className='text-underline'>Delete</td>
+                                <td className='text-underline'><img src={editIcon} className='editIcon'/></td>
+								<td className='text-underline'><img src={deleteIcon} className='editIcon'/></td>
 							</tr>
 							</>
 						)
@@ -236,8 +238,8 @@ class Quix extends Component {
 							<>
 							<tr>
 								<td>{log.name}</td>
-								<td className='text-underline'>Edit</td>
-								<td className='text-underline'>Delete</td>
+                                <td className='text-underline'><img src={editIcon} className='editIcon'/></td>
+								<td className='text-underline'><img src={deleteIcon} className='editIcon'/></td>
 							</tr>
 							</>
 						)
@@ -260,8 +262,8 @@ class Quix extends Component {
 							<>
 							<tr>
 								<td>{log.topicName}</td>
-								<td className='text-underline'>Edit</td>
-								<td className='text-underline'>Delete</td>
+                                <td className='text-underline'><img src={editIcon} className='editIcon'/></td>
+								<td className='text-underline'><img src={deleteIcon} className='editIcon'/></td>
 							</tr>
 							</>
 						)
@@ -286,8 +288,8 @@ class Quix extends Component {
 								<td>{log.title}</td>
 								{log.preTest && <td>True</td>}
 								{!log.preTest && <td>False</td>}
-								<td className='text-underline'>Edit</td>
-								<td className='text-underline'>Delete</td>
+                                <td className='text-underline'><img src={editIcon} className='editIcon'/></td>
+								<td className='text-underline'><img src={deleteIcon} className='editIcon'/></td>
 							</tr>
 							</>
 						)
