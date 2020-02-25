@@ -1,19 +1,19 @@
 {
   "files": {
-    "main.css": "/static/css/main.aed930b6.chunk.css",
-    "main.js": "/static/js/main.01c2ccc8.chunk.js",
-    "main.js.map": "/static/js/main.01c2ccc8.chunk.js.map",
+    "main.css": "/static/css/main.b476c10f.chunk.css",
+    "main.js": "/static/js/main.e18cad83.chunk.js",
+    "main.js.map": "/static/js/main.e18cad83.chunk.js.map",
     "runtime-main.js": "/static/js/runtime-main.b881e3af.js",
     "runtime-main.js.map": "/static/js/runtime-main.b881e3af.js.map",
     "static/css/2.699efa4f.chunk.css": "/static/css/2.699efa4f.chunk.css",
-    "static/js/2.94d7bbb6.chunk.js": "/static/js/2.94d7bbb6.chunk.js",
-    "static/js/2.94d7bbb6.chunk.js.map": "/static/js/2.94d7bbb6.chunk.js.map",
+    "static/js/2.70ca4cd1.chunk.js": "/static/js/2.70ca4cd1.chunk.js",
+    "static/js/2.70ca4cd1.chunk.js.map": "/static/js/2.70ca4cd1.chunk.js.map",
     "index.html": "/index.html",
-    "precache-manifest.d347ebfc8dfec729fb64138bbd7e3fe0.js": "/precache-manifest.d347ebfc8dfec729fb64138bbd7e3fe0.js",
+    "precache-manifest.8617d894a76de626d36b3cf42b11044f.js": "/precache-manifest.8617d894a76de626d36b3cf42b11044f.js",
     "service-worker.js": "/service-worker.js",
     "static/css/2.699efa4f.chunk.css.map": "/static/css/2.699efa4f.chunk.css.map",
-    "static/css/main.aed930b6.chunk.css.map": "/static/css/main.aed930b6.chunk.css.map",
-    "static/js/2.94d7bbb6.chunk.js.LICENSE": "/static/js/2.94d7bbb6.chunk.js.LICENSE",
+    "static/css/main.b476c10f.chunk.css.map": "/static/css/main.b476c10f.chunk.css.map",
+    "static/js/2.70ca4cd1.chunk.js.LICENSE": "/static/js/2.70ca4cd1.chunk.js.LICENSE",
     "static/media/010_trash-2-512.png": "/static/media/010_trash-2-512.019d0bcd.png",
     "static/media/LAP-loan.svg": "/static/media/LAP-loan.64c1cfbe.svg",
     "static/media/fonts.css": "/static/media/NunitoSans-SemiBold.bd318b58.ttf",
@@ -23,7 +23,6 @@
     "static/media/arrow-dark.svg": "/static/media/arrow-dark.739480f1.svg",
     "static/media/arrow-light.svg": "/static/media/arrow-light.f0922735.svg",
     "static/media/business-loan-icon.svg": "/static/media/business-loan-icon.164ee525.svg",
-    "static/media/close-icon-vector-23190083.jpg": "/static/media/close-icon-vector-23190083.9543af46.jpg",
     "static/media/download.svg": "/static/media/download.4f4953e3.svg",
     "static/media/home-loan-icon.svg": "/static/media/home-loan-icon.35700798.svg",
     "static/media/home1.jpg": "/static/media/home1.e91e1c31.jpg",
@@ -40,8 +39,8 @@
   "entrypoints": [
     "static/js/runtime-main.b881e3af.js",
     "static/css/2.699efa4f.chunk.css",
-    "static/js/2.94d7bbb6.chunk.js",
-    "static/css/main.aed930b6.chunk.css",
-    "static/js/main.01c2ccc8.chunk.js"
+    "static/js/2.70ca4cd1.chunk.js",
+    "static/css/main.b476c10f.chunk.css",
+    "static/js/main.e18cad83.chunk.js"
   ]
 }

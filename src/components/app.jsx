@@ -14,6 +14,7 @@ import SignIn from "./auth/signIn";
 import MyApplication from "./dashboard/myApplications";
 import Home from "./home";
 import Quix from "./dashboard/quiz";
+import StudyMaterial from "./dashboard/studyMaterial";
 // page not found
 import NoMatch from "./partials/pageNotFound";
 
@@ -57,6 +58,7 @@ class App extends Component {
 							{/* Dashboard */}
 							<Route exact path='/dashboard' component={MyApplication} />
 							<Route exact path='/quiz' component={Quix} />
+							<Route exact path='/studyMaterial' component={StudyMaterial} />
 							{/* <Route exact path='/dashboard/loans' component={Loans} />
 							<Route exact path='/dashboard/profile' component={Profile} />
 							<Route exact path='/dashboard/faq' component={Faq} />

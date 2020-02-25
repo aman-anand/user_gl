@@ -5,8 +5,8 @@ import moment from "moment";
 import './myApplication.scss';
 // import ReactDOM from 'react-dom';
 import Modal from 'react-modal';
-import closeIcon from '../../images/close-icon-vector-23190083.jpg'
-import { getCourses, getElement, getTopic, getQuiz, setElement, setCourse, setTopic, setQuiz } from "../../services/masters";
+import closeIcon from '../../images/cross-small-01-512.png'
+import { getCourses, getElement, getTopic, getQuiz, setElement, setCourse, setTopic, getQuestions, setQuiz, upload, postQuestions } from "../../services/masters";
 import editIcon from '../../images/web-circle-circular-round_58-512.png'
 import deleteIcon from '../../images/010_trash-2-512.png'
 
@@ -31,13 +31,15 @@ class Quix extends Component {
 			courseList: [],
 			elementList: [],
 			topicList: [],
-			quizList: [],
+            quizList: [],
+            questionLists: [],
 			courseView: true,
 			elementView: false,
 			topicView: false,
 			modalIsOpenCourse: false,
 			modalIsOpenElement: false,
 			modalIsOpenTopic: false,
+			modalIsOpenQuestion: false,
 			addCourseValue: null,
 			addElementValue: null,
 			addQuizNameValue: null,
@@ -55,6 +57,21 @@ class Quix extends Component {
             sendingtopicInTopic: null,
             questionLimit: null,
             preTest: false,
+            showQuizQuestions: false,
+            quizQuestionObject: null,
+            quizQuestionObjectTitle: null,
+			quizQuestionMap: [],
+			uploadUrl: null,
+			addOption1Value: null,
+			addOption2Value: null,
+			addOption3Value: null,
+			addOption4Value: null,
+			showAnswerOpton: null,
+			showOptions: true,
+			showAnswerDropdown: true,
+			optionListData: null,
+			selectQuestionTypeValue: null,
+			exactAnswerOfQuestion: null
 		};
 	}
 
@@ -114,8 +131,13 @@ class Quix extends Component {
 		this.setState({modalIsOpenCourse: false})
 	}
 	addTopicClicked = () => {
-		console.log('Add Topic Clicked')
 		this.setState({modalIsOpenTopic: true});
+	}
+	addQuestionClicked = () => {
+		this.setState({modalIsOpenQuestion: true});
+	}
+	closeAddQuestionClicked = () => {
+		this.setState({modalIsOpenQuestion: false});
 	}
 	closeAddTopicModal = () => {
 		this.setState({modalIsOpenTopic: false})
@@ -253,7 +275,39 @@ class Quix extends Component {
 					})
 				})
 			}
-		}
+        }
+        showQuestions = (e) => {
+            let dataString = {
+                "email":"aadfsddf@adsdessf.com",
+                "password":"aman",
+                    }
+
+            console.log(e.target.innerHTML)
+            this.setState({
+                clickedQuiz: e.target.innerHTML
+            }, () => {
+                let q = this.state.clickedQuiz
+                console.log(this.state.quizList)
+                // this.state.topicList.find(findingQuizObject)
+				let quizObject = this.state.quizList.data.find(findingQuizObject)
+				console.log(quizObject)
+                if(!!quizObject){
+                    this.setState({
+                        quizQuestionObject: quizObject,
+                        quizQuestionObjectTitle: quizObject.title,
+                        showQuizQuestions: true
+                    }, () => {
+                        this.gettingQuizQuestions()
+                    })
+                }
+                function findingQuizObject(f){
+                    if(f.title === q) {
+                        return f.title
+                    }
+                }
+                console.log(dataString)
+            })
+        }
 	gettingListTopic = () => {
 			if(this.state.topicList){
 				this.setState({
@@ -285,9 +339,9 @@ class Quix extends Component {
 						return (
 							<>
 							<tr>
-								<td>{log.title}</td>
-								{log.preTest && <td>True</td>}
-								{!log.preTest && <td>False</td>}
+								<td onClick={this.showQuestions.bind(log)} className='pointer'>{log.title}</td>
+								{log.preTest && <td>Yes</td>}
+								{!log.preTest && <td>No</td>}
                                 <td className='text-underline'><img src={editIcon} className='editIcon'/></td>
 								<td className='text-underline'><img src={deleteIcon} className='editIcon'/></td>
 							</tr>
@@ -296,6 +350,187 @@ class Quix extends Component {
                     })
                 })
 			}
+    }
+    
+    gettingQuizQuestions = () => {
+		let dataString = {
+			"email":"aadfsddf@adsdessf.com",
+			"password":"aman",
+				}
+		console.log('Came to question')
+		let quiz = this.state.quizQuestionObject._id
+		let status = '1'
+		console.log(this.state.quizQuestionObject)
+		getQuestions(dataString, quiz, status).then(res => {
+			console.log(res)
+			this.setState({
+				questionLists: res.data
+			}, () => {
+				if(this.state.questionLists){
+					console.log(this.state.questionLists)
+					this.setState({
+						quizQuestionMap: this.state.questionLists.data.map((log, i) => {
+							return (
+								<>
+								<tr>
+									<td>{log.question}</td>
+									<td> {log.type}</td>
+									<td className='text-underline pointer' onClick={() => {this.addQuestionClicked(log)}} ><img src={editIcon} className='editIcon'/></td>
+									<td className='text-underline pointer' onClick={() => {this.deleteCourseClicked(log)}}><img src={deleteIcon} className='editIcon'/></td>
+								</tr>
+								</>
+							)
+						})
+					})
+				}
+			})
+		});
+	}
+	selectQuestionType = (e) => {
+		let value = e.target.value
+		this.setState({
+			selectQuestionTypeValue: value
+		}, () => {
+			this.contentAccordingToQuestionType()
+			console.log(this.state.selectQuestionTypeValue)
+		})
+	}
+	contentAccordingToQuestionType = () => {
+		if(this.state.selectQuestionTypeValue === 'MCQ'){
+			this.setState({
+				showOptions: true,
+				showAnswerDropdown: true
+			})
+		}
+		if(this.state.selectQuestionTypeValue === 'TRUE/FALSE'){
+			this.setState({
+				showOptions: false,
+				showAnswerDropdown: true
+			})
+		}
+		if(this.state.selectQuestionTypeValue === 'DESCRIPTIVE'){
+			this.setState({
+				showOptions: false,
+				showAnswerDropdown: false
+			})
+		}
+	}
+	fileUploadQuestionImage = (e) => {
+		let formdata = new FormData()
+		formdata.append("file", e.target.files[0])
+		upload(formdata).then(res => {
+			this.setState({
+				uploadUrl: res.data.data.url
+			}, () => {
+				console.log(this.state.uploadUrl)
+			})
+		})
+	}
+	answerDropdownClicked = () => {
+		if(this.state.selectQuestionTypeValue === 'MCQ'){
+			let allOptions = []
+			allOptions.push(this.state.addOption1Value)
+			allOptions.push(this.state.addOption2Value)
+			allOptions.push(this.state.addOption3Value)
+			allOptions.push(this.state.addOption4Value)
+			this.setState({
+				optionListData: allOptions
+			}, () => {
+				console.log(this.state.optionListData)
+				this.answerSelectFunctions()
+			})
+		}
+		if(this.state.selectQuestionTypeValue === 'TRUE/FALSE'){
+			let allOptions = []
+			allOptions.push('TRUE')
+			allOptions.push('FALSE')
+			this.setState({
+				optionListData: allOptions
+			}, () => {
+				console.log(this.state.optionListData)
+				this.answerSelectFunctions()
+			})
+		}
+		if(this.state.selectQuestionTypeValue === 'DESCRIPTIVE'){
+			this.setState({
+				optionListData: null
+			}, () => {
+				console.log(this.state.optionListData)
+			})	
+		}
+	}
+	
+	answerSelectFunctions = () => {
+		this.setState({
+			showAnswerOpton: this.state.optionListData.map((log, i) => {
+				return (
+					<>
+						<option value={log}>{log}</option>
+					</>
+				)
+			})
+		})
+	}
+
+	answerSelectFunction = (e) => {
+		this.setState({
+			exactAnswerOfQuestion : e.target.value
+		})
+	}
+	saveQuestionValue = () => {
+		// this.state.addOption1Value
+		if(this.state.selectQuestionTypeValue === 'MCQ'){
+			let dataString = {
+				"question": this.state.addQuestionValue,
+				"media": this.state.uploadUrl,
+				"options":[{
+					"value": this.state.addOption1Value
+				}, {
+					"value": this.state.addOption2Value
+				}, {
+					"value": this.state.addOption3Value
+				}, {
+					"value": this.state.addOption4Value
+				}],
+				"type":"MCQ",
+				"answer":this.state.exactAnswerOfQuestion,
+				"quiz": this.state.quizQuestionObject._id
+				}
+				postQuestions(dataString).then(res => {
+					this.closeAddQuestionClicked()
+					this.gettingQuizQuestions()
+				})
+		}
+		if(this.state.selectQuestionTypeValue === 'TRUE/FALSE'){
+			let dataString = {
+				"question": this.state.addQuestionValue,
+				"media": this.state.uploadUrl,
+				"options":[{
+					"value": 'TRUE'
+				}, {
+					"value": 'FALSE'
+				}],
+				"type": "TRUE-FALSE",
+				"answer":this.state.exactAnswerOfQuestion,
+				"quiz": this.state.quizQuestionObject._id
+				}
+				postQuestions(dataString).then(res => {
+					this.closeAddQuestionClicked()
+					this.gettingQuizQuestions()
+				})
+		}
+		if(this.state.selectQuestionTypeValue === 'DESCRIPTIVE'){
+			let dataString = {
+				"question": this.state.addQuestionValue,
+				"media": this.state.uploadUrl,
+				"type":"MCQ",
+				"quiz": this.state.quizQuestionObject._id
+				}
+				postQuestions(dataString).then(res => {
+					this.closeAddQuestionClicked()
+					this.gettingQuizQuestions()
+				})
+		}
 	}
 	render() {
 		return (
@@ -310,7 +545,115 @@ class Quix extends Component {
 								Welcome back, Sys Admin! <span>{moment().format("DD MMMM YYYY")}</span>
 							</h1>
 						</header>
-						<div className='mainTab'>
+						{this.state.showQuizQuestions && <div className='mainTab'>
+							<div className='row top-nav'>
+								<div className="col-xl-12 col-lg-12 col-md-12 text-center pointer">
+									<div onClick={() => {
+                                        this.setState({showQuizQuestions: false})
+                                    }} className='pointer'>
+                                        Back
+                                        </div> 
+                                    <div className='text-center pointer'>
+                                        Questions: {this.state.quizQuestionObjectTitle}
+                                    </div>
+								</div>
+							</div>
+								<>
+									<div className='table-div'>
+									<table>
+									<tr>
+										<th>Question</th>
+										<th>Type</th>
+										<th>Edit</th>
+										<th>Delete</th>
+									</tr>
+									{this.state.quizQuestionMap}
+									</table>
+									</div>
+								
+									<div className='bottom-button wd-184'>
+										<button className='br-4 button px-4 py-1' onClick={this.addQuestionClicked}> + Add Question</button>
+									</div>
+									<Modal
+									isOpen={this.state.modalIsOpenQuestion}
+									onAfterOpen={this.afterOpenModal}
+									onRequestClose={this.closeModal}
+									style={customStyles}
+									contentLabel="Example Modal"
+								>
+									<div className='border-bottom'>
+										<h6 ref={subtitle => this.subtitle = subtitle}>New Quiz</h6>
+									</div>
+									<div className='form-element'>										
+									<div className='col-lg-12'>
+											Question Type
+										<select name="cars" className='single-select-style' onChange={this.selectQuestionType}>
+											<option selected="true" disabled="disabled">Select the Question type</option>    
+											<option value= 'MCQ'>MULTIPLE-TYPE</option>
+											<option value= 'TRUE/FALSE' >TRUE/FALSE</option>
+											<option value= 'DESCRIPTIVE'>DESCRIPTIVE</option>
+										</select>
+										</div>
+										<div className='form-element'>										
+										<div className='indi-form-text'>
+											<input type='text' className='' name='age' id='age' autoComplete='off' value={this.state.addQuestionValue} onChange={e => this.setState({ addQuestionValue: e.target.value })} required />
+											<label for='age' className='label-name'>
+												<span className='content-name'>Question </span>
+											</label>
+										</div>
+									</div>
+										<div className='col-lg-12'>
+											Question Image
+										<input type='file' onChange={this.fileUploadQuestionImage}/>
+										{/* onChange={e => this.setState({ addQuestionImageValue: e.target.value })} */}
+										</div>
+									{this.state.showOptions &&	<div className='form-element'>										
+										<div className='indi-form-text'>
+											<input type='text' className='' name='age' id='age' autoComplete='off' value={this.state.addOption1Value} onChange={e => this.setState({ addOption1Value: e.target.value })} required />
+											<label for='age' className='label-name'>
+												<span className='content-name'>Option 1</span>
+											</label>
+										</div>
+									</div>}
+									{this.state.showOptions && <div className='form-element'>										
+										<div className='indi-form-text'>
+											<input type='text' className='' name='age' id='age' autoComplete='off' value={this.state.addOption2Value} onChange={e => this.setState({ addOption2Value: e.target.value })} required />
+											<label for='age' className='label-name'>
+												<span className='content-name'>Option 2</span>
+											</label>
+										</div>
+									</div>}
+									{this.state.showOptions && <div className='form-element'>										
+										<div className='indi-form-text'>
+											<input type='text' className='' name='age' id='age' autoComplete='off' value={this.state.addOption3Value} onChange={e => this.setState({ addOption3Value: e.target.value })} required />
+											<label for='age' className='label-name'>
+												<span className='content-name'>Option 3</span>
+											</label>
+										</div>
+									</div>}
+									{this.state.showOptions && <div className='form-element'>										
+										<div className='indi-form-text'>
+											<input type='text' className='' name='age' id='age' autoComplete='off' value={this.state.addOption4Value} onChange={e => this.setState({ addOption4Value: e.target.value })} required />
+											<label for='age' className='label-name'>
+												<span className='content-name'>Option 4</span>
+											</label>
+										</div>
+									</div>}
+								{this.state.showAnswerDropdown && <div className='col-lg-12'>
+											Answer
+										<select name="cars" onChange={this.answerSelectFunction} onClick={this.answerDropdownClicked} className='single-select-style'>
+											<option selected="true" disabled="disabled">Choose the answer</option>
+											{this.state.showAnswerOpton}
+										</select>
+										</div>}
+									</div>
+									{/* <button onClick={this.closeAddTopicModal} className='close-button-style'>Close Me</button> */}
+									<img src = {closeIcon} className='common-close-button close-button-style' onClick={this.closeAddQuestionClicked}></img>
+									<button onClick={this.saveQuestionValue} className='save-button-style'>Save</button>
+								</Modal>
+							</>
+                        </div>}
+                        {!this.state.showQuizQuestions && <div className='mainTab'>
 							<div className='row top-nav'>
 								<div className="col-xl-12 col-lg-12 col-md-12 text-center pointer text-underline">
 									Quiz
@@ -320,7 +663,7 @@ class Quix extends Component {
 									<div className='table-div'>
 									<table>
 									<tr>
-										<th>Title</th>
+										<th>Titles</th>
 										<th>Pre Test</th>
 										<th>Edit</th>
 										<th>Delete</th>
@@ -339,23 +682,25 @@ class Quix extends Component {
 									style={customStyles}
 									contentLabel="Example Modal"
 								>
-									<h2 ref={subtitle => this.subtitle = subtitle}>New Quiz</h2>
+									<div className='border-bottom'>
+										<h6 ref={subtitle => this.subtitle = subtitle}>New Quiz</h6>
+									</div>
 									<div className='form-element'>										
 										<div className='col-lg-12' >
 											Rank
-										<select name="cars" onChange={this.multipleCourseSelectFunction}>
+										<select name="cars" onChange={this.multipleCourseSelectFunction} className='single-select-style'>
 											{this.state.courseListMapOptions}
 										</select>
 										</div>
 										<div className='col-lg-12'>
 											Element
-										<select name="cars" onChange={this.elementSelectFunction}>
+										<select name="cars" onChange={this.elementSelectFunction} className='single-select-style'>
 											{this.state.elementListMapOptions}
 										</select>
 										</div>
 										<div className='col-lg-12'>
 											Topic
-										<select name="cars" onChange={this.topicSelectFunction}>
+										<select name="cars" onChange={this.topicSelectFunction} className='single-select-style'>
 											{this.state.topicListMapOptions}
 										</select>
 										</div>
@@ -393,7 +738,7 @@ class Quix extends Component {
 									<button onClick={this.saveQuizValue} className='save-button-style'>Save</button>
 								</Modal>
 							</>
-						</div>
+						</div>}
 					</div>
 				</div>
 			</div>

@@ -136,3 +136,30 @@ export const setQuiz = datastring => {
         mode: 'no-cors'
     });
 };
+export const getQuestions = (datastring, quizId, status) => {
+    console.log(datastring)
+	return axios.get(`${ApiList.env}${ApiList.endpoint.question}?status=${status}&quiz=${quizId}`, (datastring), {
+		headers: {
+            'Content-Type' : 'application/json'
+        },
+        mode: 'no-cors'
+    });
+};
+export const postQuestions = (datastring) => {
+    console.log(datastring)
+	return axios.post(`${ApiList.env}${ApiList.endpoint.question}`, (datastring), {
+		headers: {
+            'Content-Type' : 'application/json'
+        },
+        mode: 'no-cors'
+    });
+};
+export const upload = (datastring) => {
+    console.log(datastring)
+	return axios.post(`${ApiList.env}${ApiList.endpoint.upload}`, (datastring), {
+		headers: {
+            'Content-Type' : 'application/json'
+        },
+        mode: 'no-cors'
+    });
+};

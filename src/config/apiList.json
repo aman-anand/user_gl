@@ -5,6 +5,8 @@
 			"courses": "courses",
 			"element": "element",
 			"topic": "topic",
-			"quiz": "quiz"
+			"quiz": "quiz",
+			"question": "question",
+			"upload": "upload"
 	}
 }
