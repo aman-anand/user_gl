@@ -21,7 +21,6 @@ const customStyles = {
 	  width					: '500px'
 	}
   };
-let allCoursesSelectedInMultiselect = []
 class StudyMaterial extends Component {
 	constructor(props) {
 		super(props);
@@ -116,23 +115,7 @@ class StudyMaterial extends Component {
 								</div>
 							</div>
 							<>
-									<div className='table-div'>
-									<table>
-									<tr>
-										<th>Name</th>
-										<th>Element</th>
-										<th>Topic</th>
-										<th>Download</th>
-										<th>View</th>
-									</tr>
-									{this.state.quizListMap}
-									</table>
-									</div>
-								
-									<div className='bottom-button'>
-										<button className='br-4 button px-4 py-1' onClick={this.addTopicClicked}> + Add</button>
-									</div>
-									<Modal
+							<Modal
 									isOpen={this.state.modalIsOpenTopic}
 									onAfterOpen={this.afterOpenModal}
 									onRequestClose={this.closeModal}
@@ -143,12 +126,74 @@ class StudyMaterial extends Component {
 										<h6 ref={subtitle => this.subtitle = subtitle}>New Quiz</h6>
 									</div>
 									<div className='form-element'>
-										 
+											
 									</div>
 									{/* <button onClick={this.closeAddTopicModal} className='close-button-style'>Close Me</button> */}
 									<img src = {closeIcon} className='common-close-button close-button-style' onClick={this.closeAddTopicModal}></img>
 									<button onClick={this.saveQuizValue} className='save-button-style'>Save</button>
 								</Modal>
+							{/* This is for Videos */}
+						{this.state.courseView && <div>
+									<div className='table-div'>
+									<table>
+									<tr>
+										<th>Name</th>
+										<th>Element</th>
+										<th>Topic</th>
+										<th>View</th>
+										<th>Delete</th>
+									</tr>
+									{this.state.quizListMap}
+									</table>
+									</div>
+								
+									<div className='bottom-button'>
+										<button className='br-4 button px-4 py-1 fs-15' onClick={this.addTopicClicked}>Upload Video</button>
+									</div>
+								</div>}
+								{/* End of Videos */}
+
+								{/* This is for PDF */}
+						{this.state.elementView && <div>
+									<div className='table-div'>
+									<table>
+									<tr>
+										<th>Names</th>
+										<th>Element</th>
+										<th>Topic</th>
+										<th>View</th>
+										<th>Delete</th>
+									</tr>
+									{this.state.quizListMap}
+									</table>
+									</div>
+								
+									<div className='bottom-button'>
+										<button className='br-4 button px-4 py-1 fs-15' onClick={this.addTopicClicked}>Upload PDF</button>
+									</div>
+								</div>}
+								{/* PDF | End */}
+
+								{/* This is for PPT */}
+						{this.state.topicView && <div>
+									<div className='table-div'>
+									<table>
+									<tr>
+										<th>Name</th>
+										<th>Elements</th>
+										<th>Topic</th>
+										<th>View</th>
+										<th>Delete</th>
+									</tr>
+									{this.state.quizListMap}
+									</table>
+									</div>
+								
+									<div className='bottom-button'>
+										<button className='br-4 button px-4 py-1 fs-15' onClick={this.addTopicClicked}>Upload PPT</button>
+									</div>
+								</div>}
+								{/* PPT | End */}
 							</>
 						</div>
 					</div>

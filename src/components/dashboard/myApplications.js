@@ -8,6 +8,7 @@ import closeIcon from '../../images/cross-small-01-512.png'
 import { getCourses, getElement, updateElement, deleteElement, getTopic, updateTopic, setElement, setCourse, updateCourse, deleteCourse, deleteTopic, setTopic } from "../../services/masters";
 import editIcon from '../../images/web-circle-circular-round_58-512.png'
 import deleteIcon from '../../images/010_trash-2-512.png'
+import { Multiselect } from 'multiselect-react-dropdown'
 
 const customStyles = {
 	content : {
@@ -54,7 +55,9 @@ class MyApplications extends Component {
 			topicEditValue: null,
 			topicEditId: null,
 			topicEditSource: null,
-			topicEditRemarks: null
+			topicEditRemarks: null,
+			selectedElementList: null,
+			selectedCourseList: null
 		};
 	}
 
@@ -131,21 +134,22 @@ class MyApplications extends Component {
 			courseEditValue: e.name,
 			courseEditId: e._id
 		})
-		console.log('Add Course Clicked')
 		this.setState({modalIsOpenCourse: true});
 	}
 	closeAddCourseModal = () => {
 		this.setState({modalIsOpenCourse: false})
 	}
 	addTopicClicked = (e) => {
-		console.log(e)
+		let elementToArray = []
+		elementToArray.push(e.element)
 		this.setState({
+			selectedCourseList: e.course,
+			selectedElementList: elementToArray,
 			topicEditValue: e.topicName,
 			topicEditSource: e.source,
 			topicEditRemarks: e.remarks,
 			topicEditId: e._id
 		})
-		console.log('Add Topic Clicked')
 		this.setState({modalIsOpenTopic: true});
 	}
 	closeAddTopicModal = () => {
@@ -478,6 +482,33 @@ class MyApplications extends Component {
 				})
 			}
 	}
+	onSelectCourseList = (e) => {
+		let testArray = []
+		console.log(e)
+		for(let i=0; i<e.length; i++){
+			testArray.push(e[i]._id)
+			console.log(testArray)
+		}
+		this.setState({
+			sendingMultipleCoursesInTopic: testArray
+		}, () => {
+			console.log(this.state.sendingMultipleCoursesInTopic)
+		})
+	}
+	onSelectElementList = (e) => {
+		let testArray = []
+		console.log(e)
+		for(let i=0; i<e.length; i++){
+			testArray.push(e[i]._id)
+			console.log(testArray)
+		}
+		this.setState({
+			sendingElementInTopic : testArray
+		}, () => {
+			console.log(this.state.sendingElementInTopic)
+		})
+	}
+	
 	render() {
 		const textUnderlineCourse = this.state.courseView? 'text-underline': ''
 		const textUnderlineElement = this.state.elementView? 'text-underline': ''
@@ -574,19 +605,42 @@ class MyApplications extends Component {
 										<h6 ref={subtitle => this.subtitle = subtitle}>Add Sub-branch</h6>
 									</div>
 									<div className='form-element'>										
-										<div className='col-lg-12 py-10' >
+										{/* <div className='col-lg-12 py-10' >
 											Employee Designation
 										<select name="cars" multiple onChange={this.multipleCourseSelectFunction} className='multiple-select-style'>
 											{this.state.courseListMapOptions}
 										</select>
-										</div>
+										</div> */}
 										<div className='col-lg-12 py-10'>
+										Employee Designation
+										<Multiselect
+											options={this.state.courseList.data}
+											onSelect={this.onSelectCourseList} 
+											onRemove={this.onSelectCourseList} 
+											displayValue="name" 
+											placeholder='Select Designation'
+											selectedValues = {this.state.selectedCourseList}
+											/>
+										</div>
+										{/* <div className='col-lg-12 py-10'>
 											Branch
 										<select name="cars" onChange={this.elementSelectFunction} className='single-select-style'>
 											{this.state.elementListMapOptions}
 										</select>
+										</div> */}
+										<div className='col-lg-12 py-10'>
+											Branch
+										<Multiselect
+											options={this.state.elementList.data}
+											onSelect={this.onSelectElementList} 
+											onRemove={this.onSelectElementList} 
+											displayValue="name" 
+											singleSelect='true'
+											placeholder='Select Branch'
+											selectedValues = {this.state.selectedElementList}
+											/>
 										</div>
-										<div className='form-element'>										
+										<div className='form-element col-lg-12'>										
 										<div className='indi-form-text'>
 											<input type='text' className='' name='age' id='age' autoComplete='off' value={this.state.topicEditValue} onChange={e => this.setState({ addTopicValue: e.target.value, topicEditValue: e.target.value })} required />
 											<label for='age' className='label-name'>
@@ -594,7 +648,7 @@ class MyApplications extends Component {
 											</label>
 										</div>
 									</div>
-										<div className='form-element'>										
+										<div className='form-element col-lg-12'>										
 										<div className='indi-form-text'>
 											<input type='text' className='' name='age' id='age' autoComplete='off' value={this.state.topicEditSource} onChange={e => this.setState({ addSourceValue: e.target.value, topicEditSource: e.target.value })} required />
 											<label for='age' className='label-name'>
@@ -602,7 +656,7 @@ class MyApplications extends Component {
 											</label>
 										</div>
 									</div>
-										<div className='form-element'>										
+										<div className='form-element col-lg-12'>										
 										<div className='indi-form-text'>
 											<input type='text' className='' name='age' id='age' autoComplete='off' value={this.state.topicEditRemarks} onChange={e => this.setState({ addRemarksValue: e.target.value, topicEditRemarks: e.target.value })} required />
 											<label for='age' className='label-name'>

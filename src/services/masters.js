@@ -154,6 +154,15 @@ export const postQuestions = (datastring) => {
         mode: 'no-cors'
     });
 };
+export const putQuestions = (datastring) => {
+    console.log(datastring)
+	return axios.put(`${ApiList.env}${ApiList.endpoint.question}`, (datastring), {
+		headers: {
+            'Content-Type' : 'application/json'
+        },
+        mode: 'no-cors'
+    });
+};
 export const upload = (datastring) => {
     console.log(datastring)
 	return axios.post(`${ApiList.env}${ApiList.endpoint.upload}`, (datastring), {

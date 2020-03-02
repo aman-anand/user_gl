@@ -14,6 +14,7 @@
     "inputmask": "^5.0.0-beta.314",
     "jquery": "^3.4.1",
     "moment": "^2.24.0",
+    "multiselect-react-dropdown": "^1.4.7",
     "node-sass": "^4.13.0",
     "otp-input-react": "^0.2.0",
     "qs": "^6.9.1",

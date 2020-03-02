@@ -6,9 +6,11 @@ import './myApplication.scss';
 // import ReactDOM from 'react-dom';
 import Modal from 'react-modal';
 import closeIcon from '../../images/cross-small-01-512.png'
-import { getCourses, getElement, getTopic, getQuiz, setElement, setCourse, setTopic, getQuestions, setQuiz, upload, postQuestions } from "../../services/masters";
+import { getCourses, getElement, getTopic, getQuiz, setElement, setCourse, setTopic, getQuestions, setQuiz, upload, postQuestions, putQuestions } from "../../services/masters";
 import editIcon from '../../images/web-circle-circular-round_58-512.png'
 import deleteIcon from '../../images/010_trash-2-512.png'
+import backIcon from '../../images/back-button.png'
+import { Multiselect } from 'multiselect-react-dropdown'
 
 const customStyles = {
 	content : {
@@ -18,7 +20,8 @@ const customStyles = {
 	  bottom                : 'auto',
 	  marginRight           : '-50%',
 	  transform             : 'translate(-50%, -50%)',
-	  width					: '500px'
+	  width					: '500px',
+	  minHeight				: '300px'
 	}
   };
 let allCoursesSelectedInMultiselect = []
@@ -69,9 +72,12 @@ class Quix extends Component {
 			showAnswerOpton: null,
 			showOptions: true,
 			showAnswerDropdown: true,
-			optionListData: null,
+			optionListData: [],
 			selectQuestionTypeValue: null,
-			exactAnswerOfQuestion: null
+			exactAnswerOfQuestion: null,
+			optionSelectList: [{name: 'MCQ'},{name: 'TRUE/FALSE'},{name: "DESCRIPTIVE"}],
+			questionTypeSelected: false,
+			questionEditId: null
 		};
 	}
 
@@ -130,14 +136,79 @@ class Quix extends Component {
 	closeAddCourseModal = () => {
 		this.setState({modalIsOpenCourse: false})
 	}
-	addTopicClicked = () => {
+	addTopicClicked = (e) => {
 		this.setState({modalIsOpenTopic: true});
 	}
-	addQuestionClicked = () => {
+	addQuestionClicked = (e) => {
+		console.log(e)
+		console.log(e._id === undefined)
+		if(e._id !== undefined){
+			this.setValuesQuestionModal(e)
+			this.setState({
+				questionEditId: e._id
+			})
+		}
 		this.setState({modalIsOpenQuestion: true});
 	}
+	setValuesQuestionModal = (e) => {
+		if(e.type === 'TRUE-FALSE'){
+			console.log(e)
+			let preSelectedQuestionTypeFromResponse = []
+			let preSelectedAnswerFromResponse = []
+			preSelectedQuestionTypeFromResponse.push({name: e.type})
+			preSelectedAnswerFromResponse.push({name: e.answer})
+			this.setState({
+				selectQuestionTypeValue: 'TRUE-FALSE',
+				questionTypeSelected: true,
+				preSelectedQuestionType: preSelectedQuestionTypeFromResponse,
+				addQuestionValue: e.question,
+				showOptions: false,
+				preSelectedAnswer: preSelectedAnswerFromResponse
+			})
+		}
+		if(e.type === 'MCQ'){
+			console.log(e)
+			let preSelectedQuestionTypeFromResponse = []
+			let preSelectedAnswerFromResponse = []
+			preSelectedQuestionTypeFromResponse.push({name: e.type})
+			preSelectedAnswerFromResponse.push({name: e.answer})
+			this.setState({
+				selectQuestionTypeValue: 'MCQ',
+				questionTypeSelected: true,
+				preSelectedQuestionType: preSelectedQuestionTypeFromResponse,
+				addQuestionValue: e.question,
+				showOptions: true,
+				addOption1Value: e.options[0].value,
+				addOption2Value: e.options[1].value,
+				addOption3Value: e.options[2].value,
+				addOption4Value: e.options[3].value,
+				preSelectedAnswer: preSelectedAnswerFromResponse
+			})
+		}
+		if(e.type === 'DESCRIPTIVE'){
+			console.log(e)
+			let preSelectedQuestionTypeFromResponse = []
+			preSelectedQuestionTypeFromResponse.push({name: e.type})
+			console.log(preSelectedQuestionTypeFromResponse)
+			this.setState({
+				selectQuestionTypeValue: 'DESCRIPTIVE',
+				questionTypeSelected: true,
+				preSelectedQuestionType: preSelectedQuestionTypeFromResponse,
+				addQuestionValue: e.question,
+				showOptions: false,
+				showAnswerDropdown: false
+			})
+		}
+	}
 	closeAddQuestionClicked = () => {
-		this.setState({modalIsOpenQuestion: false});
+		this.setState({
+			modalIsOpenQuestion: false,
+			questionTypeSelected: false,
+			selectQuestionTypeValue: null,
+			preSelectedQuestionType: null,
+			addQuestionValue: null,
+			preSelectedAnswer: null
+		});
 	}
 	closeAddTopicModal = () => {
 		this.setState({modalIsOpenTopic: false})
@@ -342,7 +413,7 @@ class Quix extends Component {
 								<td onClick={this.showQuestions.bind(log)} className='pointer'>{log.title}</td>
 								{log.preTest && <td>Yes</td>}
 								{!log.preTest && <td>No</td>}
-                                <td className='text-underline'><img src={editIcon} className='editIcon'/></td>
+                                <td className='text-underline' onClick={() => {this.addTopicClicked(log)}}><img src={editIcon} className='editIcon'/></td>
 								<td className='text-underline'><img src={deleteIcon} className='editIcon'/></td>
 							</tr>
 							</>
@@ -350,7 +421,17 @@ class Quix extends Component {
                     })
                 })
 			}
-    }
+	}
+	deleteCourseClicked = (e) => {
+		let dataString = {
+			"_id": e._id,
+			"status": 0
+			}
+			putQuestions(dataString).then(res => {
+				this.closeAddQuestionClicked()
+				this.gettingQuizQuestions()
+			})
+	}
     
     gettingQuizQuestions = () => {
 		let dataString = {
@@ -387,12 +468,26 @@ class Quix extends Component {
 		});
 	}
 	selectQuestionType = (e) => {
+		console.log(e)
 		let value = e.target.value
 		this.setState({
 			selectQuestionTypeValue: value
 		}, () => {
 			this.contentAccordingToQuestionType()
 			console.log(this.state.selectQuestionTypeValue)
+		})
+	}
+	selectedQuestionType = (e) => {
+		console.log(e[0].name)
+		this.setState({
+			selectQuestionTypeValue: e[0].name
+		}, () => {
+			this.setState({
+				questionTypeSelected: true
+			}, () => {
+				this.contentAccordingToQuestionType()
+				console.log(this.state.selectQuestionTypeValue)
+			})
 		})
 	}
 	contentAccordingToQuestionType = () => {
@@ -429,10 +524,10 @@ class Quix extends Component {
 	answerDropdownClicked = () => {
 		if(this.state.selectQuestionTypeValue === 'MCQ'){
 			let allOptions = []
-			allOptions.push(this.state.addOption1Value)
-			allOptions.push(this.state.addOption2Value)
-			allOptions.push(this.state.addOption3Value)
-			allOptions.push(this.state.addOption4Value)
+			allOptions.push({name: this.state.addOption1Value})
+			allOptions.push({name: this.state.addOption2Value})
+			allOptions.push({name: this.state.addOption3Value})
+			allOptions.push({name: this.state.addOption4Value})
 			this.setState({
 				optionListData: allOptions
 			}, () => {
@@ -442,8 +537,8 @@ class Quix extends Component {
 		}
 		if(this.state.selectQuestionTypeValue === 'TRUE/FALSE'){
 			let allOptions = []
-			allOptions.push('TRUE')
-			allOptions.push('FALSE')
+			allOptions.push({name: 'TRUE'})
+			allOptions.push({name: 'FALSE'})
 			this.setState({
 				optionListData: allOptions
 			}, () => {
@@ -465,7 +560,7 @@ class Quix extends Component {
 			showAnswerOpton: this.state.optionListData.map((log, i) => {
 				return (
 					<>
-						<option value={log}>{log}</option>
+						<option value={log.name}>{log.name}</option>
 					</>
 				)
 			})
@@ -474,62 +569,123 @@ class Quix extends Component {
 
 	answerSelectFunction = (e) => {
 		this.setState({
-			exactAnswerOfQuestion : e.target.value
+			exactAnswerOfQuestion : e[0].name
 		})
 	}
 	saveQuestionValue = () => {
 		// this.state.addOption1Value
 		if(this.state.selectQuestionTypeValue === 'MCQ'){
-			let dataString = {
-				"question": this.state.addQuestionValue,
-				"media": this.state.uploadUrl,
-				"options":[{
-					"value": this.state.addOption1Value
-				}, {
-					"value": this.state.addOption2Value
-				}, {
-					"value": this.state.addOption3Value
-				}, {
-					"value": this.state.addOption4Value
-				}],
-				"type":"MCQ",
-				"answer":this.state.exactAnswerOfQuestion,
-				"quiz": this.state.quizQuestionObject._id
-				}
-				postQuestions(dataString).then(res => {
-					this.closeAddQuestionClicked()
-					this.gettingQuizQuestions()
-				})
+			if(this.state.questionEditId){
+				let dataString = {
+					"_id": this.state.questionEditId,
+					"question": this.state.addQuestionValue,
+					"media": this.state.uploadUrl,
+					"options":[{
+						"value": this.state.addOption1Value
+					}, {
+						"value": this.state.addOption2Value
+					}, {
+						"value": this.state.addOption3Value
+					}, {
+						"value": this.state.addOption4Value
+					}],
+					"type":"MCQ",
+					"answer":this.state.exactAnswerOfQuestion,
+					"quiz": this.state.quizQuestionObject._id
+					}
+					putQuestions(dataString).then(res => {
+						this.closeAddQuestionClicked()
+						this.gettingQuizQuestions()
+					})
+			}
+			if(!this.state.questionEditId){
+				let dataString = {
+					"question": this.state.addQuestionValue,
+					"media": this.state.uploadUrl,
+					"options":[{
+						"value": this.state.addOption1Value
+					}, {
+						"value": this.state.addOption2Value
+					}, {
+						"value": this.state.addOption3Value
+					}, {
+						"value": this.state.addOption4Value
+					}],
+					"type":"MCQ",
+					"answer":this.state.exactAnswerOfQuestion,
+					"quiz": this.state.quizQuestionObject._id
+					}
+					postQuestions(dataString).then(res => {
+						this.closeAddQuestionClicked()
+						this.gettingQuizQuestions()
+					})
+			}
 		}
 		if(this.state.selectQuestionTypeValue === 'TRUE/FALSE'){
-			let dataString = {
-				"question": this.state.addQuestionValue,
-				"media": this.state.uploadUrl,
-				"options":[{
-					"value": 'TRUE'
-				}, {
-					"value": 'FALSE'
-				}],
-				"type": "TRUE-FALSE",
-				"answer":this.state.exactAnswerOfQuestion,
-				"quiz": this.state.quizQuestionObject._id
-				}
-				postQuestions(dataString).then(res => {
-					this.closeAddQuestionClicked()
-					this.gettingQuizQuestions()
-				})
+			if(this.state.questionEditId){
+				let dataString = {
+					"_id": this.state.questionEditId,
+					"question": this.state.addQuestionValue,
+					"media": this.state.uploadUrl,
+					"options":[{
+						"value": 'TRUE'
+					}, {
+						"value": 'FALSE'
+					}],
+					"type": "TRUE-FALSE",
+					"answer":this.state.exactAnswerOfQuestion,
+					"quiz": this.state.quizQuestionObject._id
+					}
+					putQuestions(dataString).then(res => {
+						this.closeAddQuestionClicked()
+						this.gettingQuizQuestions()
+					})
+			}
+			if(!this.state.questionEditId){
+				let dataString = {
+					"question": this.state.addQuestionValue,
+					"media": this.state.uploadUrl,
+					"options":[{
+						"value": 'TRUE'
+					}, {
+						"value": 'FALSE'
+					}],
+					"type": "TRUE-FALSE",
+					"answer":this.state.exactAnswerOfQuestion,
+					"quiz": this.state.quizQuestionObject._id
+					}
+					postQuestions(dataString).then(res => {
+						this.closeAddQuestionClicked()
+						this.gettingQuizQuestions()
+					})
+			}
 		}
 		if(this.state.selectQuestionTypeValue === 'DESCRIPTIVE'){
-			let dataString = {
-				"question": this.state.addQuestionValue,
-				"media": this.state.uploadUrl,
-				"type":"MCQ",
-				"quiz": this.state.quizQuestionObject._id
-				}
-				postQuestions(dataString).then(res => {
-					this.closeAddQuestionClicked()
-					this.gettingQuizQuestions()
-				})
+			if(this.state.questionEditId){
+				let dataString = {
+					"_id": this.state.questionEditId,
+					"question": this.state.addQuestionValue,
+					"media": this.state.uploadUrl,
+					"type":"MCQ",
+					"quiz": this.state.quizQuestionObject._id
+					}
+					putQuestions(dataString).then(res => {
+						this.closeAddQuestionClicked()
+						this.gettingQuizQuestions()
+					})
+			}
+			if(!this.state.questionEditId){
+				let dataString = {
+					"question": this.state.addQuestionValue,
+					"media": this.state.uploadUrl,
+					"type":"MCQ",
+					"quiz": this.state.quizQuestionObject._id
+					}
+					postQuestions(dataString).then(res => {
+						this.closeAddQuestionClicked()
+						this.gettingQuizQuestions()
+					})
+			}
 		}
 	}
 	render() {
@@ -547,13 +703,13 @@ class Quix extends Component {
 						</header>
 						{this.state.showQuizQuestions && <div className='mainTab'>
 							<div className='row top-nav'>
-								<div className="col-xl-12 col-lg-12 col-md-12 text-center pointer">
+								<div className="col-xl-12 col-lg-12 col-md-12 text-center pointer row">
 									<div onClick={() => {
                                         this.setState({showQuizQuestions: false})
-                                    }} className='pointer'>
-                                        Back
+                                    }} className='pointer col-lg-1'>
+										<img src={backIcon}  className='editIcon'/> 
                                         </div> 
-                                    <div className='text-center pointer'>
+                                    <div className='text-center pointer col-lg-11 py-10'>
                                         Questions: {this.state.quizQuestionObjectTitle}
                                     </div>
 								</div>
@@ -584,30 +740,39 @@ class Quix extends Component {
 									<div className='border-bottom'>
 										<h6 ref={subtitle => this.subtitle = subtitle}>New Quiz</h6>
 									</div>
-									<div className='form-element'>										
+									<div className='form-element py-40'>										
 									<div className='col-lg-12'>
 											Question Type
-										<select name="cars" className='single-select-style' onChange={this.selectQuestionType}>
+										{/* <select name="cars" className='single-select-style' onChange={this.selectQuestionType}>
 											<option selected="true" disabled="disabled">Select the Question type</option>    
 											<option value= 'MCQ'>MULTIPLE-TYPE</option>
 											<option value= 'TRUE/FALSE' >TRUE/FALSE</option>
 											<option value= 'DESCRIPTIVE'>DESCRIPTIVE</option>
-										</select>
+										</select> */}
+										<Multiselect
+											options={this.state.optionSelectList}
+											onSelect={this.selectedQuestionType} 
+											onRemove={this.selectedQuestionType} 
+											displayValue="name" 
+											singleSelect='true'
+											placeholder='Select Type'
+											selectedValues = {this.state.preSelectedQuestionType}
+											/>
 										</div>
-										<div className='form-element'>										
+										{this.state.questionTypeSelected && <div className='form-element col-lg-12'>										
 										<div className='indi-form-text'>
 											<input type='text' className='' name='age' id='age' autoComplete='off' value={this.state.addQuestionValue} onChange={e => this.setState({ addQuestionValue: e.target.value })} required />
 											<label for='age' className='label-name'>
 												<span className='content-name'>Question </span>
 											</label>
 										</div>
-									</div>
-										<div className='col-lg-12'>
+									</div>}
+										{this.state.questionTypeSelected && <div className='col-lg-12 py-10'>
 											Question Image
 										<input type='file' onChange={this.fileUploadQuestionImage}/>
 										{/* onChange={e => this.setState({ addQuestionImageValue: e.target.value })} */}
-										</div>
-									{this.state.showOptions &&	<div className='form-element'>										
+										</div>}
+									{this.state.questionTypeSelected && this.state.showOptions &&	<div className='form-element col-lg-12'>										
 										<div className='indi-form-text'>
 											<input type='text' className='' name='age' id='age' autoComplete='off' value={this.state.addOption1Value} onChange={e => this.setState({ addOption1Value: e.target.value })} required />
 											<label for='age' className='label-name'>
@@ -615,7 +780,7 @@ class Quix extends Component {
 											</label>
 										</div>
 									</div>}
-									{this.state.showOptions && <div className='form-element'>										
+									{this.state.questionTypeSelected && this.state.showOptions && <div className='form-element col-lg-12'>										
 										<div className='indi-form-text'>
 											<input type='text' className='' name='age' id='age' autoComplete='off' value={this.state.addOption2Value} onChange={e => this.setState({ addOption2Value: e.target.value })} required />
 											<label for='age' className='label-name'>
@@ -623,7 +788,7 @@ class Quix extends Component {
 											</label>
 										</div>
 									</div>}
-									{this.state.showOptions && <div className='form-element'>										
+									{this.state.questionTypeSelected && this.state.showOptions && <div className='form-element col-lg-12'>										
 										<div className='indi-form-text'>
 											<input type='text' className='' name='age' id='age' autoComplete='off' value={this.state.addOption3Value} onChange={e => this.setState({ addOption3Value: e.target.value })} required />
 											<label for='age' className='label-name'>
@@ -631,7 +796,7 @@ class Quix extends Component {
 											</label>
 										</div>
 									</div>}
-									{this.state.showOptions && <div className='form-element'>										
+									{this.state.questionTypeSelected && this.state.showOptions && <div className='form-element col-lg-12'>										
 										<div className='indi-form-text'>
 											<input type='text' className='' name='age' id='age' autoComplete='off' value={this.state.addOption4Value} onChange={e => this.setState({ addOption4Value: e.target.value })} required />
 											<label for='age' className='label-name'>
@@ -639,12 +804,24 @@ class Quix extends Component {
 											</label>
 										</div>
 									</div>}
-								{this.state.showAnswerDropdown && <div className='col-lg-12'>
-											Answer
-										<select name="cars" onChange={this.answerSelectFunction} onClick={this.answerDropdownClicked} className='single-select-style'>
+								{this.state.questionTypeSelected && this.state.showAnswerDropdown && <div className='py-10'>
+											
+										{/* <select name="cars" onChange={this.answerSelectFunction} onClick={this.answerDropdownClicked} className='single-select-style'>
 											<option selected="true" disabled="disabled">Choose the answer</option>
 											{this.state.showAnswerOpton}
-										</select>
+										</select> */}
+										<div onClick={this.answerDropdownClicked} className='col-lg-12'>
+										Answer
+										<Multiselect
+											options={this.state.optionListData}
+											onSelect={this.answerSelectFunction} 
+											onRemove={this.answerSelectFunction} 
+											displayValue="name" 
+											singleSelect='true'
+											placeholder='Select Type'
+											selectedValues = {this.state.preSelectedAnswer}
+											/>
+										</div>
 										</div>}
 									</div>
 									{/* <button onClick={this.closeAddTopicModal} className='close-button-style'>Close Me</button> */}
