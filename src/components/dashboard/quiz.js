@@ -6,7 +6,7 @@ import './myApplication.scss';
 // import ReactDOM from 'react-dom';
 import Modal from 'react-modal';
 import closeIcon from '../../images/cross-small-01-512.png'
-import { getCourses, getElement, getTopic, getQuiz, setElement, setCourse, setTopic, getQuestions, setQuiz, upload, postQuestions, putQuestions } from "../../services/masters";
+import { getCourses, getElement, getTopic, getQuiz, setElement, setCourse, setTopic, getQuestions, setQuiz, upload, postQuestions, putQuestions, putQuiz } from "../../services/masters";
 import editIcon from '../../images/web-circle-circular-round_58-512.png'
 import deleteIcon from '../../images/010_trash-2-512.png'
 import backIcon from '../../images/back-button.png'
@@ -77,7 +77,12 @@ class Quix extends Component {
 			exactAnswerOfQuestion: null,
 			optionSelectList: [{name: 'MCQ'},{name: 'TRUE/FALSE'},{name: "DESCRIPTIVE"}],
 			questionTypeSelected: false,
-			questionEditId: null
+			questionEditId: null,
+			topicListForDropdownState: null,
+			preSelectedCourseList: null,
+			preSelectedElementList: null,
+			preSelectedTopicList: null,
+			idEditQuiz: null,
 		};
 	}
 
@@ -137,7 +142,35 @@ class Quix extends Component {
 		this.setState({modalIsOpenCourse: false})
 	}
 	addTopicClicked = (e) => {
-		this.setState({modalIsOpenTopic: true});
+		console.log(e)
+		this.setState({
+			modalIsOpenTopic: true
+		}, () => {
+			if(e._id){
+				this.setState({
+					idEditQuiz: e._id
+				}, () => {
+					this.setDataOfQuizModal(e)
+				})
+			}
+		});
+	}
+	setDataOfQuizModal = (e) => {
+		let dataForTopic = []
+		let dataForCourses = []
+		let dataForElement = []
+		dataForTopic.push({name: e.topic.topicName, _id: e.topic._id})
+		dataForCourses.push(e.rank)
+		dataForElement.push(e.element)
+		this.setState({
+			preSelectedCourseList: dataForCourses,
+			preSelectedElementList: dataForElement,
+			preSelectedTopicList: dataForTopic,
+			addQuizNameValue: e.title,
+			questionLimit: e.questionLimit,
+			preTest: e.preTest,
+			addRemarksValue: e.remark
+		})
 	}
 	addQuestionClicked = (e) => {
 		console.log(e)
@@ -211,7 +244,17 @@ class Quix extends Component {
 		});
 	}
 	closeAddTopicModal = () => {
-		this.setState({modalIsOpenTopic: false})
+		this.setState({
+			preSelectedCourseList: null,
+			preSelectedElementList: null,
+			preSelectedTopicList: null,
+			addQuizNameValue: null,
+			questionLimit: null,
+			idEditQuiz: null,
+			preTest: null,
+			addRemarksValue: null,
+			modalIsOpenTopic: false
+		})
 	}
 	saveElementValue = () => {
 		console.log(this.state.addElementValue)
@@ -231,35 +274,69 @@ class Quix extends Component {
 			alert(err)
 		})
 	}
+
 	saveQuizValue = () => {
-        console.log(this.state.addQuizNameValue)
-        console.log(this.state.sendingMultipleCoursesInTopic)
-        console.log(this.state.sendingElementInTopic)
-        console.log(this.state.sendingtopicInTopic)
-        console.log(this.state.questionLimit)
-        console.log(this.state.preTest)
-        console.log(this.state.addRemarksValue)
-		let quizSetString = {
-			'title': this.state.addQuizNameValue,
-			'rank': this.state.sendingMultipleCoursesInTopic,
-            'element': this.state.sendingElementInTopic,
-            'topic': this.state.sendingtopicInTopic,
-            'questionLimit': this.state.questionLimit,
-			'preTest': this.state.preTest,
-			'remarks': this.state.addRemarksValue
-		}
-		setQuiz(quizSetString).then(res => {
-			console.log(res)
-			this.setState({
-				topicList: res.data
-			}, () => {
-				this.fetchCall()
+        if(this.state.idEditQuiz){
+			console.log(this.state.addQuizNameValue)
+			console.log(this.state.sendingMultipleCoursesInTopic)
+			console.log(this.state.sendingElementInTopic)
+			console.log(this.state.sendingtopicInTopic)
+			console.log(this.state.questionLimit)
+			console.log(this.state.preTest)
+			console.log(this.state.addRemarksValue)
+			let quizSetString = {
+				'_id': this.state.idEditQuiz,
+				'title': this.state.addQuizNameValue,
+				'rank': this.state.sendingMultipleCoursesInTopic? this.state.sendingMultipleCoursesInTopic : this.state.preSelectedCourseList[0]._id,
+				'element': this.state.sendingElementInTopic? this.state.sendingElementInTopic : this.state.preSelectedElementList[0]._id ,
+				'topic': this.state.sendingtopicInTopic? this.state.sendingtopicInTopic : this.state.preSelectedTopicList[0]._id,
+				'questionLimit': this.state.questionLimit,
+				'preTest': this.state.preTest,
+				'remarks': this.state.addRemarksValue
+			}
+			putQuiz(quizSetString).then(res => {
+				console.log(res)
+				this.setState({
+					topicList: res.data
+				}, () => {
+					this.fetchCall()
+				})
+				this.closeAddTopicModal()
 			})
-			this.closeAddTopicModal()
-		})
-		.catch(err => {
-			alert(err)
-		})
+			.catch(err => {
+				alert(err)
+			})
+		}
+		if(!this.state.idEditQuiz){
+			console.log(this.state.addQuizNameValue)
+			console.log(this.state.sendingMultipleCoursesInTopic)
+			console.log(this.state.sendingElementInTopic)
+			console.log(this.state.sendingtopicInTopic)
+			console.log(this.state.questionLimit)
+			console.log(this.state.preTest)
+			console.log(this.state.addRemarksValue)
+			let quizSetString = {
+				'title': this.state.addQuizNameValue,
+				'rank': this.state.sendingMultipleCoursesInTopic,
+				'element': this.state.sendingElementInTopic,
+				'topic': this.state.sendingtopicInTopic,
+				'questionLimit': this.state.questionLimit,
+				'preTest': this.state.preTest,
+				'remarks': this.state.addRemarksValue
+			}
+			setQuiz(quizSetString).then(res => {
+				console.log(res)
+				this.setState({
+					topicList: res.data
+				}, () => {
+					this.fetchCall()
+				})
+				this.closeAddTopicModal()
+			})
+			.catch(err => {
+				alert(err)
+			})
+		}
 	}
 	elementSelectFunction = (e) => {
 		let element = this.state.elementList.data.find(findingElementId)
@@ -300,6 +377,7 @@ class Quix extends Component {
 		})
 	}
 	gettingListCourse = () => {
+		console.log(this.state.courseList.data)
 			if(this.state.courseList){
 				this.setState({
 					courseListMap:  this.state.courseList.data.map((log, i) => { 
@@ -380,7 +458,9 @@ class Quix extends Component {
             })
         }
 	gettingListTopic = () => {
+		console.log(this.state.topicList.data)
 			if(this.state.topicList){
+				let topicListForDropdown = []
 				this.setState({
 					topicListMap: this.state.topicList.data.map((log, i) => {
 						return (
@@ -394,6 +474,10 @@ class Quix extends Component {
 						)
                     }),
                     topicListMapOptions: this.state.topicList.data.map((log, i) => {
+						topicListForDropdown.push({name: log.topicName, _id: log._id})
+						this.setState({
+							topicListForDropdownState: topicListForDropdown
+						})
                         return (
                             <>
                             <option value={log.topicName}>{log.topicName}</option>
@@ -402,6 +486,24 @@ class Quix extends Component {
                     })  
                 })
 			}
+	}
+	deleteTopicClicked = (e) => {
+			let quizSetString = {
+				'_id': e._id,
+				'status': 0
+			}
+			putQuiz(quizSetString).then(res => {
+				console.log(res)
+				this.setState({
+					topicList: res.data
+				}, () => {
+					this.fetchCall()
+				})
+				this.closeAddTopicModal()
+			})
+			.catch(err => {
+				alert(err)
+			})
 	}
 	gettingListQuiz = () => {
 			if(this.state.quizList){
@@ -414,7 +516,7 @@ class Quix extends Component {
 								{log.preTest && <td>Yes</td>}
 								{!log.preTest && <td>No</td>}
                                 <td className='text-underline' onClick={() => {this.addTopicClicked(log)}}><img src={editIcon} className='editIcon'/></td>
-								<td className='text-underline'><img src={deleteIcon} className='editIcon'/></td>
+								<td className='text-underline' onClick={() => {this.deleteTopicClicked(log)}}><img src={deleteIcon} className='editIcon'/></td>
 							</tr>
 							</>
 						)
@@ -688,6 +790,31 @@ class Quix extends Component {
 			}
 		}
 	}
+	/* 
+	    'title': this.state.addQuizNameValue,
+		'rank': this.state.sendingMultipleCoursesInTopic,
+		'element': this.state.sendingElementInTopic,
+		'topic': this.state.sendingtopicInTopic,
+		'questionLimit': this.state.questionLimit,
+		'preTest': this.state.preTest,
+		'remarks': this.state.addRemarksValue
+	*/
+	selectedCourseListDropdown = (e) => {
+		this.setState({
+			sendingMultipleCoursesInTopic: e[0]._id
+		})
+	}
+	selectedElementListDropdown = (e) => {
+		this.setState({
+			sendingElementInTopic: e[0]._id
+		})
+	}
+	selectedTopicListDropdown = (e) => {
+		this.setState({
+			sendingtopicInTopic: e[0]._id
+		})
+	}
+
 	render() {
 		return (
 			<div className='container-fluid'>
@@ -863,25 +990,43 @@ class Quix extends Component {
 										<h6 ref={subtitle => this.subtitle = subtitle}>New Quiz</h6>
 									</div>
 									<div className='form-element'>										
-										<div className='col-lg-12' >
+										<div className='col-lg-12 py-10' >
 											Rank
-										<select name="cars" onChange={this.multipleCourseSelectFunction} className='single-select-style'>
-											{this.state.courseListMapOptions}
-										</select>
+										<Multiselect
+											options={this.state.courseList.data}
+											onSelect={this.selectedCourseListDropdown} 
+											onRemove={this.selectedCourseListDropdown} 
+											displayValue="name" 
+											singleSelect='true'
+											placeholder='Select Rank'
+											selectedValues = {this.state.preSelectedCourseList}
+											/>
 										</div>
-										<div className='col-lg-12'>
+										<div className='col-lg-12 py-10'>
 											Element
-										<select name="cars" onChange={this.elementSelectFunction} className='single-select-style'>
-											{this.state.elementListMapOptions}
-										</select>
+										<Multiselect
+											options={this.state.elementList.data}
+											onSelect={this.selectedElementListDropdown} 
+											onRemove={this.selectedElementListDropdown} 
+											displayValue="name" 
+											singleSelect='true'
+											placeholder='Select '
+											selectedValues = {this.state.preSelectedElementList}
+											/>
 										</div>
-										<div className='col-lg-12'>
+										<div className='col-lg-12 py-10'>
 											Topic
-										<select name="cars" onChange={this.topicSelectFunction} className='single-select-style'>
-											{this.state.topicListMapOptions}
-										</select>
+										<Multiselect
+											options={this.state.topicListForDropdownState}
+											onSelect={this.selectedTopicListDropdown} 
+											onRemove={this.selectedTopicListDropdown} 
+											displayValue="name" 
+											singleSelect='true'
+											placeholder='Select Type'
+											selectedValues = {this.state.preSelectedTopicList}
+											/>
 										</div>
-										<div className='form-element'>										
+										<div className='form-element col-lg-12'>										
 										<div className='indi-form-text'>
 											<input type='text' className='' name='age' id='age' autoComplete='off' value={this.state.addQuizNameValue} onChange={e => this.setState({ addQuizNameValue: e.target.value })} required />
 											<label for='age' className='label-name'>
@@ -889,7 +1034,7 @@ class Quix extends Component {
 											</label>
 										</div>
 									</div>
-										<div className='form-element'>										
+										<div className='form-element col-lg-12'>										
 										<div className='indi-form-text'>
 											<input type='number' className='' name='age' id='age' autoComplete='off' value={this.state.questionLimit} onChange={e => this.setState({ questionLimit: e.target.value })} required />
 											<label for='age' className='label-name'>
@@ -897,7 +1042,7 @@ class Quix extends Component {
 											</label>
 										</div>
 									</div>
-                                    <div className='form-element'>										
+                                    <div className='form-element col-lg-12'>										
 										<div className='indi-form-text'>
 											<input type='text' className='' name='age' id='age' autoComplete='off' value={this.state.addRemarksValue} onChange={e => this.setState({ addRemarksValue: e.target.value })} required />
 											<label for='age' className='label-name'>
@@ -905,9 +1050,9 @@ class Quix extends Component {
 											</label>
 										</div>
 									</div>
-                                    <div className='form-element'>		
+                                    <div className='form-element col-lg-12 py-10'>		
                                     Pre Test								
-											<input type='checkbox' className='' name='age' id='age' autoComplete='off' value={this.state.preTest} onChange={e => this.setState({ preTest: !this.state.preTest })} />
+											<input type='checkbox' className='mx-3' name='age' id='age' autoComplete='off' value={this.state.preTest} checked={this.state.preTest} onChange={e => this.setState({ preTest: !this.state.preTest })} />
 									</div>
 									</div>
 									{/* <button onClick={this.closeAddTopicModal} className='close-button-style'>Close Me</button> */}

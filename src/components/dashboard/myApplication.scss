@@ -50,7 +50,7 @@ table {
   td, th {
     border: 1px solid #dddddd;
     text-align: left;
-    padding: 8px;
+    padding: 3px;
   }
   
   tr:nth-child(even) {
@@ -131,7 +131,8 @@ table tr th{
     text-align: center;
 }
 table tr td{
-    border: 1px solid #ccc;
+    border-bottom: 1px solid #ccc;
+    border-top: 1px solid #ccc;
     text-align: center;
     padding: 10px 0px;
 }
@@ -140,4 +141,7 @@ table tr td{
 }
 .py-40{
     padding: 40px 0px;
+}
+.mx-3{
+    margin-left: 3px;
 }

@@ -141,7 +141,9 @@ class MyApplications extends Component {
 	}
 	addTopicClicked = (e) => {
 		let elementToArray = []
-		elementToArray.push(e.element)
+		if(e.element){
+			elementToArray.push(e.element)
+		}
 		this.setState({
 			selectedCourseList: e.course,
 			selectedElementList: elementToArray,
@@ -473,6 +475,7 @@ class MyApplications extends Component {
 							<>
 							<tr>
 								<td>{log.topicName}</td>
+								<td>{log.element.name}</td>
 								<td className='text-underline pointer' onClick={() => {this.addTopicClicked(log)}}><img src={editIcon} className='editIcon'/></td>
 								<td className='text-underline pointer' onClick={() => {this.deleteTopicClicked(log)}}><img src={deleteIcon} className='editIcon'/></td>
 							</tr>
@@ -584,6 +587,7 @@ class MyApplications extends Component {
 									<table>
 									<tr>
 										<th>Name</th>
+										<th>Branch</th>
 										<th>Edit</th>
 										<th>Delete</th>
 									</tr>

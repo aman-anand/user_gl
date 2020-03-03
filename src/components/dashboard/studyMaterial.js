@@ -6,9 +6,10 @@ import './myApplication.scss';
 // import ReactDOM from 'react-dom';
 import Modal from 'react-modal';
 import closeIcon from '../../images/cross-small-01-512.png'
-import { getElement, getTopic } from "../../services/masters";
+import { getElement, getTopic, getStudyMaterial } from "../../services/masters";
 import editIcon from '../../images/web-circle-circular-round_58-512.png'
 import deleteIcon from '../../images/010_trash-2-512.png'
+import { Multiselect } from 'multiselect-react-dropdown'
 
 const customStyles = {
 	content : {
@@ -18,7 +19,8 @@ const customStyles = {
 	  bottom                : 'auto',
 	  marginRight           : '-50%',
 	  transform             : 'translate(-50%, -50%)',
-	  width					: '500px'
+	  width					: '500px',
+	  minHeight				: '300px'
 	}
   };
 class StudyMaterial extends Component {
@@ -31,6 +33,7 @@ class StudyMaterial extends Component {
 			elementView: false,
 			topicView: false,
 			modalIsOpenTopic: false,
+			studyMaterial: null,
 		};
 	}
 
@@ -51,13 +54,20 @@ class StudyMaterial extends Component {
 				topicList: res.data
 			})
 		});
+		getStudyMaterial(dataString).then(res => {
+			console.log(res)
+			this.setState({
+				studyMaterial: res.data
+			})
+		});
 	}
 	componentDidMount() {
 		this.fetchCall()
 	}
 	addTopicClicked = () => {
-		console.log('Add Topic Clicked')
-		this.setState({modalIsOpenTopic: true});
+		this.setState({
+			modalIsOpenTopic: true
+		});
 	}
 	closeAddTopicModal = () => {
 		this.setState({modalIsOpenTopic: false})
@@ -123,11 +133,20 @@ class StudyMaterial extends Component {
 									contentLabel="Example Modal"
 								>
 									<div className='border-bottom'>
-										<h6 ref={subtitle => this.subtitle = subtitle}>New Quiz</h6>
+										<h6 ref={subtitle => this.subtitle = subtitle}>Upload</h6>
 									</div>
-									<div className='form-element'>
-											
-									</div>
+									<div className='col-lg-12'>
+											Element
+										{/* <Multiselect
+											options={this.state.optionSelectList}
+											onSelect={this.selectedQuestionType} 
+											onRemove={this.selectedQuestionType} 
+											displayValue="name" 
+											singleSelect='true'
+											placeholder='Select Type'
+											selectedValues = {this.state.preSelectedQuestionType}
+											/> */}
+										</div>
 									{/* <button onClick={this.closeAddTopicModal} className='close-button-style'>Close Me</button> */}
 									<img src = {closeIcon} className='common-close-button close-button-style' onClick={this.closeAddTopicModal}></img>
 									<button onClick={this.saveQuizValue} className='save-button-style'>Save</button>

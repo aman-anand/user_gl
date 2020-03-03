@@ -7,6 +7,7 @@
 			"topic": "topic",
 			"quiz": "quiz",
 			"question": "question",
-			"upload": "upload"
+			"upload": "upload",
+			"studyM": "studyM"
 	}
 }
