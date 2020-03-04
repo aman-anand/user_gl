@@ -6,8 +6,10 @@ import './myApplication.scss';
 // import ReactDOM from 'react-dom';
 import Modal from 'react-modal';
 import closeIcon from '../../images/cross-small-01-512.png'
-import { getElement, getTopic, getStudyMaterial, upload, setStudyMaterial } from "../../services/masters";
-import editIcon from '../../images/web-circle-circular-round_58-512.png'
+import { getElement, getTopic, getStudyMaterial, upload, setStudyMaterial, editStudyMaterial } from "../../services/masters";
+import editIcon from '../../images/eye-icon.png'
+import tickIcon from '../../images/tick-mark.png'
+import crossIcon from '../../images/cross-icon.png'
 import deleteIcon from '../../images/010_trash-2-512.png'
 import { Multiselect } from 'multiselect-react-dropdown'
 
@@ -103,6 +105,8 @@ class StudyMaterial extends Component {
 			courseView: true,
 			elementView: false,
 			topicView: false	
+		}, () => {
+			this.gettingListElement()
 		})
 	}
 	elementViewClicked = () => {
@@ -111,6 +115,8 @@ class StudyMaterial extends Component {
 			courseView: false,
 			elementView: true,
 			topicView: false	
+		}, () => {
+			this.gettingListElement()
 		})
 	}
 	topicViewClicked = () => {
@@ -119,6 +125,8 @@ class StudyMaterial extends Component {
 			courseView: false,
 			elementView: false,
 			topicView: true	
+		}, () => {
+			this.gettingListElement()
 		})
 	}
 	fileUploadQuestionImage = (e) => {
@@ -200,17 +208,57 @@ class StudyMaterial extends Component {
 			alert(err)
 		})
 	}
+	viewElementClicked = (e) => {
+		console.log(e)
+	}
+	deleteElementClicked = (e) => {
+		let quizSetString = {
+			'_id': e._id,
+			'status': 0
+		}
+		editStudyMaterial(quizSetString).then(res => {
+			console.log(res)
+			this.setState({
+				studyMaterialList: res.data
+			}, () => {
+				this.fetchCall()
+			})
+			this.closeAddTopicModal()
+		})
+		.catch(err => {
+			alert(err)
+		})
+	}
 	gettingListElement = () => {
 		if(this.state.studyMaterial){
 			this.setState({
 				elementListMap: this.state.studyMaterial.data.map((log, i) => {
 					return (
 						<>
-						<tr>
+						{this.state.courseView && log.type === 'video' && <tr>
 							<td>{log.title}</td>
-							<td className='text-underline pointer' onClick={() => {this.addElementClicked(log)}}><img src={editIcon} className='editIcon'/></td>
+							<td>{log.readingMinutes}</td>
+							<td className='text-underline pointer' onClick={() => {this.viewElementClicked(log)}}><img src={editIcon} className='eyeIcon'/></td>
+							{log.isPostTest && <td className='text-underline pointer' onClick={() => {this.viewElementClicked(log)}}><img src={tickIcon} className='eyeIcon'/></td>}
+							{!log.isPostTest && <td className='text-underline pointer' onClick={() => {this.viewElementClicked(log)}}><img src={crossIcon} className='eyeIcon'/></td>}
 							<td className='text-underline pointer' onClick={() => {this.deleteElementClicked(log)}}><img src={deleteIcon} className='editIcon'/></td>
-						</tr>
+						</tr>}
+						{this.state.elementView && log.type === 'pdf' && <tr>
+							<td>{log.title}</td>
+							<td>{log.readingMinutes}</td>
+							<td className='text-underline pointer' onClick={() => {this.viewElementClicked(log)}}><img src={editIcon} className='eyeIcon'/></td>
+							{log.isPostTest && <td className='text-underline pointer' onClick={() => {this.viewElementClicked(log)}}><img src={tickIcon} className='eyeIcon'/></td>}
+							{!log.isPostTest && <td className='text-underline pointer' onClick={() => {this.viewElementClicked(log)}}><img src={crossIcon} className='eyeIcon'/></td>}
+							<td className='text-underline pointer' onClick={() => {this.deleteElementClicked(log)}}><img src={deleteIcon} className='editIcon'/></td>
+						</tr>}
+						{this.state.topicView && log.type === 'ppt' && <tr>
+							<td>{log.title}</td>
+							<td>{log.readingMinutes}</td>
+							<td className='text-underline pointer' onClick={() => {this.viewElementClicked(log)}}><img src={editIcon} className='eyeIcon'/></td>
+							{log.isPostTest && <td className='text-underline pointer' onClick={() => {this.viewElementClicked(log)}}><img src={tickIcon} className='eyeIcon'/></td>}
+							{!log.isPostTest && <td className='text-underline pointer' onClick={() => {this.viewElementClicked(log)}}><img src={crossIcon} className='eyeIcon'/></td>}
+							<td className='text-underline pointer' onClick={() => {this.deleteElementClicked(log)}}><img src={deleteIcon} className='editIcon'/></td>
+						</tr>}
 						</>
 					)
 				})
@@ -324,7 +372,9 @@ class StudyMaterial extends Component {
 									<table>
 									<tr>
 										<th>Name</th>
+										<th>Reading Minutes</th>
 										<th>View</th>
+										<th>IsDownloadable</th>
 										<th>Delete</th>
 									</tr>
 									{this.state.elementListMap}
@@ -342,10 +392,10 @@ class StudyMaterial extends Component {
 									<div className='table-div'>
 									<table>
 									<tr>
-										<th>Names</th>
-										<th>Element</th>
-										<th>Topic</th>
+										<th>Name</th>
+										<th>Reading Minutes</th>
 										<th>View</th>
+										<th>IsDownloadable</th>
 										<th>Delete</th>
 									</tr>
 									{this.state.elementListMap}
@@ -364,9 +414,9 @@ class StudyMaterial extends Component {
 									<table>
 									<tr>
 										<th>Name</th>
-										<th>Elements</th>
-										<th>Topic</th>
+										<th>Reading Minutes</th>
 										<th>View</th>
+										<th>Downloadable</th>
 										<th>Delete</th>
 									</tr>
 									{this.state.elementListMap}
