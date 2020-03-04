@@ -190,3 +190,12 @@ export const getStudyMaterial = (datastring) => {
         mode: 'no-cors'
     });
 };
+export const setStudyMaterial = (datastring) => {
+    console.log(datastring)
+	return axios.post(`${ApiList.env}${ApiList.endpoint.studyM}`, (datastring), {
+		headers: {
+            'Content-Type' : 'application/json'
+        },
+        mode: 'no-cors'
+    });
+};

@@ -6,7 +6,7 @@ import './myApplication.scss';
 // import ReactDOM from 'react-dom';
 import Modal from 'react-modal';
 import closeIcon from '../../images/cross-small-01-512.png'
-import { getElement, getTopic, getStudyMaterial } from "../../services/masters";
+import { getElement, getTopic, getStudyMaterial, upload, setStudyMaterial } from "../../services/masters";
 import editIcon from '../../images/web-circle-circular-round_58-512.png'
 import deleteIcon from '../../images/010_trash-2-512.png'
 import { Multiselect } from 'multiselect-react-dropdown'
@@ -34,6 +34,17 @@ class StudyMaterial extends Component {
 			topicView: false,
 			modalIsOpenTopic: false,
 			studyMaterial: null,
+			elementOptionList: [],
+			preSelectedElementType: null,
+			topicOptionList: [],
+			preSelectedTopicType: null,
+			uploadUrl: null,
+			allowDownload: null,
+			readingMinutes: null,
+			selectedElementFromList: null,
+			selectedTopicFromList: null,
+			studyMaterialList: null,
+			typeUpload: null
 		};
 	}
 
@@ -58,16 +69,30 @@ class StudyMaterial extends Component {
 			console.log(res)
 			this.setState({
 				studyMaterial: res.data
+			}, () => {
+				this.gettingListElement()
 			})
 		});
 	}
 	componentDidMount() {
 		this.fetchCall()
 	}
+
 	addTopicClicked = () => {
 		this.setState({
 			modalIsOpenTopic: true
+		}, () => {
+			this.topicOptionListFunc()
 		});
+	}
+	topicOptionListFunc = () => {
+		let topicListToBePushed = []
+		this.state.topicList.data.map((log, i) => {
+			topicListToBePushed.push({name: log.topicName, _id: log._id})
+			this.setState({
+				topicOptionList: topicListToBePushed
+			})
+		})
 	}
 	closeAddTopicModal = () => {
 		this.setState({modalIsOpenTopic: false})
@@ -95,6 +120,102 @@ class StudyMaterial extends Component {
 			elementView: false,
 			topicView: true	
 		})
+	}
+	fileUploadQuestionImage = (e) => {
+		let formdata = new FormData()
+		formdata.append("file", e.target.files[0])
+		upload(formdata).then(res => {
+			this.setState({
+				uploadUrl: res.data.data.url
+			}, () => {
+				console.log(this.state.uploadUrl)
+			})
+		})
+	}
+	selectedElementType = (e) => {
+		console.log(e)
+		this.setState({
+			selectedElementFromList: e[0]
+		})
+	}
+	selectedTopicType = (e) => {
+		console.log(e)
+		this.setState({
+			selectedTopicFromList: e[0]
+		})
+	}
+	saveUploadValue = () => {
+		console.log(this.state.selectedElementFromList._id)
+		console.log(this.state.selectedTopicFromList._id)
+		console.log(this.state.nameOnUploadForm)
+		console.log(this.state.URLOnUploadForm)
+		console.log(this.state.uploadUrl)
+		console.log(this.state.allowDownload)
+		console.log(this.state.readingMinutes)
+		console.log(this.state.courseView)
+		console.log(this.state.elementView)
+		console.log(this.state.topicView)
+		if(this.state.courseView){
+				this.setState({
+					typeUpload: 'video'
+				}, () => {
+					this.uploadFinal()
+				})
+			}
+		if(this.state.elementView){
+				this.setState({
+					typeUpload: 'pdf'
+				}, () => {
+					this.uploadFinal()
+				})
+			}
+		if(this.state.topicView){
+				this.setState({
+					typeUpload: 'ppt'
+				}, () => {
+					this.uploadFinal()
+				})
+			}
+	}
+	uploadFinal = () => {
+		let quizSetString = {
+			'title': this.state.nameOnUploadForm,
+			'preTestQuiz': this.state.selectedElementFromList._id,
+			'postTestQuiz': this.state.selectedTopicFromList._id,
+			'url': this.state.URLOnUploadForm? this.state.URLOnUploadForm: this.state.uploadUrl,
+			'readingMinutes': this.state.readingMinutes,
+			'isPostTest': this.state.allowDownload,
+			'type': this.state.typeUpload
+		}
+		setStudyMaterial(quizSetString).then(res => {
+			console.log(res)
+			this.setState({
+				studyMaterialList: res.data
+			}, () => {
+				this.fetchCall()
+			})
+			this.closeAddTopicModal()
+		})
+		.catch(err => {
+			alert(err)
+		})
+	}
+	gettingListElement = () => {
+		if(this.state.studyMaterial){
+			this.setState({
+				elementListMap: this.state.studyMaterial.data.map((log, i) => {
+					return (
+						<>
+						<tr>
+							<td>{log.title}</td>
+							<td className='text-underline pointer' onClick={() => {this.addElementClicked(log)}}><img src={editIcon} className='editIcon'/></td>
+							<td className='text-underline pointer' onClick={() => {this.deleteElementClicked(log)}}><img src={deleteIcon} className='editIcon'/></td>
+						</tr>
+						</>
+					)
+				})
+			})
+		}
 	}
 	render() {
         const textUnderlineCourse = this.state.courseView? 'text-underline': ''
@@ -135,21 +256,67 @@ class StudyMaterial extends Component {
 									<div className='border-bottom'>
 										<h6 ref={subtitle => this.subtitle = subtitle}>Upload</h6>
 									</div>
-									<div className='col-lg-12'>
+									<div className='col-lg-12 py-10'>
 											Element
-										{/* <Multiselect
-											options={this.state.optionSelectList}
-											onSelect={this.selectedQuestionType} 
-											onRemove={this.selectedQuestionType} 
+										<Multiselect
+											options={this.state.elementList.data}
+											onSelect={this.selectedElementType} 
+											onRemove={this.selectedElementType} 
 											displayValue="name" 
 											singleSelect='true'
 											placeholder='Select Type'
-											selectedValues = {this.state.preSelectedQuestionType}
-											/> */}
+											selectedValues = {this.state.preSelectedElementType}
+											/>
 										</div>
+									<div className='col-lg-12 py-10'>
+											Topic
+										<Multiselect
+											options={this.state.topicOptionList}
+											onSelect={this.selectedTopicType} 
+											onRemove={this.selectedTopicType} 
+											displayValue="name" 
+											singleSelect='true'
+											placeholder='Select Type'
+											selectedValues = {this.state.preSelectedTopicType}
+											/>
+										</div>
+									<div className='form-element col-lg-12'>										
+										<div className='indi-form-text'>
+											<input type='text' className='' name='age' id='age' autoComplete='off' value={this.state.nameOnUploadForm} onChange={e => this.setState({nameOnUploadForm: e.target.value })} required />
+											<label for='age' className='label-name'>
+												<span className='content-name'>Name</span>
+											</label>
+										</div>
+									</div>
+									<div className='form-element col-lg-12'>										
+										<div className='indi-form-text'>
+											<input type='text' className='' name='age' id='age' autoComplete='off' value={this.state.URLOnUploadForm} onChange={e => this.setState({URLOnUploadForm: e.target.value })} />
+											<label for='age' className='label-name'>
+												<span className='content-name'>URL</span>
+											</label>
+										</div>
+									</div>
+									OR
+									<div className='col-lg-12 py-10'>
+											File
+										<input type='file' onChange={this.fileUploadQuestionImage}/>
+										{/* onChange={e => this.setState({ addQuestionImageValue: e.target.value })} */}
+										</div>
+										<div className='form-element col-lg-12 py-10'>		
+											Pre Test								
+													<input type='checkbox' className='mx-3' name='age' id='age' autoComplete='off' value={this.state.allowDownload} checked={this.state.allowDownload} onChange={e => this.setState({ allowDownload: !this.state.allowDownload })} />
+											</div>
+									<div className='form-element col-lg-12'>										
+										<div className='indi-form-text'>
+											<input type='number' className='' name='age' id='age' autoComplete='off' value={this.state.readingMinutes } onChange={e => this.setState({readingMinutes : e.target.value })} required />
+											<label for='age' className='label-name'>
+												<span className='content-name'>Reading Minutes</span>
+											</label>
+										</div>
+									</div>
 									{/* <button onClick={this.closeAddTopicModal} className='close-button-style'>Close Me</button> */}
 									<img src = {closeIcon} className='common-close-button close-button-style' onClick={this.closeAddTopicModal}></img>
-									<button onClick={this.saveQuizValue} className='save-button-style'>Save</button>
+									<button onClick={this.saveUploadValue} className='save-button-style'>Save</button>
 								</Modal>
 							{/* This is for Videos */}
 						{this.state.courseView && <div>
@@ -157,12 +324,10 @@ class StudyMaterial extends Component {
 									<table>
 									<tr>
 										<th>Name</th>
-										<th>Element</th>
-										<th>Topic</th>
 										<th>View</th>
 										<th>Delete</th>
 									</tr>
-									{this.state.quizListMap}
+									{this.state.elementListMap}
 									</table>
 									</div>
 								
@@ -183,7 +348,7 @@ class StudyMaterial extends Component {
 										<th>View</th>
 										<th>Delete</th>
 									</tr>
-									{this.state.quizListMap}
+									{this.state.elementListMap}
 									</table>
 									</div>
 								
@@ -204,7 +369,7 @@ class StudyMaterial extends Component {
 										<th>View</th>
 										<th>Delete</th>
 									</tr>
-									{this.state.quizListMap}
+									{this.state.elementListMap}
 									</table>
 									</div>
 								
