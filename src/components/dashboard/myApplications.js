@@ -388,37 +388,6 @@ class MyApplications extends Component {
 			}
 		})
 	}
-	elementSelectFunction = (e) => {
-		let element = this.state.elementList.data.find(findingElementId)
-		console.log(element._id)
-		function findingElementId(data){
-			if(data.name === e.target.value){
-				return data.name
-			}
-		}
-		this.setState({
-			sendingElementInTopic : element._id
-		})
-		// e => {this.setState({
-		// 	sendingElementInTopic : e.target.value
-		// })}
-	}
-	multipleCourseSelectFunction = (e) => {
-		console.log(e.target.value)
-		console.log(this.state.courseList)
-		let course  = this.state.courseList.data.find(findingCourseId)
-		console.log(course._id)
-		function findingCourseId(data){
-			if(data.name === e.target.value){
-				return data.name
-			}
-		}
-		allCoursesSelectedInMultiselect.push(course._id)
-		console.log(allCoursesSelectedInMultiselect)
-		this.setState({
-			sendingMultipleCoursesInTopic: allCoursesSelectedInMultiselect
-		})
-	}
 	gettingListCourse = () => {
 			if(this.state.courseList){
 				this.setState({

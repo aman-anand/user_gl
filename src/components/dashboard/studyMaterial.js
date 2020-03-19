@@ -350,10 +350,10 @@ class StudyMaterial extends Component {
 										<input type='file' onChange={this.fileUploadQuestionImage}/>
 										{/* onChange={e => this.setState({ addQuestionImageValue: e.target.value })} */}
 										</div>
-										<div className='form-element col-lg-12 py-10'>		
+										{/* <div className='form-element col-lg-12 py-10'>		
 											Pre Test								
 													<input type='checkbox' className='mx-3' name='age' id='age' autoComplete='off' value={this.state.allowDownload} checked={this.state.allowDownload} onChange={e => this.setState({ allowDownload: !this.state.allowDownload })} />
-											</div>
+											</div> */}
 									<div className='form-element col-lg-12'>										
 										<div className='indi-form-text'>
 											<input type='number' className='' name='age' id='age' autoComplete='off' value={this.state.readingMinutes } onChange={e => this.setState({readingMinutes : e.target.value })} required />
@@ -374,7 +374,7 @@ class StudyMaterial extends Component {
 										<th>Name</th>
 										<th>Reading Minutes</th>
 										<th>View</th>
-										<th>IsDownloadable</th>
+										<th>Downloadable</th>
 										<th>Delete</th>
 									</tr>
 									{this.state.elementListMap}
@@ -395,7 +395,7 @@ class StudyMaterial extends Component {
 										<th>Name</th>
 										<th>Reading Minutes</th>
 										<th>View</th>
-										<th>IsDownloadable</th>
+										<th>Downloadable</th>
 										<th>Delete</th>
 									</tr>
 									{this.state.elementListMap}

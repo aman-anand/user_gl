@@ -461,6 +461,7 @@ class Quix extends Component {
 		console.log(this.state.topicList.data)
 			if(this.state.topicList){
 				let topicListForDropdown = []
+
 				this.setState({
 					topicListMap: this.state.topicList.data.map((log, i) => {
 						return (
@@ -472,20 +473,58 @@ class Quix extends Component {
 							</tr>
 							</>
 						)
-                    }),
-                    topicListMapOptions: this.state.topicList.data.map((log, i) => {
-						topicListForDropdown.push({name: log.topicName, _id: log._id})
-						this.setState({
-							topicListForDropdownState: topicListForDropdown
-						})
-                        return (
-                            <>
-                            <option value={log.topicName}>{log.topicName}</option>
-                            </>
-                        )
-                    })  
+					}),
+					topicListForDropdownState: []
+                    // topicListMapOptions: this.state.topicList.data.map((log, i) => {
+					// 	this.topicElementCourseFinder(log)
+					// 	topicListForDropdown.push({name: log.topicName, _id: log._id})
+					// 	this.setState({
+					// 		topicListForDropdownState: topicListForDropdown
+					// 	})
+                    //     return (
+                    //         <>
+                    //         <option value={log.topicName}>{log.topicName}</option>
+                    //         </>
+                    //     )
+                    // })  
                 })
 			}
+	}
+	topicElementCourseFinder = () => {
+		this.state.topicList.data.map((log, i) => {
+			console.log(log)
+		})
+		console.log('Shubham Anand')
+		console.log(this.state.sendingMultipleCoursesInTopic)
+		console.log(this.state.sendingElementInTopic)
+		if(this.state.sendingMultipleCoursesInTopic && this.state.sendingElementInTopic){
+			let topicListForDropdown = []
+			console.log('Namaste')
+			console.log(this.state.topicList.data)
+			// let t = this
+			for(let i=0; i< this.state.topicList.data.length; i++){
+				if(this.state.topicList.data[i].element._id === this.state.sendingElementInTopic){
+					for(let j=0; j< this.state.topicList.data[i].course.length; j++){
+						if(this.state.topicList.data[i].course[j]._id === this.state.sendingMultipleCoursesInTopic){
+							topicListForDropdown.push({name: this.state.topicList.data[i].topicName, _id: this.state.topicList.data[i]._id})
+							this.setState({
+										topicListForDropdownState: topicListForDropdown
+									})
+						}
+					}
+				}
+			}
+			// let foundElement = this.state.topicList.data.find(function(element){
+			// 	return element.element._id === t.state.sendingElementInTopic
+			// })
+			// console.log(foundElement)
+			// this.state.topicList.data.map((log, i) => {
+			// 	let foundCourse = log.course.find(function(findingCourse){
+			// 		return findingCourse._id === t.state.sendingMultipleCoursesInTopic
+			// 	})
+			// 	console.log(foundCourse)
+			// })
+		}
 	}
 	deleteTopicClicked = (e) => {
 			let quizSetString = {
@@ -802,11 +841,15 @@ class Quix extends Component {
 	selectedCourseListDropdown = (e) => {
 		this.setState({
 			sendingMultipleCoursesInTopic: e[0]._id
+		}, () => {
+			this.topicElementCourseFinder()
 		})
 	}
 	selectedElementListDropdown = (e) => {
 		this.setState({
 			sendingElementInTopic: e[0]._id
+		}, () => {
+			this.topicElementCourseFinder()
 		})
 	}
 	selectedTopicListDropdown = (e) => {
@@ -896,7 +939,7 @@ class Quix extends Component {
 									</div>}
 										{this.state.questionTypeSelected && <div className='col-lg-12 py-10'>
 											Question Image
-										<input type='file' onChange={this.fileUploadQuestionImage}/>
+										<input type='file' onChange={this.fileUploadQuestionImage} accept="image/x-png,image/gif,image/jpeg"/>
 										{/* onChange={e => this.setState({ addQuestionImageValue: e.target.value })} */}
 										</div>}
 									{this.state.questionTypeSelected && this.state.showOptions &&	<div className='form-element col-lg-12'>										
@@ -991,7 +1034,7 @@ class Quix extends Component {
 									</div>
 									<div className='form-element'>										
 										<div className='col-lg-12 py-10' >
-											Rank
+											Employee Designation
 										<Multiselect
 											options={this.state.courseList.data}
 											onSelect={this.selectedCourseListDropdown} 
@@ -1003,7 +1046,7 @@ class Quix extends Component {
 											/>
 										</div>
 										<div className='col-lg-12 py-10'>
-											Element
+											Branch
 										<Multiselect
 											options={this.state.elementList.data}
 											onSelect={this.selectedElementListDropdown} 
@@ -1015,7 +1058,7 @@ class Quix extends Component {
 											/>
 										</div>
 										<div className='col-lg-12 py-10'>
-											Topic
+											Sub-branch
 										<Multiselect
 											options={this.state.topicListForDropdownState}
 											onSelect={this.selectedTopicListDropdown} 
