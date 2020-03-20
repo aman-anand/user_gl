@@ -83,6 +83,7 @@ class Quix extends Component {
 			preSelectedElementList: null,
 			preSelectedTopicList: null,
 			idEditQuiz: null,
+			disableTypeQuestion: false
 		};
 	}
 
@@ -240,7 +241,12 @@ class Quix extends Component {
 			selectQuestionTypeValue: null,
 			preSelectedQuestionType: null,
 			addQuestionValue: null,
-			preSelectedAnswer: null
+			preSelectedAnswer: null,
+			addOption1Value: null,
+			addOption2Value: null,
+			addOption3Value: null,
+			addOption4Value: null,
+			disableTypeQuestion: false
 		});
 	}
 	closeAddTopicModal = () => {
@@ -292,7 +298,7 @@ class Quix extends Component {
 				'topic': this.state.sendingtopicInTopic? this.state.sendingtopicInTopic : this.state.preSelectedTopicList[0]._id,
 				'questionLimit': this.state.questionLimit,
 				'preTest': this.state.preTest,
-				'remarks': this.state.addRemarksValue
+				'remark': this.state.addRemarksValue
 			}
 			putQuiz(quizSetString).then(res => {
 				console.log(res)
@@ -322,7 +328,7 @@ class Quix extends Component {
 				'topic': this.state.sendingtopicInTopic,
 				'questionLimit': this.state.questionLimit,
 				'preTest': this.state.preTest,
-				'remarks': this.state.addRemarksValue
+				'remark': this.state.addRemarksValue
 			}
 			setQuiz(quizSetString).then(res => {
 				console.log(res)
@@ -717,115 +723,176 @@ class Quix extends Component {
 		// this.state.addOption1Value
 		if(this.state.selectQuestionTypeValue === 'MCQ'){
 			if(this.state.questionEditId){
-				let dataString = {
-					"_id": this.state.questionEditId,
-					"question": this.state.addQuestionValue,
-					"media": this.state.uploadUrl,
-					"options":[{
-						"value": this.state.addOption1Value
-					}, {
-						"value": this.state.addOption2Value
-					}, {
-						"value": this.state.addOption3Value
-					}, {
-						"value": this.state.addOption4Value
-					}],
-					"type":"MCQ",
-					"answer":this.state.exactAnswerOfQuestion,
-					"quiz": this.state.quizQuestionObject._id
+				this.setState({
+					disableTypeQuestion : true
+				}, () => {
+					if(this.state.questionEditId && 
+						this.state.addQuestionValue && 
+						this.state.addOption1Value &&
+						this.state.addOption2Value &&
+						this.state.addOption3Value &&
+						this.state.addOption4Value &&
+						this.state.exactAnswerOfQuestion &&
+						this.state.quizQuestionObject._id
+						){
+						let dataString = {
+							"_id": this.state.questionEditId,
+							"question": this.state.addQuestionValue,
+							"media": this.state.uploadUrl,
+							"options":[{
+								"value": this.state.addOption1Value
+							}, {
+								"value": this.state.addOption2Value
+							}, {
+								"value": this.state.addOption3Value
+							}, {
+								"value": this.state.addOption4Value
+							}],
+							"type":"MCQ",
+							"answer":this.state.exactAnswerOfQuestion,
+							"quiz": this.state.quizQuestionObject._id
+							}
+							putQuestions(dataString).then(res => {
+								this.closeAddQuestionClicked()
+								this.gettingQuizQuestions()
+							})
 					}
-					putQuestions(dataString).then(res => {
-						this.closeAddQuestionClicked()
-						this.gettingQuizQuestions()
-					})
+					else{
+						alert('Please fill all the mandatory fields')
+					}
+				})
 			}
 			if(!this.state.questionEditId){
-				let dataString = {
-					"question": this.state.addQuestionValue,
-					"media": this.state.uploadUrl,
-					"options":[{
-						"value": this.state.addOption1Value
-					}, {
-						"value": this.state.addOption2Value
-					}, {
-						"value": this.state.addOption3Value
-					}, {
-						"value": this.state.addOption4Value
-					}],
-					"type":"MCQ",
-					"answer":this.state.exactAnswerOfQuestion,
-					"quiz": this.state.quizQuestionObject._id
-					}
-					postQuestions(dataString).then(res => {
-						this.closeAddQuestionClicked()
-						this.gettingQuizQuestions()
-					})
+				if( this.state.addQuestionValue && 
+					this.state.addOption1Value &&
+					this.state.addOption2Value &&
+					this.state.addOption3Value &&
+					this.state.addOption4Value &&
+					this.state.exactAnswerOfQuestion &&
+					this.state.quizQuestionObject._id){
+					let dataString = {
+						"question": this.state.addQuestionValue,
+						"media": this.state.uploadUrl,
+						"options":[{
+							"value": this.state.addOption1Value
+						}, {
+							"value": this.state.addOption2Value
+						}, {
+							"value": this.state.addOption3Value
+						}, {
+							"value": this.state.addOption4Value
+						}],
+						"type":"MCQ",
+						"answer":this.state.exactAnswerOfQuestion,
+						"quiz": this.state.quizQuestionObject._id
+						}
+						postQuestions(dataString).then(res => {
+							this.closeAddQuestionClicked()
+							this.gettingQuizQuestions()
+						})
+				}
+				else{
+					alert('Please fill all the mandatory fields')
+				}
 			}
 		}
 		if(this.state.selectQuestionTypeValue === 'TRUE/FALSE'){
 			if(this.state.questionEditId){
-				let dataString = {
-					"_id": this.state.questionEditId,
-					"question": this.state.addQuestionValue,
-					"media": this.state.uploadUrl,
-					"options":[{
-						"value": 'TRUE'
-					}, {
-						"value": 'FALSE'
-					}],
-					"type": "TRUE-FALSE",
-					"answer":this.state.exactAnswerOfQuestion,
-					"quiz": this.state.quizQuestionObject._id
+				this.setState({
+					disableTypeQuestion : true
+				}, () => {
+					if(this.state.questionEditId && 
+						this.state.addQuestionValue && 
+						this.state.exactAnswerOfQuestion &&
+						this.state.quizQuestionObject._id){
+						let dataString = {
+							"_id": this.state.questionEditId,
+							"question": this.state.addQuestionValue,
+							"media": this.state.uploadUrl,
+							"options":[{
+								"value": 'TRUE'
+							}, {
+								"value": 'FALSE'
+							}],
+							"type": "TRUE-FALSE",
+							"answer":this.state.exactAnswerOfQuestion,
+							"quiz": this.state.quizQuestionObject._id
+							}
+							putQuestions(dataString).then(res => {
+								this.closeAddQuestionClicked()
+								this.gettingQuizQuestions()
+							})
 					}
-					putQuestions(dataString).then(res => {
-						this.closeAddQuestionClicked()
-						this.gettingQuizQuestions()
-					})
+					else{
+						alert('Please fill all the mandatory fields')
+					}
+				})
 			}
 			if(!this.state.questionEditId){
-				let dataString = {
-					"question": this.state.addQuestionValue,
-					"media": this.state.uploadUrl,
-					"options":[{
-						"value": 'TRUE'
-					}, {
-						"value": 'FALSE'
-					}],
-					"type": "TRUE-FALSE",
-					"answer":this.state.exactAnswerOfQuestion,
-					"quiz": this.state.quizQuestionObject._id
-					}
-					postQuestions(dataString).then(res => {
-						this.closeAddQuestionClicked()
-						this.gettingQuizQuestions()
-					})
+				if( this.state.addQuestionValue && 
+					this.state.exactAnswerOfQuestion &&
+					this.state.quizQuestionObject._id){
+					let dataString = {
+						"question": this.state.addQuestionValue,
+						"media": this.state.uploadUrl,
+						"options":[{
+							"value": 'TRUE'
+						}, {
+							"value": 'FALSE'
+						}],
+						"type": "TRUE-FALSE",
+						"answer":this.state.exactAnswerOfQuestion,
+						"quiz": this.state.quizQuestionObject._id
+						}
+						postQuestions(dataString).then(res => {
+							this.closeAddQuestionClicked()
+							this.gettingQuizQuestions()
+						})
+				}
+				else{
+					alert('Please fill all the mandatory fields')
+				}
 			}
 		}
 		if(this.state.selectQuestionTypeValue === 'DESCRIPTIVE'){
 			if(this.state.questionEditId){
-				let dataString = {
-					"_id": this.state.questionEditId,
-					"question": this.state.addQuestionValue,
-					"media": this.state.uploadUrl,
-					"type":"MCQ",
-					"quiz": this.state.quizQuestionObject._id
+				this.setState({
+					disableTypeQuestion : true
+				}, () => {
+					if(this.state.questionEditId &&
+						this.state.addQuestionValue &&
+						this.state.quizQuestionObject._id){
+						let dataString = {
+							"_id": this.state.questionEditId,
+							"question": this.state.addQuestionValue,
+							"media": this.state.uploadUrl,
+							"type":"DESCRIPTIVE",
+							"quiz": this.state.quizQuestionObject._id
+							}
+							putQuestions(dataString).then(res => {
+								this.closeAddQuestionClicked()
+								this.gettingQuizQuestions()
+							})
 					}
-					putQuestions(dataString).then(res => {
-						this.closeAddQuestionClicked()
-						this.gettingQuizQuestions()
-					})
+					else{
+						alert('Please fill all the mandatory fields')
+					}
+				})
 			}
 			if(!this.state.questionEditId){
-				let dataString = {
-					"question": this.state.addQuestionValue,
-					"media": this.state.uploadUrl,
-					"type":"MCQ",
-					"quiz": this.state.quizQuestionObject._id
-					}
-					postQuestions(dataString).then(res => {
-						this.closeAddQuestionClicked()
-						this.gettingQuizQuestions()
-					})
+				if( this.state.addQuestionValue &&
+					this.state.quizQuestionObject._id){
+					let dataString = {
+						"question": this.state.addQuestionValue,
+						"media": this.state.uploadUrl,
+						"type":"DESCRIPTIVE",
+						"quiz": this.state.quizQuestionObject._id
+						}
+						postQuestions(dataString).then(res => {
+							this.closeAddQuestionClicked()
+							this.gettingQuizQuestions()
+						})
+				}
 			}
 		}
 	}
@@ -927,6 +994,7 @@ class Quix extends Component {
 											singleSelect='true'
 											placeholder='Select Type'
 											selectedValues = {this.state.preSelectedQuestionType}
+											disablePreSelectedValues = {this.state.disableTypeQuestion}
 											/>
 										</div>
 										{this.state.questionTypeSelected && <div className='form-element col-lg-12'>										

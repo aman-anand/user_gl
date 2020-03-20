@@ -187,13 +187,21 @@ class StudyMaterial extends Component {
 	}
 	uploadFinal = () => {
 		let quizSetString = {
-			'title': this.state.nameOnUploadForm,
-			'preTestQuiz': this.state.selectedElementFromList._id,
-			'postTestQuiz': this.state.selectedTopicFromList._id,
+			// 'title': this.state.nameOnUploadForm,
+			// 'preTestQuiz': this.state.selectedElementFromList._id,
+			// 'postTestQuiz': this.state.selectedTopicFromList._id,
+			// 'url': this.state.URLOnUploadForm? this.state.URLOnUploadForm: this.state.uploadUrl,
+			// 'readingMinutes': this.state.readingMinutes,
+			// 'type': this.state.typeUpload
+
+
+			"title": this.state.nameOnUploadForm,
+			"isPreTest":false,
+			"type": this.state.typeUpload,
 			'url': this.state.URLOnUploadForm? this.state.URLOnUploadForm: this.state.uploadUrl,
 			'readingMinutes': this.state.readingMinutes,
-			'isPostTest': this.state.allowDownload,
-			'type': this.state.typeUpload
+			"topic": this.state.selectedTopicFromList._id,
+			"element": this.state.selectedElementFromList._id
 		}
 		setStudyMaterial(quizSetString).then(res => {
 			console.log(res)
@@ -239,24 +247,24 @@ class StudyMaterial extends Component {
 							<td>{log.title}</td>
 							<td>{log.readingMinutes}</td>
 							<td className='text-underline pointer' onClick={() => {this.viewElementClicked(log)}}><img src={editIcon} className='eyeIcon'/></td>
-							{log.isPostTest && <td className='text-underline pointer' onClick={() => {this.viewElementClicked(log)}}><img src={tickIcon} className='eyeIcon'/></td>}
-							{!log.isPostTest && <td className='text-underline pointer' onClick={() => {this.viewElementClicked(log)}}><img src={crossIcon} className='eyeIcon'/></td>}
+							{/* {log.isPostTest && <td className='text-underline pointer' onClick={() => {this.viewElementClicked(log)}}><img src={tickIcon} className='eyeIcon'/></td>}
+							{!log.isPostTest && <td className='text-underline pointer' onClick={() => {this.viewElementClicked(log)}}><img src={crossIcon} className='eyeIcon'/></td>} */}
 							<td className='text-underline pointer' onClick={() => {this.deleteElementClicked(log)}}><img src={deleteIcon} className='editIcon'/></td>
 						</tr>}
 						{this.state.elementView && log.type === 'pdf' && <tr>
 							<td>{log.title}</td>
 							<td>{log.readingMinutes}</td>
 							<td className='text-underline pointer' onClick={() => {this.viewElementClicked(log)}}><img src={editIcon} className='eyeIcon'/></td>
-							{log.isPostTest && <td className='text-underline pointer' onClick={() => {this.viewElementClicked(log)}}><img src={tickIcon} className='eyeIcon'/></td>}
-							{!log.isPostTest && <td className='text-underline pointer' onClick={() => {this.viewElementClicked(log)}}><img src={crossIcon} className='eyeIcon'/></td>}
+							{/* {log.isPostTest && <td className='text-underline pointer' onClick={() => {this.viewElementClicked(log)}}><img src={tickIcon} className='eyeIcon'/></td>}
+							{!log.isPostTest && <td className='text-underline pointer' onClick={() => {this.viewElementClicked(log)}}><img src={crossIcon} className='eyeIcon'/></td>} */}
 							<td className='text-underline pointer' onClick={() => {this.deleteElementClicked(log)}}><img src={deleteIcon} className='editIcon'/></td>
 						</tr>}
 						{this.state.topicView && log.type === 'ppt' && <tr>
 							<td>{log.title}</td>
 							<td>{log.readingMinutes}</td>
 							<td className='text-underline pointer' onClick={() => {this.viewElementClicked(log)}}><img src={editIcon} className='eyeIcon'/></td>
-							{log.isPostTest && <td className='text-underline pointer' onClick={() => {this.viewElementClicked(log)}}><img src={tickIcon} className='eyeIcon'/></td>}
-							{!log.isPostTest && <td className='text-underline pointer' onClick={() => {this.viewElementClicked(log)}}><img src={crossIcon} className='eyeIcon'/></td>}
+							{/* {log.isPostTest && <td className='text-underline pointer' onClick={() => {this.viewElementClicked(log)}}><img src={tickIcon} className='eyeIcon'/></td>}
+							{!log.isPostTest && <td className='text-underline pointer' onClick={() => {this.viewElementClicked(log)}}><img src={crossIcon} className='eyeIcon'/></td>} */}
 							<td className='text-underline pointer' onClick={() => {this.deleteElementClicked(log)}}><img src={deleteIcon} className='editIcon'/></td>
 						</tr>}
 						</>
@@ -374,7 +382,6 @@ class StudyMaterial extends Component {
 										<th>Name</th>
 										<th>Reading Minutes</th>
 										<th>View</th>
-										<th>Downloadable</th>
 										<th>Delete</th>
 									</tr>
 									{this.state.elementListMap}
@@ -395,7 +402,6 @@ class StudyMaterial extends Component {
 										<th>Name</th>
 										<th>Reading Minutes</th>
 										<th>View</th>
-										<th>Downloadable</th>
 										<th>Delete</th>
 									</tr>
 									{this.state.elementListMap}
@@ -416,7 +422,6 @@ class StudyMaterial extends Component {
 										<th>Name</th>
 										<th>Reading Minutes</th>
 										<th>View</th>
-										<th>Downloadable</th>
 										<th>Delete</th>
 									</tr>
 									{this.state.elementListMap}
