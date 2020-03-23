@@ -37,6 +37,9 @@ class MyApplications extends Component {
 			modalIsOpenCourse: false,
 			modalIsOpenElement: false,
 			modalIsOpenTopic: false,
+			modalIsOpenCourseDelete: false,
+			modalIsOpenElementDelete: false,
+			modalIsOpenTopicDelete: false,
 			addCourseValue: null,
 			addElementValue: null,
 			addTopicValue: null,
@@ -57,7 +60,9 @@ class MyApplications extends Component {
 			topicEditSource: null,
 			topicEditRemarks: null,
 			selectedElementList: null,
-			selectedCourseList: null
+			selectedCourseList: null,
+			modalDeleteShown: true,
+			logOfSelected: null,
 		};
 	}
 
@@ -298,6 +303,23 @@ class MyApplications extends Component {
 		})
 		}
 	}
+	deleteCourseClickeds = (e) => {
+		console.log('Came to this func')
+		console.log(e)
+		// this.deleteCourseClicked(e)
+		this.setState({
+			modalIsOpenCourseDelete: true,
+			logOfSelected: e
+		}, () => {
+			console.log(this.state.logOfSelected)
+		})
+	}
+	deleteFuncCourse = () => {
+		if(this.state.logOfSelected){
+			console.log(this.state.logOfSelected)
+			this.deleteCourseClicked(this.state.logOfSelected)
+		}
+	}
 	deleteCourseClicked = (e) => {
 		console.log(e)
 		this.setState({
@@ -320,13 +342,30 @@ class MyApplications extends Component {
 				}, () => {
 					this.fetchCall()
 				})
-				this.closeAddCourseModal()
+				this.closeAddCourseDeleteModal()
 			})
 			.catch(err => {
 				alert(err)
 			})
 			}
 		})
+	}
+	deleteElementClickeds = (e) => {
+		console.log('Came to this func')
+		console.log(e)
+		// this.deleteCourseClicked(e)
+		this.setState({
+			modalIsOpenElementDelete: true,
+			logOfSelected: e
+		}, () => {
+			console.log(this.state.logOfSelected)
+		})
+	}
+	deleteFuncElement = () => {
+		if(this.state.logOfSelected){
+			console.log(this.state.logOfSelected)
+			this.deleteElementClicked(this.state.logOfSelected)
+		}
 	}
 	deleteElementClicked = (e) => {
 		console.log(e)
@@ -350,13 +389,30 @@ class MyApplications extends Component {
 				}, () => {
 					this.fetchCall()
 				})
-				this.closeAddElementModal()
+				this.closeAddElementDeleteModal()
 			})
 			.catch(err => {
 				alert(err)
 			})
 			}
 		})
+	}
+	deleteTopicClickeds = (e) => {
+		console.log('Came to this func')
+		console.log(e)
+		// this.deleteCourseClicked(e)
+		this.setState({
+			modalIsOpenTopicDelete: true,
+			logOfSelected: e
+		}, () => {
+			console.log(this.state.logOfSelected)
+		})
+	}
+	deleteFuncTopic = () => {
+		if(this.state.logOfSelected){
+			console.log(this.state.logOfSelected)
+			this.deleteTopicClicked(this.state.logOfSelected)
+		}
 	}
 	deleteTopicClicked = (e) => {
 		console.log(e)
@@ -380,7 +436,7 @@ class MyApplications extends Component {
 				}, () => {
 					this.fetchCall()
 				})
-				this.closeAddTopicModal()
+				this.closeAddTopicDeleteModal()
 			})
 			.catch(err => {
 				alert(err)
@@ -397,7 +453,7 @@ class MyApplications extends Component {
 							<tr>
 								<td>{log.name}</td>
 								<td className='text-underline pointer' onClick={() => {this.addCourseClicked(log)}} ><img src={editIcon} className='editIcon'/></td>
-								<td className='text-underline pointer' onClick={() => {this.deleteCourseClicked(log)}}><img src={deleteIcon} className='editIcon'/></td>
+								<td className='text-underline pointer' onClick={() => {this.deleteCourseClickeds(log)}}><img src={deleteIcon} className='editIcon'/></td>
 							</tr>
 							</>
 						)
@@ -421,7 +477,7 @@ class MyApplications extends Component {
 							<tr>
 								<td>{log.name}</td>
 								<td className='text-underline pointer' onClick={() => {this.addElementClicked(log)}}><img src={editIcon} className='editIcon'/></td>
-								<td className='text-underline pointer' onClick={() => {this.deleteElementClicked(log)}}><img src={deleteIcon} className='editIcon'/></td>
+								<td className='text-underline pointer' onClick={() => {this.deleteElementClickeds(log)}}><img src={deleteIcon} className='editIcon'/></td>
 							</tr>
 							</>
 						)
@@ -446,7 +502,7 @@ class MyApplications extends Component {
 								<td>{log.topicName}</td>
 								<td>{log.element.name}</td>
 								<td className='text-underline pointer' onClick={() => {this.addTopicClicked(log)}}><img src={editIcon} className='editIcon'/></td>
-								<td className='text-underline pointer' onClick={() => {this.deleteTopicClicked(log)}}><img src={deleteIcon} className='editIcon'/></td>
+								<td className='text-underline pointer' onClick={() => {this.deleteTopicClickeds(log)}}><img src={deleteIcon} className='editIcon'/></td>
 							</tr>
 							</>
 						)
@@ -478,6 +534,25 @@ class MyApplications extends Component {
 			sendingElementInTopic : testArray
 		}, () => {
 			console.log(this.state.sendingElementInTopic)
+		})
+	}
+
+	closeAddCourseDeleteModal = () => {
+		this.setState({
+			modalIsOpenCourseDelete: false,
+			logOfSelected: null,	
+		})
+	}
+	closeAddElementDeleteModal = () => {
+		this.setState({
+			modalIsOpenElementDelete: false,
+			logOfSelected: null,	
+		})
+	}
+	closeAddTopicDeleteModal = () => {
+		this.setState({
+			modalIsOpenTopicDelete: false,
+			logOfSelected: null,	
 		})
 	}
 	
@@ -547,7 +622,29 @@ class MyApplications extends Component {
 										<img src = {closeIcon} className='common-close-button close-button-style' onClick={this.closeAddElementModal}></img>
 									<button onClick={this.saveElementValue} className='save-button-style'>Save</button>
 								</Modal>
+								{/* Modal for the confirmation of the Delete option | Element | Start */}
+								<Modal
+									isOpen={this.state.modalIsOpenElementDelete}
+									onAfterOpen={this.afterOpenModal}
+									onRequestClose={this.closeModal}
+									style={customStyles}
+									contentLabel="Example Modal"
+								>
+									<div className='border-bottom'>
+										<h6 ref={subtitle => this.subtitle = subtitle}>Confirm Delete ?</h6>
+									</div>
+									<div className='col-lg-12 col-md-12 col-sm-12 row m-0 my-50'>
+									  <button onClick={this.deleteFuncElement} className='yes-no-button col-lg-4 col-md-4 col-sm-4'>Yes</button>
+									  <div className='col-lg-4 col-md-4 col-sm-4'></div>
+									  <button onClick={this.closeAddElementDeleteModal} className='yes-no-button col-lg-4 col-md-4 col-sm-4'>No</button>
+									</div>
+									{/* <button onClick={this.closeAddCourseModal} className='close-button-style'>Close Me</button> */}
+									<img src = {closeIcon} className='common-close-button close-button-style pointer' onClick={this.closeAddElementDeleteModal}></img>
+									{/* <button onClick={this.saveCourseValue} className='save-button-style'>Save</button> */}
+								</Modal>
+								{/* Modal for the confirmation of the Delete option | End */}
 							</>
+							
 							}
 							{
 								this.state.topicView && 
@@ -642,6 +739,27 @@ class MyApplications extends Component {
 									<img src = {closeIcon} className='common-close-button close-button-style' onClick={this.closeAddTopicModal}></img>
 									<button onClick={this.saveTopicValue} className='save-button-style'>Save</button>
 								</Modal>
+								{/* Modal for the confirmation of the Delete option | Topic | Start */}
+								<Modal
+									isOpen={this.state.modalIsOpenTopicDelete}
+									onAfterOpen={this.afterOpenModal}
+									onRequestClose={this.closeModal}
+									style={customStyles}
+									contentLabel="Example Modal"
+								>
+									<div className='border-bottom'>
+										<h6 ref={subtitle => this.subtitle = subtitle}>Confirm Delete ?</h6>
+									</div>
+									<div className='col-lg-12 col-md-12 col-sm-12 row m-0 my-50'>
+									  <button onClick={this.deleteFuncTopic} className='yes-no-button col-lg-4 col-md-4 col-sm-4'>Yes</button>
+									  <div className='col-lg-4 col-md-4 col-sm-4'></div>
+									  <button onClick={this.closeAddTopicDeleteModal} className='yes-no-button col-lg-4 col-md-4 col-sm-4'>No</button>
+									</div>
+									{/* <button onClick={this.closeAddCourseModal} className='close-button-style'>Close Me</button> */}
+									<img src = {closeIcon} className='common-close-button close-button-style pointer' onClick={this.closeAddTopicDeleteModal}></img>
+									{/* <button onClick={this.saveCourseValue} className='save-button-style'>Save</button> */}
+								</Modal>
+								{/* Modal for the confirmation of the Delete option | End */}
 							</>
 							}
 							{
@@ -686,6 +804,29 @@ class MyApplications extends Component {
 									<img src = {closeIcon} className='common-close-button close-button-style' onClick={this.closeAddCourseModal}></img>
 									<button onClick={this.saveCourseValue} className='save-button-style'>Save</button>
 								</Modal>
+
+								{/* Modal for the confirmation of the Delete option | Course | Start */}
+									<Modal
+									isOpen={this.state.modalIsOpenCourseDelete}
+									onAfterOpen={this.afterOpenModal}
+									onRequestClose={this.closeModal}
+									style={customStyles}
+									contentLabel="Example Modal"
+								>
+									<div className='border-bottom'>
+										<h6 ref={subtitle => this.subtitle = subtitle}>Confirm Delete ?</h6>
+									</div>
+									<div className='col-lg-12 col-md-12 col-sm-12 row m-0 my-50'>
+									  <button onClick={this.deleteFuncCourse} className='yes-no-button col-lg-4 col-md-4 col-sm-4'>Yes</button>
+									  <div className='col-lg-4 col-md-4 col-sm-4'></div>
+									  <button onClick={this.closeAddCourseDeleteModal} className='yes-no-button col-lg-4 col-md-4 col-sm-4'>No</button>
+									</div>
+									{/* <button onClick={this.closeAddCourseModal} className='close-button-style'>Close Me</button> */}
+									<img src = {closeIcon} className='common-close-button close-button-style pointer' onClick={this.closeAddCourseDeleteModal}></img>
+									{/* <button onClick={this.saveCourseValue} className='save-button-style'>Save</button> */}
+								</Modal>
+								{/* Modal for the confirmation of the Delete option | End */}
+
 							</>
 							}
 						</div>

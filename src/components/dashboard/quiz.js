@@ -24,6 +24,17 @@ const customStyles = {
 	  minHeight				: '300px'
 	}
   };
+const customStylesDelete = {
+	content : {
+	  top                   : '50%',
+	  left                  : '50%',
+	  right                 : 'auto',
+	  bottom                : 'auto',
+	  marginRight           : '-50%',
+	  transform             : 'translate(-50%, -50%)',
+	  width					: '500px',
+	}
+  };
 let allCoursesSelectedInMultiselect = []
 class Quix extends Component {
 	constructor(props) {
@@ -83,7 +94,9 @@ class Quix extends Component {
 			preSelectedElementList: null,
 			preSelectedTopicList: null,
 			idEditQuiz: null,
-			disableTypeQuestion: false
+			disableTypeQuestion: false,
+			modalIsOpenQuizDelete: false,
+			logOfSelected: null,
 		};
 	}
 
@@ -532,6 +545,22 @@ class Quix extends Component {
 			// })
 		}
 	}
+	deleteTopicClickeds = (e) => {
+		console.log('Came to this func')
+		console.log(e)
+		this.setState({
+			modalIsOpenQuizDelete: true,
+			logOfSelected: e
+		}, () => {
+			console.log(this.state.logOfSelected)
+		})
+	}
+	deleteFuncQuiz = () => {
+		if(this.state.logOfSelected){
+			console.log(this.state.logOfSelected)
+			this.deleteTopicClicked(this.state.logOfSelected)
+		}
+	}
 	deleteTopicClicked = (e) => {
 			let quizSetString = {
 				'_id': e._id,
@@ -544,11 +573,17 @@ class Quix extends Component {
 				}, () => {
 					this.fetchCall()
 				})
-				this.closeAddTopicModal()
+				this.closeAddQuizDelete()
 			})
 			.catch(err => {
 				alert(err)
 			})
+	}
+	closeAddQuizDelete = () => {
+		this.setState({
+			modalIsOpenQuizDelete: false,
+			logOfSelected: null,	
+		})
 	}
 	gettingListQuiz = () => {
 			if(this.state.quizList){
@@ -561,13 +596,29 @@ class Quix extends Component {
 								{log.preTest && <td>Yes</td>}
 								{!log.preTest && <td>No</td>}
                                 <td className='text-underline' onClick={() => {this.addTopicClicked(log)}}><img src={editIcon} className='editIcon'/></td>
-								<td className='text-underline' onClick={() => {this.deleteTopicClicked(log)}}><img src={deleteIcon} className='editIcon'/></td>
+								<td className='text-underline' onClick={() => {this.deleteTopicClickeds(log)}}><img src={deleteIcon} className='editIcon'/></td>
 							</tr>
 							</>
 						)
                     })
                 })
 			}
+	}
+	deleteCourseClickeds = (e) => {
+		console.log('Came to this func')
+		console.log(e)
+		this.setState({
+			modalIsOpenQuestionDelete: true,
+			logOfSelected: e
+		}, () => {
+			console.log(this.state.logOfSelected)
+		})
+	}
+	deleteFuncQuestion = () => {
+		if(this.state.logOfSelected){
+			console.log(this.state.logOfSelected)
+			this.deleteCourseClicked(this.state.logOfSelected)
+		}
 	}
 	deleteCourseClicked = (e) => {
 		let dataString = {
@@ -577,9 +628,15 @@ class Quix extends Component {
 			putQuestions(dataString).then(res => {
 				this.closeAddQuestionClicked()
 				this.gettingQuizQuestions()
+				this.closeDeleteQuestionModal()
 			})
 	}
-    
+    closeDeleteQuestionModal = () => {
+		this.setState({
+			modalIsOpenQuestionDelete: false,
+			logOfSelected: null,	
+		})
+	}
     gettingQuizQuestions = () => {
 		let dataString = {
 			"email":"aadfsddf@adsdessf.com",
@@ -604,7 +661,7 @@ class Quix extends Component {
 									<td>{log.question}</td>
 									<td> {log.type}</td>
 									<td className='text-underline pointer' onClick={() => {this.addQuestionClicked(log)}} ><img src={editIcon} className='editIcon'/></td>
-									<td className='text-underline pointer' onClick={() => {this.deleteCourseClicked(log)}}><img src={deleteIcon} className='editIcon'/></td>
+									<td className='text-underline pointer' onClick={() => {this.deleteCourseClickeds(log)}}><img src={deleteIcon} className='editIcon'/></td>
 								</tr>
 								</>
 							)
@@ -1066,6 +1123,27 @@ class Quix extends Component {
 									<img src = {closeIcon} className='common-close-button close-button-style' onClick={this.closeAddQuestionClicked}></img>
 									<button onClick={this.saveQuestionValue} className='save-button-style'>Save</button>
 								</Modal>
+								{/* Modal for the confirmation of the Delete option | Course | Start */}
+								<Modal
+									isOpen={this.state.modalIsOpenQuestionDelete}
+									onAfterOpen={this.afterOpenModal}
+									onRequestClose={this.closeModal}
+									style={customStylesDelete}
+									contentLabel="Example Modal"
+								>
+									<div className='border-bottom'>
+										<h6 ref={subtitle => this.subtitle = subtitle}>Confirm Delete ?</h6>
+									</div>
+									<div className='col-lg-12 col-md-12 col-sm-12 row m-0 my-50'>
+									  <button onClick={this.deleteFuncQuestion} className='yes-no-button col-lg-4 col-md-4 col-sm-4'>Yes</button>
+									  <div className='col-lg-4 col-md-4 col-sm-4'></div>
+									  <button onClick={this.closeAddQuestionDeleteModal} className='yes-no-button col-lg-4 col-md-4 col-sm-4'>No</button>
+									</div>
+									{/* <button onClick={this.closeAddCourseModal} className='close-button-style'>Close Me</button> */}
+									<img src = {closeIcon} className='common-close-button close-button-style pointer' onClick={this.closeAddQuestionDeleteModal}></img>
+									{/* <button onClick={this.saveCourseValue} className='save-button-style'>Save</button> */}
+								</Modal>
+								{/* Modal for the confirmation of the Delete option | End */}
 							</>
                         </div>}
                         {!this.state.showQuizQuestions && <div className='mainTab'>
@@ -1170,6 +1248,27 @@ class Quix extends Component {
 									<img src = {closeIcon} className='common-close-button close-button-style' onClick={this.closeAddTopicModal}></img>
 									<button onClick={this.saveQuizValue} className='save-button-style'>Save</button>
 								</Modal>
+								{/* Modal for the confirmation of the Delete option | Course | Start */}
+								<Modal
+									isOpen={this.state.modalIsOpenQuizDelete}
+									onAfterOpen={this.afterOpenModal}
+									onRequestClose={this.closeModal}
+									style={customStylesDelete}
+									contentLabel="Example Modal"
+								>
+									<div className='border-bottom'>
+										<h6 ref={subtitle => this.subtitle = subtitle}>Confirm Delete ?</h6>
+									</div>
+									<div className='col-lg-12 col-md-12 col-sm-12 row m-0 my-50'>
+									  <button onClick={this.deleteFuncQuiz} className='yes-no-button col-lg-4 col-md-4 col-sm-4'>Yes</button>
+									  <div className='col-lg-4 col-md-4 col-sm-4'></div>
+									  <button onClick={this.closeAddQuestionDeleteModal} className='yes-no-button col-lg-4 col-md-4 col-sm-4'>No</button>
+									</div>
+									{/* <button onClick={this.closeAddCourseModal} className='close-button-style'>Close Me</button> */}
+									<img src = {closeIcon} className='common-close-button close-button-style pointer' onClick={this.closeAddQuestionDeleteModal}></img>
+									{/* <button onClick={this.saveCourseValue} className='save-button-style'>Save</button> */}
+								</Modal>
+								{/* Modal for the confirmation of the Delete option | End */}
 							</>
 						</div>}
 					</div>
