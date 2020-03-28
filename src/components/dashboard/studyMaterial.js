@@ -25,6 +25,17 @@ const customStyles = {
 	  minHeight				: '300px'
 	}
   };
+const customStyless = {
+	content : {
+	  top                   : '50%',
+	  left                  : '50%',
+	  right                 : 'auto',
+	  bottom                : 'auto',
+	  marginRight           : '-50%',
+	  transform             : 'translate(-50%, -50%)',
+	  width					: '500px'
+	}
+  };
 class StudyMaterial extends Component {
 	constructor(props) {
 		super(props);
@@ -46,7 +57,10 @@ class StudyMaterial extends Component {
 			selectedElementFromList: null,
 			selectedTopicFromList: null,
 			studyMaterialList: null,
-			typeUpload: null
+			typeUpload: null,
+			acceptingParams: null,
+			modalIsOpenElementDelete: false,
+			logOfSelected: null,
 		};
 	}
 
@@ -78,6 +92,9 @@ class StudyMaterial extends Component {
 	}
 	componentDidMount() {
 		this.fetchCall()
+		this.setState({
+			acceptingParams: 'video/mp4,video/x-m4v,video/*'
+		})
 	}
 
 	addTopicClicked = () => {
@@ -97,14 +114,19 @@ class StudyMaterial extends Component {
 		})
 	}
 	closeAddTopicModal = () => {
-		this.setState({modalIsOpenTopic: false})
+		this.setState({
+			modalIsOpenTopic: false,
+			nameOnUploadForm: null,
+			readingMinutes:null 
+		})
 	}
     courseViewClicked = () => {
 		console.log('Course List View')
 		this.setState({
 			courseView: true,
 			elementView: false,
-			topicView: false	
+			topicView: false,
+			acceptingParams: 'video/mp4,video/x-m4v,video/*'
 		}, () => {
 			this.gettingListElement()
 		})
@@ -114,7 +136,8 @@ class StudyMaterial extends Component {
 		this.setState({
 			courseView: false,
 			elementView: true,
-			topicView: false	
+			topicView: false,
+			acceptingParams: 'application/pdf'
 		}, () => {
 			this.gettingListElement()
 		})
@@ -124,7 +147,8 @@ class StudyMaterial extends Component {
 		this.setState({
 			courseView: false,
 			elementView: false,
-			topicView: true	
+			topicView: true,
+			acceptingParams: 'application/msword, application/vnd.ms-excel, application/vnd.ms-powerpoint'
 		}, () => {
 			this.gettingListElement()
 		})
@@ -163,23 +187,29 @@ class StudyMaterial extends Component {
 		console.log(this.state.courseView)
 		console.log(this.state.elementView)
 		console.log(this.state.topicView)
+		// accept="video/mp4,video/x-m4v,video/*"
+		// accept="application/pdf"
+		// accept="application/msword, application/vnd.ms-excel, application/vnd.ms-powerpoint, text/plain, application/pdf, image/*"
 		if(this.state.courseView){
 				this.setState({
-					typeUpload: 'video'
+					typeUpload: 'video',
+					acceptingParams: 'video/mp4,video/x-m4v,video/*'
 				}, () => {
 					this.uploadFinal()
 				})
 			}
 		if(this.state.elementView){
 				this.setState({
-					typeUpload: 'pdf'
+					typeUpload: 'pdf',
+					acceptingParams: 'application/pdf'
 				}, () => {
 					this.uploadFinal()
 				})
 			}
 		if(this.state.topicView){
 				this.setState({
-					typeUpload: 'ppt'
+					typeUpload: 'ppt',
+					acceptingParams: 'application/msword, application/vnd.ms-excel, application/vnd.ms-powerpoint'
 				}, () => {
 					this.uploadFinal()
 				})
@@ -219,6 +249,29 @@ class StudyMaterial extends Component {
 	viewElementClicked = (e) => {
 		console.log(e)
 	}
+	closeAddElementDeleteModal = () => {
+		this.setState({
+			modalIsOpenElementDelete: false,
+			logOfSelected: null,	
+		})
+	}
+	deleteElementClickeds = (e) => {
+		console.log('Came to this func')
+		console.log(e)
+		// this.deleteCourseClicked(e)
+		this.setState({
+			modalIsOpenElementDelete: true,
+			logOfSelected: e
+		}, () => {
+			console.log(this.state.logOfSelected)
+		})
+	}
+	deleteFuncElement = () => {
+		if(this.state.logOfSelected){
+			console.log(this.state.logOfSelected)
+			this.deleteElementClicked(this.state.logOfSelected)
+		}
+	}
 	deleteElementClicked = (e) => {
 		let quizSetString = {
 			'_id': e._id,
@@ -231,7 +284,7 @@ class StudyMaterial extends Component {
 			}, () => {
 				this.fetchCall()
 			})
-			this.closeAddTopicModal()
+			this.closeAddElementDeleteModal()
 		})
 		.catch(err => {
 			alert(err)
@@ -249,7 +302,7 @@ class StudyMaterial extends Component {
 							<td className='text-underline pointer' onClick={() => {this.viewElementClicked(log)}}><img src={editIcon} className='eyeIcon'/></td>
 							{/* {log.isPostTest && <td className='text-underline pointer' onClick={() => {this.viewElementClicked(log)}}><img src={tickIcon} className='eyeIcon'/></td>}
 							{!log.isPostTest && <td className='text-underline pointer' onClick={() => {this.viewElementClicked(log)}}><img src={crossIcon} className='eyeIcon'/></td>} */}
-							<td className='text-underline pointer' onClick={() => {this.deleteElementClicked(log)}}><img src={deleteIcon} className='editIcon'/></td>
+							<td className='text-underline pointer' onClick={() => {this.deleteElementClickeds(log)}}><img src={deleteIcon} className='editIcon'/></td>
 						</tr>}
 						{this.state.elementView && log.type === 'pdf' && <tr>
 							<td>{log.title}</td>
@@ -257,7 +310,7 @@ class StudyMaterial extends Component {
 							<td className='text-underline pointer' onClick={() => {this.viewElementClicked(log)}}><img src={editIcon} className='eyeIcon'/></td>
 							{/* {log.isPostTest && <td className='text-underline pointer' onClick={() => {this.viewElementClicked(log)}}><img src={tickIcon} className='eyeIcon'/></td>}
 							{!log.isPostTest && <td className='text-underline pointer' onClick={() => {this.viewElementClicked(log)}}><img src={crossIcon} className='eyeIcon'/></td>} */}
-							<td className='text-underline pointer' onClick={() => {this.deleteElementClicked(log)}}><img src={deleteIcon} className='editIcon'/></td>
+							<td className='text-underline pointer' onClick={() => {this.deleteElementClickeds(log)}}><img src={deleteIcon} className='editIcon'/></td>
 						</tr>}
 						{this.state.topicView && log.type === 'ppt' && <tr>
 							<td>{log.title}</td>
@@ -265,7 +318,7 @@ class StudyMaterial extends Component {
 							<td className='text-underline pointer' onClick={() => {this.viewElementClicked(log)}}><img src={editIcon} className='eyeIcon'/></td>
 							{/* {log.isPostTest && <td className='text-underline pointer' onClick={() => {this.viewElementClicked(log)}}><img src={tickIcon} className='eyeIcon'/></td>}
 							{!log.isPostTest && <td className='text-underline pointer' onClick={() => {this.viewElementClicked(log)}}><img src={crossIcon} className='eyeIcon'/></td>} */}
-							<td className='text-underline pointer' onClick={() => {this.deleteElementClicked(log)}}><img src={deleteIcon} className='editIcon'/></td>
+							<td className='text-underline pointer' onClick={() => {this.deleteElementClickeds(log)}}><img src={deleteIcon} className='editIcon'/></td>
 						</tr>}
 						</>
 					)
@@ -313,7 +366,7 @@ class StudyMaterial extends Component {
 										<h6 ref={subtitle => this.subtitle = subtitle}>Upload</h6>
 									</div>
 									<div className='col-lg-12 py-10'>
-											Element
+											Branch
 										<Multiselect
 											options={this.state.elementList.data}
 											onSelect={this.selectedElementType} 
@@ -325,7 +378,7 @@ class StudyMaterial extends Component {
 											/>
 										</div>
 									<div className='col-lg-12 py-10'>
-											Topic
+											Sub-branch
 										<Multiselect
 											options={this.state.topicOptionList}
 											onSelect={this.selectedTopicType} 
@@ -355,7 +408,7 @@ class StudyMaterial extends Component {
 									OR
 									<div className='col-lg-12 py-10'>
 											File
-										<input type='file' onChange={this.fileUploadQuestionImage}/>
+										<input type='file' onChange={this.fileUploadQuestionImage} accept={this.state.acceptingParams}/>
 										{/* onChange={e => this.setState({ addQuestionImageValue: e.target.value })} */}
 										</div>
 										{/* <div className='form-element col-lg-12 py-10'>		
@@ -373,6 +426,25 @@ class StudyMaterial extends Component {
 									{/* <button onClick={this.closeAddTopicModal} className='close-button-style'>Close Me</button> */}
 									<img src = {closeIcon} className='common-close-button close-button-style' onClick={this.closeAddTopicModal}></img>
 									<button onClick={this.saveUploadValue} className='save-button-style'>Save</button>
+								</Modal>
+								<Modal
+									isOpen={this.state.modalIsOpenElementDelete}
+									onAfterOpen={this.afterOpenModal}
+									onRequestClose={this.closeModal}
+									style={customStyless}
+									contentLabel="Example Modal"
+								>
+									<div className='border-bottom'>
+										<h6 ref={subtitle => this.subtitle = subtitle}>Confirm Delete ?</h6>
+									</div>
+									<div className='col-lg-12 col-md-12 col-sm-12 row m-0 my-50'>
+									  <button onClick={this.deleteFuncElement} className='yes-no-button col-lg-4 col-md-4 col-sm-4'>Yes</button>
+									  <div className='col-lg-4 col-md-4 col-sm-4'></div>
+									  <button onClick={this.closeAddElementDeleteModal} className='yes-no-button col-lg-4 col-md-4 col-sm-4'>No</button>
+									</div>
+									{/* <button onClick={this.closeAddCourseModal} className='close-button-style'>Close Me</button> */}
+									<img src = {closeIcon} className='common-close-button close-button-style pointer' onClick={this.closeAddElementDeleteModal}></img>
+									{/* <button onClick={this.saveCourseValue} className='save-button-style'>Save</button> */}
 								</Modal>
 							{/* This is for Videos */}
 						{this.state.courseView && <div>

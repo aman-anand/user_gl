@@ -555,6 +555,12 @@ class Quix extends Component {
 			console.log(this.state.logOfSelected)
 		})
 	}
+	closeAddQuizDeleteModal = (e) => {
+		console.log(e)
+		this.setState({
+			modalIsOpenQuizDelete: false	
+		})
+	}
 	deleteFuncQuiz = () => {
 		if(this.state.logOfSelected){
 			console.log(this.state.logOfSelected)
@@ -1262,10 +1268,10 @@ class Quix extends Component {
 									<div className='col-lg-12 col-md-12 col-sm-12 row m-0 my-50'>
 									  <button onClick={this.deleteFuncQuiz} className='yes-no-button col-lg-4 col-md-4 col-sm-4'>Yes</button>
 									  <div className='col-lg-4 col-md-4 col-sm-4'></div>
-									  <button onClick={this.closeAddQuestionDeleteModal} className='yes-no-button col-lg-4 col-md-4 col-sm-4'>No</button>
+									  <button onClick={this.closeAddQuizDeleteModal} className='yes-no-button col-lg-4 col-md-4 col-sm-4'>No</button>
 									</div>
 									{/* <button onClick={this.closeAddCourseModal} className='close-button-style'>Close Me</button> */}
-									<img src = {closeIcon} className='common-close-button close-button-style pointer' onClick={this.closeAddQuestionDeleteModal}></img>
+									<img src = {closeIcon} className='common-close-button close-button-style pointer' onClick={this.closeAddQuizDeleteModal}></img>
 									{/* <button onClick={this.saveCourseValue} className='save-button-style'>Save</button> */}
 								</Modal>
 								{/* Modal for the confirmation of the Delete option | End */}
